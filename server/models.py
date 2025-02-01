@@ -1,4 +1,4 @@
 from pydantic import BaseModel
 
-class GenVideoInput():
+class GenVideoInput(BaseModel):
     prompt: str
