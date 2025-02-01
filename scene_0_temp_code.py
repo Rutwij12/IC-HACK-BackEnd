@@ -1,114 +1,91 @@
 from manim import *
 
-class IntroductionToVectors(Scene):
+class LinearFunctionTransformation(Scene):
     def construct(self):
-        # 1. Coordinate System Introduction
-        axes = Axes(
-            x_range=[-5, 5, 1],
-            y_range=[-5, 5, 1],
-            axis_config={
-                "color": WHITE,
-                "stroke_width": 2,
-                "include_ticks": True,
-                "include_tip": True,
-            },
-        )
+        # Part 1: Function Introduction
+        title = Text("Linear Function", font_size=36).shift(UP * 3)
+        function = MathTex("y = 2x + 1", font_size=36).shift(UP * 2)
         
-        # Add labels for axes
-        x_label = axes.get_x_axis_label("x")
-        y_label = axes.get_y_axis_label("y")
-        
-        # Create grid
-        grid = NumberPlane(
-            x_range=[-5, 5, 1],
-            y_range=[-5, 5, 1],
-            background_line_style={
-                "stroke_color": GRAY,
-                "stroke_width": 1,
-                "stroke_opacity": 0.3
-            }
-        )
-
-        # Animate coordinate system
         self.play(
-            FadeIn(grid),
-            Create(axes),
+            Write(title),
+            Write(function)
+        )
+        self.wait(0.5)
+
+        # Part 2: Create number lines
+        x_line = NumberLine(
+            x_range=[-3, 5],
+            length=6,
+            include_numbers=True,
+            include_tip=True
+        ).shift(LEFT * 3)
+        
+        y_line = NumberLine(
+            x_range=[-3, 5],
+            length=6,
+            include_numbers=True,
+            include_tip=True
+        ).shift(RIGHT * 3)
+
+        x_label = Text("x", font_size=24).next_to(x_line, DOWN)
+        y_label = Text("y", font_size=24).next_to(y_line, DOWN)
+
+        self.play(
+            Create(x_line),
+            Create(y_line),
             Write(x_label),
-            Write(y_label),
-            run_time=3
+            Write(y_label)
         )
 
-        # 2. Vector Introduction
-        # Create main vector
-        vector = Arrow(
-            axes.c2p(0, 0),
-            axes.c2p(3, 2),
-            buff=0,
-            color="#FF4444",
-            stroke_width=3,
-        )
+        # Create function box
+        function_box = Rectangle(height=1, width=2, fill_color=LIGHT_GRAY, 
+                               fill_opacity=0.3, stroke_color=GRAY)
+        box_text = MathTex("f(x) = 2x + 1", font_size=24)
+        box_group = VGroup(function_box, box_text)
 
-        # Animate vector creation
         self.play(
-            GrowArrow(vector),
-            run_time=2
+            Create(function_box),
+            Write(box_text)
         )
-        self.wait()
 
-        # 3. Component Breakdown
-        # Create dashed lines for components
-        x_component = DashedLine(
-            axes.c2p(0, 0),
-            axes.c2p(3, 0),
-            color="#3498DB",
-            dash_length=0.2
-        )
+        # Create dots and arrows
+        input_outputs = [(0, 1), (1, 3), (2, 5)]
+        colors = [BLUE, GREEN, RED]
         
-        y_component = DashedLine(
-            axes.c2p(3, 0),
-            axes.c2p(3, 2),
-            color="#2ECC71",
-            dash_length=0.2
-        )
+        for i, (x_val, y_val) in enumerate(input_outputs):
+            # Create dots
+            x_dot = Dot(x_line.number_to_point(x_val), color=colors[i])
+            y_dot = Dot(y_line.number_to_point(y_val), color=colors[i])
+            
+            # Create labels
+            x_text = MathTex(f"x={x_val}", font_size=24, color=colors[i])\
+                .next_to(x_dot, UP)
+            y_text = MathTex(f"y={y_val}", font_size=24, color=colors[i])\
+                .next_to(y_dot, UP)
+            
+            # Create curved arrow
+            arrow = CurvedArrow(
+                start_point=x_dot.get_center(),
+                end_point=y_dot.get_center(),
+                color=colors[i],
+                stroke_width=2,
+                angle=PI/4
+            )
 
-        # Create right angle symbol
-        right_angle = RightAngle(
-            x_component,
-            y_component,
-            length=0.2,
-            color=WHITE
-        )
+            # Animate elements
+            self.play(
+                Create(x_dot),
+                Write(x_text),
+                Create(arrow),
+                Create(y_dot),
+                Write(y_text),
+                run_time=1
+            )
+            self.wait(0.5)
 
-        # Create component labels
-        x_component_label = MathTex("3").scale(0.8)
-        x_component_label.next_to(x_component, DOWN, buff=0.2)
-        
-        y_component_label = MathTex("2").scale(0.8)
-        y_component_label.next_to(y_component, RIGHT, buff=0.2)
-
-        # Create vector notation
-        vector_notation = MathTex(r"\vec{v} = (3,2)")
-        vector_notation.scale(0.8)
-        vector_notation.move_to(axes.c2p(3, 3))
-
-        # Animate components and labels
+        # Final pause and fadeout
+        self.wait(1)
         self.play(
-            Create(x_component),
-            Create(y_component),
-            run_time=2
-        )
-        
-        self.play(
-            Create(right_angle),
-            Write(x_component_label),
-            Write(y_component_label),
-            run_time=2
-        )
-
-        self.play(
-            Write(vector_notation),
+            *[FadeOut(mob) for mob in self.mobjects],
             run_time=1
         )
-
-        # Final pause
-        self.wait(2)

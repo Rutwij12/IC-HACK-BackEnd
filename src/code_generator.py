@@ -41,29 +41,49 @@ class CodeGenerator:
         iterations = state["iterations"]
         
         response = await self.llm.ainvoke(messages)
-        messages.append(("assistant", response.content))
-        
+        # Trim any trailing whitespace from the response content
+        cleaned_content = response.content.rstrip()
+        messages.append(("assistant", cleaned_content))
+        print(f"state of messages after call: {self.temp_file_prefix}")
+        print(messages)
         return {
             "messages": messages,
             "iterations": iterations + 1
         }
 
     async def _evaluate_code(self, state: State):
-        """Evaluate generated code by writing to file and executing"""
+        """Evaluate generated code using manim --dry_run"""
         messages = state["messages"]
-        # last_message = messages[-1][1]  # Get code from last assistant message
-        last_message = messages[-1][1].content if hasattr(messages[-1][1], 'content') else messages[-1][1]
+        
+        # Concatenate all recent assistant messages until a non-assistant message
+        last_message = ""
+        for msg_type, content in reversed(messages):
+            if msg_type == "assistant" and content and not isinstance(content, list):
+                last_message = content + last_message
+            elif msg_type != "assistant":
+                break
+        
+        if not last_message:
+            return {
+                "messages": messages,
+                "evaluation": CodeEvaluation(
+                    passes_criteria=False,
+                    feedback="No valid assistant message found"
+                )
+            }
 
-        # Extract code blocks between triple backticks
+        # Initialize code_blocks before try block
+        code_blocks = []
+        
         try:
             code_blocks = re.findall(r'```python\n(.*?)```', last_message, re.DOTALL)
-        except:
-            print(last_message)
-        
-        if not code_blocks:
-            # Fallback to looking for any code blocks if python-specific ones aren't found
-            code_blocks = re.findall(r'```(.*?)```', last_message, re.DOTALL)
-        
+            if not code_blocks:
+                # Fallback to looking for any code blocks if python-specific ones aren't found
+                code_blocks = re.findall(r'```(.*?)```', last_message, re.DOTALL)
+        except Exception as e:
+            print(f"Error extracting code blocks: {e}")
+            print(f"Last message: {last_message}")
+
         if not code_blocks:
             return {
                 "messages": messages,
@@ -86,16 +106,56 @@ class CodeGenerator:
         try:
             async with aiofiles.open(filename) as f:
                 code_content = await f.read()
-
-            exec(code_content, namespace, namespace)
-            evaluation = CodeEvaluation(
-                passes_criteria=True,
-                feedback=""
+            
+            # Extract the class name from the code
+            class_match = re.search(r'class\s+(\w+)\s*\(', code_content)
+            if not class_match:
+                return {
+                    "messages": messages,
+                    "evaluation": CodeEvaluation(
+                        passes_criteria=False,
+                        feedback="No class definition found in the code"
+                    )
+                }
+            
+            class_name = class_match.group(1)
+            
+            # Run manim with --dry_run using extracted class name
+            command = ["manim", "--dry_run", filename, class_name]
+            print(f"Running command: {' '.join(command)}")
+            
+            process = await asyncio.create_subprocess_exec(
+                *command,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
             )
+            stdout, stderr = await process.communicate()
+            
+            if process.returncode == 0:
+                evaluation = CodeEvaluation(
+                    passes_criteria=True,
+                    feedback=""
+                )
+            else:
+                def extract_error(error_string: str):
+                    error_lines = error_string.splitlines()
+                    error_message = ""
+                    for i, line in enumerate(error_lines):
+                        if "Error" in line:
+                            error_message = "\n".join(error_lines[i:])
+                            print(f"\nDry run failed with error:\n{error_message}")
+                            break
+                    return error_message
+                error_message = extract_error(stderr.decode())
+                print(f"error messsage extracted from file {filename}: {error_message}")
+                evaluation = CodeEvaluation(
+                    passes_criteria=False,
+                    feedback=f"Code Execution: {error_message}"
+                )
         except Exception as e:
             evaluation = CodeEvaluation(
                 passes_criteria=False, 
-                feedback=f"Code execution failed: {e}"
+                feedback=f"Code execution failed: {str(e)}"
             )
         finally:
             # Clean up temp file

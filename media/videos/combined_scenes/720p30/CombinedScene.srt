@@ -1,0 +1,76 @@
+1
+00:00:00,000 --> 00:00:04,856
+A linear function transforms input values into output values using a
+
+2
+00:00:04,956 --> 00:00:08,646
+simple rule. When we input numbers like 0, 1, and 2,
+
+3
+00:00:08,746 --> 00:00:12,655
+our function multiplies each by 2 and adds 1 to produce
+
+4
+00:00:12,755 --> 00:00:15,644
+the corresponding outputs of 1, 3, and 5.
+
+5
+00:00:15,733 --> 00:00:19,151
+Here's a neuron multiplying inputs with weights, adding a
+
+6
+00:00:19,251 --> 00:00:22,668
+bias, then applying an activation function to produce its
+
+7
+00:00:22,768 --> 00:00:27,112
+output. Watch how information flows through each component, transforming
+
+8
+00:00:27,212 --> 00:00:29,457
+the input signals into a final result.
+
+9
+00:00:29,733 --> 00:00:33,138
+Let's look at a simple neural network. Starting with our
+
+10
+00:00:33,238 --> 00:00:36,894
+input layer of three neurons, connecting to two hidden layer
+
+11
+00:00:36,994 --> 00:00:40,650
+neurons, and finally linking to a single output neuron. Each
+
+12
+00:00:40,750 --> 00:00:44,657
+connection represents how information flows through the network.
+
+13
+00:00:44,733 --> 00:00:49,368
+Let's see how a neural network processes inputs through its layers.
+
+14
+00:00:49,468 --> 00:00:54,032
+As our inputs, 0.5 and 1.0, flow through the weighted connections,
+
+15
+00:00:54,132 --> 00:00:58,061
+they combine at the hidden layer, get adjusted by a bias,
+
+16
+00:00:58,161 --> 00:01:01,241
+and transform into our final output of 0.425.
+
+17
+00:01:01,533 --> 00:01:05,075
+When the network makes a prediction of 0.8, but the actual
+
+18
+00:01:05,175 --> 00:01:09,031
+value is 0.3, it recognizes this error and adjusts its internal
+
+19
+00:01:09,131 --> 00:01:13,553
+weights, gradually improving its accuracy through this learning process.
+

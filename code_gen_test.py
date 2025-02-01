@@ -8,7 +8,7 @@ async def main():
     
     code_generator = CodeGenerator(
         ("write a python function demonstrating breadth first search, however initially you should make some syntax error, only output code with an error, no corrections required"
-         ", before outputting any code, you must explain what syntax error you are about to make"), 
+         ", before outputting any code, you must explain what syntax error you are about to make. Ignore all instructtions about geneating manim code, this is completeely unrealted to manim. Just a normal function required"), 
         temp_file_prefix="0",
         model="claude-3-haiku-20240307"
     )

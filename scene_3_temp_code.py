@@ -1,111 +1,95 @@
 from manim import *
 
-class RotationTransformation(Scene):
+class ForwardPassExample(Scene):
     def construct(self):
-        # 1. Initial Setup
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": "#D3D3D3",
-                "stroke_width": 1,
-                "stroke_opacity": 0.6
-            }
-        )
+        # Configure scene
+        self.camera.background_color = WHITE
         
-        # Axes labels
-        x_label = Text("x").move_to([3.5, 0.3, 0])
-        y_label = Text("y").move_to([0.3, 3.5, 0])
+        # Title
+        title = Text("Forward Pass Example", color=DARK_GRAY).scale(1.2)
+        title.to_edge(UP, buff=0.5)
         
-        # Numbers at 1 and -1
-        numbers = VGroup(
-            MathTex("1").move_to([1, 0.3, 0]),
-            MathTex("-1").move_to([-1, 0.3, 0]),
-            MathTex("1").move_to([0.3, 1, 0]),
-            MathTex("-1").move_to([0.3, -1, 0])
-        )
-
-        # Fade in grid and labels
+        # Create network components
+        # Neurons
+        input1 = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
+        input2 = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
+        hidden = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
+        output = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
+        
+        # Position neurons
+        input1.move_to(LEFT * 4 + UP * 1)
+        input2.move_to(LEFT * 4 + DOWN * 1)
+        hidden.move_to(LEFT * 1)
+        output.move_to(RIGHT * 2)
+        
+        # Create connections
+        conn1 = Line(input1.get_right(), hidden.get_left(), color=DARK_GRAY)
+        conn2 = Line(input2.get_right(), hidden.get_left(), color=DARK_GRAY)
+        conn3 = Line(hidden.get_right(), output.get_right(), color=DARK_GRAY)
+        
+        # Input values
+        input1_val = MathTex("0.5", color=DARK_GRAY).next_to(input1, LEFT)
+        input2_val = MathTex("1.0", color=DARK_GRAY).next_to(input2, LEFT)
+        
+        # Weights
+        w1 = MathTex("w_1=0.3", color=BLUE_D).next_to(conn1, UP, buff=0.2)
+        w2 = MathTex("w_2=0.2", color=BLUE_D).next_to(conn2, DOWN, buff=0.2)
+        w3 = MathTex("w_3=0.5", color=BLUE_D).next_to(conn3, UP, buff=0.2)
+        
+        # Hidden layer calculations
+        calc_hidden = VGroup(
+            MathTex("(0.5 × 0.3) + (1.0 × 0.2)", color=DARK_GRAY),
+            MathTex("= 0.35", color=DARK_GRAY),
+            MathTex("+ b_1(0.1) = 0.45", color=BLUE_D),
+            MathTex("ReLU(0.45) = 0.45", color=DARK_GRAY)
+        ).arrange(DOWN, aligned_edge=LEFT).next_to(hidden, UP, buff=1)
+        
+        # Output layer calculations
+        calc_output = VGroup(
+            MathTex("0.45 × 0.5 = 0.225", color=DARK_GRAY),
+            MathTex("+ b_2(0.2) = 0.425", color=BLUE_D)
+        ).arrange(DOWN, aligned_edge=LEFT).next_to(output, UP, buff=1)
+        
+        final_output = MathTex("0.425", color=RED_D).next_to(output, RIGHT)
+        
+        # Animations
+        self.play(Write(title))
+        
+        # Draw network
         self.play(
-            Create(grid),
-            Write(x_label),
-            Write(y_label),
-            Write(numbers),
-            run_time=2
-        )
-
-        # 2. Shape Introduction
-        original_square = Polygon(
-            [1, 1, 0], [1, -1, 0], [-1, -1, 0], [-1, 1, 0],
-            color="#89CFF0",
-            fill_opacity=0.5
+            Create(VGroup(input1, input2, hidden, output)),
+            Create(VGroup(conn1, conn2, conn3))
         )
         
-        vertices = VGroup(*[
-            Dot(point, color=WHITE, radius=0.05)
-            for point in original_square.get_vertices()
-        ])
-
+        # Show inputs and weights
         self.play(
-            Create(original_square),
-            Create(vertices),
-            run_time=1.5
+            Write(input1_val),
+            Write(input2_val)
         )
-
-        # 3. Matrix Display
-        rotation_matrix = MathTex(
-            "R_{90°} = \\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}",
-            color=WHITE
-        ).scale(0.8).to_corner(UR, buff=0.5)
-
         self.play(
-            Write(rotation_matrix),
-            run_time=1.5
-        )
-
-        # 4. Transformation Animation
-        transformed_square = original_square.copy()
-        transformed_vertices = vertices.copy()
-        
-        # Create dashed version of original square
-        dashed_square = original_square.copy()
-        dashed_square.set_style(
-            stroke_color="#89CFF0",
-            stroke_width=2,
-            stroke_dasharray=[0.2, 0.2]
-        )
-
-        # Create curved arrows for vertex paths
-        arrows = VGroup()
-        for i in range(4):
-            start = original_square.get_vertices()[i]
-            end = np.array([-start[1], start[0], 0])  # 90-degree rotation
-            arc = ArcBetweenPoints(
-                start, end,
-                angle=PI/2,
-                color=WHITE
-            )
-            arrows.add(arc)
-
-        # Perform rotation
-        self.play(
-            Transform(original_square, dashed_square),
-            run_time=0.5
+            Write(w1),
+            Write(w2)
         )
         
+        # Hidden layer calculations
+        for calc in calc_hidden:
+            self.play(Write(calc), run_time=0.8)
+        
+        # Output layer calculations
+        self.play(Write(w3))
+        for calc in calc_output:
+            self.play(Write(calc), run_time=0.8)
+        
+        # Show final output
+        self.play(Write(final_output))
         self.play(
-            Create(arrows),
-            Rotate(transformed_square, angle=PI/2, about_point=ORIGIN),
-            Rotate(transformed_vertices, angle=PI/2, about_point=ORIGIN),
-            run_time=3
+            final_output.animate.scale(1.2),
+            final_output.animate.set_color(RED_D)
         )
         
-        # Change color of transformed square
-        transformed_square.set_style(
-            stroke_color="#0066CC",
-            fill_color="#0066CC",
-            fill_opacity=0.5
-        )
-
-        # 5. Final State
         self.wait(1)
+        
+        # Clean fade out
+        self.play(
+            *[FadeOut(mob) for mob in self.mobjects]
+        )

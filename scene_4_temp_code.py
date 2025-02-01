@@ -1,95 +1,105 @@
 from manim import *
 
-class LinearTransformationProperties(Scene):
+class LearningProcessOverview(Scene):
     def construct(self):
-        # Part 1: Initial Grid Setup
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": "#888888",
-                "stroke_width": 1,
-                "stroke_opacity": 0.5
-            }
-        )
-        
-        # Make axes slightly brighter
-        grid.axes.set_color(WHITE)
-        
-        # Origin point and label
-        origin_dot = Dot(point=ORIGIN, color=RED, radius=0.1)
-        origin_label = MathTex("(0,0)", color=WHITE).next_to(origin_dot, UR, buff=0.1)
-        
-        # Fade in grid and origin elements
-        self.play(
-            Create(grid),
-            GrowFromCenter(origin_dot),
-            Write(origin_label)
-        )
-        self.wait(0.5)
+        # Part 1: Create Neural Network
+        # Create nodes
+        input_layer = VGroup(*[Circle(radius=0.3) for _ in range(2)])
+        hidden_layer = VGroup(*[Circle(radius=0.3) for _ in range(2)])
+        output_layer = Circle(radius=0.3)
 
-        # Part 2: Parallel Lines and Transformation
-        line1 = Line(start=np.array([-3, 1, 0]), end=np.array([3, 1, 0]), 
-                    color=BLUE, stroke_opacity=0.8)
-        line2 = Line(start=np.array([-3, 2, 0]), end=np.array([3, 2, 0]), 
-                    color=BLUE, stroke_opacity=0.8)
-        
-        # Draw parallel lines
-        self.play(
-            Create(line1),
-            Create(line2)
-        )
-        self.wait(0.5)
+        # Position nodes
+        input_layer.arrange(DOWN, buff=1)
+        hidden_layer.arrange(DOWN, buff=1)
+        output_layer.move_to(RIGHT * 2)
 
-        # Define and apply transformation
-        matrix = [[2, 0.5], [0.5, 1.5]]
-        transform = grid.animate.apply_matrix(matrix)
-        lines_transform = VGroup(line1, line2).animate.apply_matrix(matrix)
+        # Position layers
+        input_layer.move_to(LEFT * 2)
+        hidden_layer.move_to(ORIGIN)
         
-        self.play(
-            transform,
-            lines_transform,
-            run_time=3
-        )
-        self.wait(0.5)
+        # Group all nodes
+        all_nodes = VGroup(input_layer, hidden_layer, output_layer)
+        all_nodes.move_to(ORIGIN)
+        all_nodes.shift(UP * 1)  # Move network above center
 
-        # Part 3: Highlighting Properties
-        # Pulse origin
+        # Create connections
+        connections = VGroup()
+        for input_node in input_layer:
+            for hidden_node in hidden_layer:
+                connections.add(Arrow(input_node.get_center(), hidden_node.get_center(),
+                                   buff=0.3))
+        
+        for hidden_node in hidden_layer:
+            connections.add(Arrow(hidden_node.get_center(), output_layer.get_center(),
+                                buff=0.3))
+
+        # Fade in network
         self.play(
-            origin_dot.animate.scale(1.5),
-            rate_func=there_and_back,
-            run_time=1
+            FadeIn(all_nodes),
+            Create(connections),
+            run_time=2
         )
 
-        # Add text labels
-        origin_text = Text("Origin remains fixed", 
-                         color=WHITE, font_size=36).to_edge(UR, buff=0.5)
-        parallel_text = Text("Grid lines remain parallel", 
-                           color=WHITE, font_size=36).next_to(origin_text, DOWN, buff=0.3)
+        # Part 2: Prediction Example
+        prediction = Text("Prediction: 0.8", color=RED).scale(0.8)
+        actual = Text("Actual: 0.3", color=GREEN).scale(0.8)
+        error_text = Text("Error!", color=RED).scale(0.8)
 
-        self.play(Write(origin_text))
+        # Position texts
+        prediction.next_to(all_nodes, DOWN, buff=0.5)
+        actual.next_to(prediction, DOWN, buff=0.5)
+        error_text.next_to(actual, DOWN, buff=0.5)
 
-        # Highlight parallel grid lines
-        highlights = []
-        for i in [-2, 0, 2]:
-            # Horizontal lines
-            h_line = Line([-4, i, 0], [4, i, 0], color=YELLOW, stroke_opacity=0.3)
-            # Vertical lines
-            v_line = Line([i, -4, 0], [i, 4, 0], color=YELLOW, stroke_opacity=0.3)
-            h_line.apply_matrix(matrix)
-            v_line.apply_matrix(matrix)
-            highlights.extend([h_line, v_line])
+        # Create X mark
+        x_mark = Cross(output_layer, stroke_color=RED)
 
-        parallel_highlights = VGroup(*highlights)
-        
+        # Fade in prediction info
         self.play(
-            Create(parallel_highlights),
-            Write(parallel_text),
+            FadeIn(prediction),
+            FadeIn(actual),
             run_time=1
         )
         self.play(
-            FadeOut(parallel_highlights),
-            run_time=0.5
+            FadeIn(error_text),
+            Create(x_mark),
+            run_time=1
         )
 
-        self.wait(1)
+        # Part 3: Weight Adjustment
+        # Create rotating arrows for weight adjustment
+        adjustment_arrows = VGroup()
+        for connection in connections[:2]:  # Only add to some connections
+            curve = ArcBetweenPoints(
+                connection.get_start() + RIGHT * 0.3 + UP * 0.3,
+                connection.get_end() + LEFT * 0.3 + UP * 0.3,
+                angle=-TAU/4
+            ).set_color(YELLOW)
+            adjustment_arrows.add(curve)
+
+        adjusting_text = Text("Adjusting weights", color=YELLOW).scale(0.7)
+        adjusting_text.next_to(hidden_layer, UP, buff=0.3)
+
+        final_text = Text("Network learns by updating weights").scale(0.7)
+        final_text.to_edge(DOWN, buff=0.5)
+
+        # Create animation for rotating arrows
+        self.play(
+            Create(adjustment_arrows),
+            FadeIn(adjusting_text),
+            run_time=1
+        )
+
+        # Animate arrows rotation
+        self.play(
+            Rotate(adjustment_arrows, angle=TAU/2, about_point=adjustment_arrows.get_center()),
+            run_time=2
+        )
+
+        # Add final text
+        self.play(
+            FadeIn(final_text),
+            run_time=1
+        )
+
+        # Hold final state
+        self.wait(2)

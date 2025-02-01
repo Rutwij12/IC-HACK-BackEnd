@@ -1,98 +1,100 @@
 from manim import *
 
-class MatrixTransformUnitVectors(Scene):
+class NetworkArchitecture(Scene):
     def construct(self):
-        # Create coordinate plane
-        plane = NumberPlane(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
-            x_length=6,
-            y_length=6,
-            background_line_style={
-                "stroke_color": GREY_C,
-                "stroke_width": 1,
-                "stroke_opacity": 0.5
-            }
-        )
+        # Colors
+        input_color = "#4B8BBE"
+        hidden_color = "#946B9E"
+        output_color = "#3F6B4F"
         
-        # Create original unit vectors
-        i_hat = Arrow(plane.c2p(0, 0), plane.c2p(1, 0), color=RED, buff=0)
-        j_hat = Arrow(plane.c2p(0, 0), plane.c2p(0, 1), color=BLUE, buff=0)
-        
-        # Create labels for original vectors
-        i_label = MathTex("\\hat{\\imath}", color=RED).next_to(i_hat.get_end(), DOWN)
-        j_label = MathTex("\\hat{\\jmath}", color=BLUE).next_to(j_hat.get_end(), LEFT)
-        
-        # Create matrix
-        matrix = MathTex(
-            "\\begin{bmatrix} 2 & 1 \\\\ 1 & 1 \\end{bmatrix}"
-        ).scale(0.8).to_corner(UR)
-        
-        # Create transformed vectors
-        i_hat_transformed = Arrow(
-            plane.c2p(0, 0), 
-            plane.c2p(2, 1), 
-            color=RED, 
-            buff=0
-        )
-        j_hat_transformed = Arrow(
-            plane.c2p(0, 0), 
-            plane.c2p(1, 1), 
-            color=BLUE, 
-            buff=0
-        )
-        
-        # Create labels for transformed vectors
-        i_transformed_label = MathTex("(2,1)", color=RED).next_to(i_hat_transformed.get_end(), RIGHT)
-        j_transformed_label = MathTex("(1,1)", color=BLUE).next_to(j_hat_transformed.get_end(), RIGHT)
-        
-        # Create ghost vectors (dashed versions of original vectors)
-        i_hat_ghost = DashedVMobject(i_hat.copy()).set_opacity(0.3)
-        j_hat_ghost = DashedVMobject(j_hat.copy()).set_opacity(0.3)
-        
-        # Animation sequence
-        
-        # 1. Fade in coordinate plane and original vectors
+        # Title
+        title = Text("Neural Network Architecture").scale(0.8)
+        title.to_edge(UP, buff=0.5)
+        self.play(FadeIn(title))
+        self.wait(0.5)
+
+        # Create layers
+        # Input Layer
+        input_neurons = VGroup()
+        input_labels = VGroup()
+        for i in range(3):
+            neuron = Circle(radius=0.3, color=input_color, fill_opacity=0.5)
+            neuron.shift(LEFT * 2.5 + (i-1) * UP)
+            label = MathTex(f"x_{i+1}").next_to(neuron, DOWN, buff=0.2)
+            input_neurons.add(neuron)
+            input_labels.add(label)
+
+        # Hidden Layer
+        hidden_neurons = VGroup()
+        hidden_labels = VGroup()
+        for i in range(2):
+            neuron = Circle(radius=0.3, color=hidden_color, fill_opacity=0.5)
+            neuron.shift((i-0.5) * UP)
+            label = MathTex(f"h_{i+1}").next_to(neuron, DOWN, buff=0.2)
+            hidden_neurons.add(neuron)
+            hidden_labels.add(label)
+
+        # Output Layer
+        output_neuron = Circle(radius=0.3, color=output_color, fill_opacity=0.5)
+        output_neuron.shift(RIGHT * 2.5)
+        output_label = MathTex("y").next_to(output_neuron, DOWN, buff=0.2)
+
+        # Layer labels
+        input_layer_label = Text("Input Layer", font_size=24).next_to(input_neurons, DOWN, buff=0.8)
+        hidden_layer_label = Text("Hidden Layer", font_size=24).next_to(hidden_neurons, DOWN, buff=0.8)
+        output_layer_label = Text("Output Layer", font_size=24).next_to(output_neuron, DOWN, buff=0.8)
+
+        # Animate input layer
+        for neuron, label in zip(input_neurons, input_labels):
+            self.play(
+                Create(neuron),
+                Write(label),
+                run_time=0.5
+            )
+        self.play(Write(input_layer_label))
+        self.wait(0.5)
+
+        # Animate hidden layer and connections
+        connections_in_to_hidden = VGroup()
+        for h_neuron in hidden_neurons:
+            for i_neuron in input_neurons:
+                line = Line(
+                    i_neuron.get_center(), 
+                    h_neuron.get_center(),
+                    stroke_opacity=0.6,
+                    stroke_width=2
+                )
+                connections_in_to_hidden.add(line)
+
+        for neuron, label in zip(hidden_neurons, hidden_labels):
+            self.play(
+                Create(neuron),
+                Write(label),
+                *[Create(conn) for conn in connections_in_to_hidden if np.array_equal(conn.get_end(), neuron.get_center())],
+                run_time=0.5
+            )
+        self.play(Write(hidden_layer_label))
+        self.wait(0.5)
+
+        # Animate output layer and connections
+        connections_hidden_to_out = VGroup()
+        for h_neuron in hidden_neurons:
+            line = Line(
+                h_neuron.get_center(),
+                output_neuron.get_center(),
+                stroke_opacity=0.6,
+                stroke_width=2
+            )
+            connections_hidden_to_out.add(line)
+
         self.play(
-            Create(plane),
-            run_time=1
+            Create(output_neu
+ron),
+            Write(output_label),
+            *[Create(conn) for conn in connections_hidden_to_out],
+            run_time=0.5
         )
-        self.play(
-            Create(i_hat),
-            Create(j_hat),
-            Write(i_label),
-            Write(j_label),
-            run_time=2
-        )
-        
-        # 2. Fade in matrix
-        self.play(
-            Write(matrix),
-            run_time=1
-        )
-        
-        # 3. Transform vectors
-        self.play(
-            ReplacementTransform(i_hat.copy(), i_hat_transformed),
-            ReplacementTransform(j_hat.copy(), j_hat_transformed),
-            FadeIn(i_hat_ghost),
-            FadeIn(j_hat_ghost),
-            run_time=3
-        )
-        
-        # 4. Add final position labels
-        self.play(
-            Write(i_transformed_label),
-            Write(j_transformed_label),
-            run_time=1
-        )
-        
-        # Final highlight
-        self.play(
-            Flash(i_hat_transformed.get_end(), color=RED, line_length=0.2),
-            Flash(j_hat_transformed.get_end(), color=BLUE, line_length=0.2),
-            run_time=1
-        )
-        
-        # Hold final state
+        self.play(Write(output_layer_label))
+
+        # Final pause
         self.wait(2)
