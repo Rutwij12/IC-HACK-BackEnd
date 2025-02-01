@@ -34,8 +34,10 @@ SCENE_PLAN_USER_PROMPT = """This is the scene:
 SCENE_EVALUATOR_SYSTEM_PROMPT = """Evaluate the plan for the Manim animation. 
 The plan must contain the following characteristics:
  - The examples used must be mathematically correct and rigorous
- - The plan must ensure that text is not overlapping other objects
- - Ensure 
+ - The plan must ensure that text is not overlapping other objects (like other text, or a grid)
+ - Ensure that there is not too much text at once, and if you must it is seperate from other things
+ - If there are lots of elements, instead of trying to fit them all at once, show them one by one
+ - Ensure that all the items fit in the screen
  """
 
 SCENE_EVALUATION_USER_PROMPT = """Evaluate this scene plan and respond with feeback if it does not meet the criteria.

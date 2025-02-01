@@ -2,99 +2,111 @@ from manim import *
 
 class NetworkArchitecture(Scene):
     def construct(self):
-        # Colors
-        input_color = "#4B8BBE"
-        hidden_color = "#946B9E"
-        output_color = "#3F6B4F"
+        # Define colors
+        input_color = "#3498db"
+        hidden_color = "#2ecc71"
+        output_color = "#e74c3c"
+        connection_color = "#95a5a6"
         
-        # Title
-        title = Text("Neural Network Architecture").scale(0.8)
-        title.to_edge(UP, buff=0.5)
-        self.play(FadeIn(title))
-        self.wait(0.5)
-
-        # Create layers
-        # Input Layer
+        # Create input layer neurons
         input_neurons = VGroup()
         input_labels = VGroup()
-        for i in range(3):
+        for i, y in enumerate([1, -1]):
             neuron = Circle(radius=0.3, color=input_color, fill_opacity=0.5)
-            neuron.shift(LEFT * 2.5 + (i-1) * UP)
-            label = MathTex(f"x_{i+1}").next_to(neuron, DOWN, buff=0.2)
+            neuron.move_to(np.array([-4, y, 0]))
+            label = MathTex(f"x_{i+1}").next_to(neuron, DOWN)
             input_neurons.add(neuron)
             input_labels.add(label)
-
-        # Hidden Layer
+        
+        # Create hidden layer neurons
         hidden_neurons = VGroup()
-        hidden_labels = VGroup()
-        for i in range(2):
+        for y in [1.5, 0, -1.5]:
             neuron = Circle(radius=0.3, color=hidden_color, fill_opacity=0.5)
-            neuron.shift((i-0.5) * UP)
-            label = MathTex(f"h_{i+1}").next_to(neuron, DOWN, buff=0.2)
+            neuron.move_to(np.array([0, y, 0]))
             hidden_neurons.add(neuron)
-            hidden_labels.add(label)
-
-        # Output Layer
-        output_neuron = Circle(radius=0.3, color=output_color, fill_opacity=0.5)
-        output_neuron.shift(RIGHT * 2.5)
-        output_label = MathTex("y").next_to(output_neuron, DOWN, buff=0.2)
-
-        # Layer labels
-        input_layer_label = Text("Input Layer", font_size=24).next_to(input_neurons, DOWN, buff=0.8)
-        hidden_layer_label = Text("Hidden Layer", font_size=24).next_to(hidden_neurons, DOWN, buff=0.8)
-        output_layer_label = Text("Output Layer", font_size=24).next_to(output_neuron, DOWN, buff=0.8)
-
-        # Animate input layer
-        for neuron, label in zip(input_neurons, input_labels):
-            self.play(
-                Create(neuron),
-                Write(label),
-                run_time=0.5
-            )
-        self.play(Write(input_layer_label))
-        self.wait(0.5)
-
-        # Animate hidden layer and connections
-        connections_in_to_hidden = VGroup()
-        for h_neuron in hidden_neurons:
-            for i_neuron in input_neurons:
-                line = Line(
-                    i_neuron.get_center(), 
-                    h_neuron.get_center(),
-                    stroke_opacity=0.6,
-                    stroke_width=2
+        
+        # Create output layer neurons
+        output_neurons = VGroup()
+        output_labels = VGroup()
+        for i, y in enumerate([1, -1]):
+            neuron = Circle(radius=0.3, color=output_color, fill_opacity=0.5)
+            neuron.move_to(np.array([4, y, 0]))
+            label = MathTex(f"y_{i+1}").next_to(neuron, DOWN)
+            output_neurons.add(neuron)
+            output_labels.add(label)
+        
+        # Create connections
+        input_connections = VGroup()
+        output_connections = VGroup()
+        
+        # Input to hidden connections
+        for in_neuron in input_neurons:
+            for hidden_neuron in hidden_neurons:
+                connection = Arrow(
+                    start=in_neuron.get_center(),
+                    end=hidden_neuron.get_center(),
+                    color=connection_color,
+                    buff=0.3,
+                    stroke_opacity=0.7
                 )
-                connections_in_to_hidden.add(line)
-
-        for neuron, label in zip(hidden_neurons, hidden_labels):
-            self.play(
-                Create(neuron),
-                Write(label),
-                *[Create(conn) for conn in connections_in_to_hidden if np.array_equal(conn.get_end(), neuron.get_center())],
-                run_time=0.5
-            )
-        self.play(Write(hidden_layer_label))
-        self.wait(0.5)
-
-        # Animate output layer and connections
-        connections_hidden_to_out = VGroup()
-        for h_neuron in hidden_neurons:
-            line = Line(
-                h_neuron.get_center(),
-                output_neuron.get_center(),
-                stroke_opacity=0.6,
-                stroke_width=2
-            )
-            connections_hidden_to_out.add(line)
-
+                input_connections.add(connection)
+        
+        # Hidden to output connections
+        for hidden_neuron in hidden_neurons:
+            for out_neuron in output_neurons:
+                connection = Arrow(
+                    start=hidden_neuron.get_center(),
+                    end=out_neuron.get_center(),
+                    color=connection_color,
+                    buff=0.3,
+                    stroke_opacity=0.7
+                )
+                output_connections.add(connection)
+        
+        # Animation sequence
+        # 1. Input Layer
         self.play(
-            Create(output_neu
-ron),
-            Write(output_label),
-            *[Create(conn) for conn in connections_hidden_to_out],
-            run_time=0.5
+            FadeIn(input_neurons),
+            FadeIn(input_labels),
+            run_time=2
         )
-        self.play(Write(output_layer_label))
-
-        # Final pause
-        self.wait(2)
+        
+        # 2. Hidden Layer and connections
+        self.play(
+            FadeIn(hidden_neurons),
+            Create(input_connections),
+            run_time=3
+        )
+        
+        # 3. Output Layer and connections
+        self.play(
+            FadeIn(output_neurons),
+            FadeIn(output_labels),
+            Create(output_connections),
+            run_time=3
+        )
+        
+        # 4. Information flow animation
+        path_dots = []
+        # Define path: input[0] -> hidden[1] -> output[0]
+        path_points = [
+            input_neurons[0].get_center(),
+            hidden_neurons[1].get_center(),
+            output_neurons[0].get_center()
+        ]
+        
+        # Create dots for animation
+        for i in range(len(path_points) - 1):
+            dot = Dot(color=WHITE)
+            dot.move_to(path_points[i])
+            path_dots.append(dot)
+            
+            self.play(
+                dot.animate.move_to(path_points[i + 1]),
+                rate_func=linear,
+                run_time=1
+            )
+            self.play(FadeOut(dot), run_time=0.5)
+        
+        # Pause at the end to show final structure
+        self.wait(1)

@@ -1,95 +1,82 @@
 from manim import *
 
-class ForwardPassExample(Scene):
+class SimpleLearningProcess(Scene):
     def construct(self):
-        # Configure scene
-        self.camera.background_color = WHITE
+        # Create neural network nodes
+        input_node = Circle(radius=0.3).move_to(LEFT * 3)
+        hidden_node = Circle(radius=0.2)
+        output_node = Circle(radius=0.3).move_to(RIGHT * 3)
         
-        # Title
-        title = Text("Forward Pass Example", color=DARK_GRAY).scale(1.2)
-        title.to_edge(UP, buff=0.5)
+        nodes = VGroup(input_node, hidden_node, output_node)
+        nodes.shift(UP)
         
-        # Create network components
-        # Neurons
-        input1 = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-        input2 = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-        hidden = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-        output = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
+        # Create arrows
+        arrow1 = Arrow(input_node.get_right(), hidden_node.get_left())
+        arrow2 = Arrow(hidden_node.get_right(), output_node.get_left())
+        arrows = VGroup(arrow1, arrow2)
         
-        # Position neurons
-        input1.move_to(LEFT * 4 + UP * 1)
-        input2.move_to(LEFT * 4 + DOWN * 1)
-        hidden.move_to(LEFT * 1)
-        output.move_to(RIGHT * 2)
+        # Create labels
+        input_label = MathTex("x=2").next_to(input_node, DOWN)
+        output_label = MathTex("\\hat{y}").next_to(output_node, DOWN)
+        w1_label = MathTex("w_1=0.5").next_to(arrow1, UP)
+        w2_label = MathTex("w_2=0.3").next_to(arrow2, UP)
         
-        # Create connections
-        conn1 = Line(input1.get_right(), hidden.get_left(), color=DARK_GRAY)
-        conn2 = Line(input2.get_right(), hidden.get_left(), color=DARK_GRAY)
-        conn3 = Line(hidden.get_right(), output.get_right(), color=DARK_GRAY)
+        # Group initial network elements
+        network = VGroup(nodes, arrows, input_label, output_label, w1_label, w2_label)
         
-        # Input values
-        input1_val = MathTex("0.5", color=DARK_GRAY).next_to(input1, LEFT)
-        input2_val = MathTex("1.0", color=DARK_GRAY).next_to(input2, LEFT)
-        
-        # Weights
-        w1 = MathTex("w_1=0.3", color=BLUE_D).next_to(conn1, UP, buff=0.2)
-        w2 = MathTex("w_2=0.2", color=BLUE_D).next_to(conn2, DOWN, buff=0.2)
-        w3 = MathTex("w_3=0.5", color=BLUE_D).next_to(conn3, UP, buff=0.2)
-        
-        # Hidden layer calculations
-        calc_hidden = VGroup(
-            MathTex("(0.5 × 0.3) + (1.0 × 0.2)", color=DARK_GRAY),
-            MathTex("= 0.35", color=DARK_GRAY),
-            MathTex("+ b_1(0.1) = 0.45", color=BLUE_D),
-            MathTex("ReLU(0.45) = 0.45", color=DARK_GRAY)
-        ).arrange(DOWN, aligned_edge=LEFT).next_to(hidden, UP, buff=1)
-        
-        # Output layer calculations
-        calc_output = VGroup(
-            MathTex("0.45 × 0.5 = 0.225", color=DARK_GRAY),
-            MathTex("+ b_2(0.2) = 0.425", color=BLUE_D)
-        ).arrange(DOWN, aligned_edge=LEFT).next_to(output, UP, buff=1)
-        
-        final_output = MathTex("0.425", color=RED_D).next_to(output, RIGHT)
-        
-        # Animations
-        self.play(Write(title))
-        
-        # Draw network
+        # 1. Initial Network Display
         self.play(
-            Create(VGroup(input1, input2, hidden, output)),
-            Create(VGroup(conn1, conn2, conn3))
+            FadeIn(nodes),
+            Create(arrows),
+            Write(input_label),
+            Write(output_label),
+            Write(w1_label),
+            Write(w2_label)
+        )
+        self.wait()
+        
+        # 2. Forward Pass
+        forward_pass = Text("Forward Pass:", font_size=30).move_to(DOWN * 0.5)
+        calculation = MathTex(
+            "2 \\rightarrow 2(0.5) = 1 \\rightarrow 1(0.3) = 0.3"
+        ).next_to(forward_pass, DOWN)
+        
+        prediction = Text(
+            "Predicted: 0.3, Desired: 1.0",
+            font_size=30
+        ).next_to(calculation, DOWN)
+        
+        error = Text(
+            "Error = 0.7",
+            font_size=30
+        ).next_to(prediction, DOWN)
+        
+        self.play(Write(forward_pass))
+        self.play(Write(calculation))
+        self.play(Write(prediction))
+        self.play(Write(error))
+        self.wait()
+        
+        # 3. Weight Update
+        updating = Text(
+            "Updating weights...",
+            font_size=30
+        ).move_to(DOWN * 3)
+        
+        # New weight labels
+        w1_new = MathTex("w_1=0.7").next_to(arrow1, UP).set_color(GREEN)
+        w2_new = MathTex("w_2=0.5").next_to(arrow2, UP).set_color(GREEN)
+        
+        self.play(Write(updating))
+        self.play(
+            ReplacementTransform(w1_label, w1_new),
+            ReplacementTransform(w2_label, w2_new)
         )
         
-        # Show inputs and weights
-        self.play(
-            Write(input1_val),
-            Write(input2_val)
-        )
-        self.play(
-            Write(w1),
-            Write(w2)
-        )
+        final_text = Text(
+            "Network adjusted to reduce error",
+            font_size=30
+        ).next_to(updating, DOWN)
         
-        # Hidden layer calculations
-        for calc in calc_hidden:
-            self.play(Write(calc), run_time=0.8)
-        
-        # Output layer calculations
-        self.play(Write(w3))
-        for calc in calc_output:
-            self.play(Write(calc), run_time=0.8)
-        
-        # Show final output
-        self.play(Write(final_output))
-        self.play(
-            final_output.animate.scale(1.2),
-            final_output.animate.set_color(RED_D)
-        )
-        
-        self.wait(1)
-        
-        # Clean fade out
-        self.play(
-            *[FadeOut(mob) for mob in self.mobjects]
-        )
+        self.play(Write(final_text))
+        self.wait()

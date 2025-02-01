@@ -1,91 +1,89 @@
 from manim import *
 
-class LinearFunctionTransformation(Scene):
+class FunctionIntroduction(Scene):
     def construct(self):
-        # Part 1: Function Introduction
-        title = Text("Linear Function", font_size=36).shift(UP * 3)
-        function = MathTex("y = 2x + 1", font_size=36).shift(UP * 2)
-        
-        self.play(
-            Write(title),
-            Write(function)
+        # Set background color to light gray
+        self.camera.background_color = "#FFFFFF"
+
+        # 1. Initial Setup - Title
+        title = Text("Functions: The Building Blocks", font_size=40)
+        title.set_color("#3B82F6")
+        title.to_edge(UP, buff=0.5)
+
+        # 2. Function Introduction
+        function_eq = MathTex("y = 2x")
+        function_eq.next_to(title, DOWN, buff=0.5)
+
+        # Create coordinate system
+        axes = Axes(
+            x_range=[-3, 3],
+            y_range=[-3, 3],
+            axis_config={
+                "color": BLACK,
+                "stroke_width": 2,
+                "include_tip": True,
+            },
+            x_length=6,
+            y_length=6
         )
-        self.wait(0.5)
+        axes.shift(DOWN * 0.5)
 
-        # Part 2: Create number lines
-        x_line = NumberLine(
-            x_range=[-3, 5],
-            length=6,
-            include_numbers=True,
-            include_tip=True
-        ).shift(LEFT * 3)
+        # Add labels
+        x_label = axes.get_x_axis_label("x")
+        y_label = axes.get_y_axis_label("y")
         
-        y_line = NumberLine(
-            x_range=[-3, 5],
-            length=6,
-            include_numbers=True,
-            include_tip=True
-        ).shift(RIGHT * 3)
+        # Create function line
+        line = axes.plot(lambda x: 2*x, color="#EF4444")
+        
+        # Create dot and its labels
+        dot = Dot(color="#10B981")
+        dot.move_to(axes.c2p(1, 2))
+        
+        input_label = MathTex("\\text{Input: }1").scale(0.8)
+        output_label = MathTex("\\text{Output: }2").scale(0.8)
+        
+        # Position labels near the dot
+        input_label.next_to(axes.c2p(1, 0), DOWN)
+        output_label.next_to(axes.c2p(0, 2), LEFT)
+        
+        # Create dashed lines
+        v_line = DashedLine(
+            axes.c2p(1, 0),
+            axes.c2p(1, 2),
+            color=GRAY
+        )
+        h_line = DashedLine(
+            axes.c2p(0, 2),
+            axes.c2p(1, 2),
+            color=GRAY
+        )
 
-        x_label = Text("x", font_size=24).next_to(x_line, DOWN)
-        y_label = Text("y", font_size=24).next_to(y_line, DOWN)
-
+        # Animation sequence
+        self.play(FadeIn(title), run_time=1)
+        self.play(Write(function_eq), run_time=1)
         self.play(
-            Create(x_line),
-            Create(y_line),
+            Create(axes),
             Write(x_label),
-            Write(y_label)
+            Write(y_label),
+            run_time=2
         )
-
-        # Create function box
-        function_box = Rectangle(height=1, width=2, fill_color=LIGHT_GRAY, 
-                               fill_opacity=0.3, stroke_color=GRAY)
-        box_text = MathTex("f(x) = 2x + 1", font_size=24)
-        box_group = VGroup(function_box, box_text)
-
-        self.play(
-            Create(function_box),
-            Write(box_text)
-        )
-
-        # Create dots and arrows
-        input_outputs = [(0, 1), (1, 3), (2, 5)]
-        colors = [BLUE, GREEN, RED]
+        self.play(Create(line), run_time=2)
         
-        for i, (x_val, y_val) in enumerate(input_outputs):
-            # Create dots
-            x_dot = Dot(x_line.number_to_point(x_val), color=colors[i])
-            y_dot = Dot(y_line.number_to_point(y_val), color=colors[i])
-            
-            # Create labels
-            x_text = MathTex(f"x={x_val}", font_size=24, color=colors[i])\
-                .next_to(x_dot, UP)
-            y_text = MathTex(f"y={y_val}", font_size=24, color=colors[i])\
-                .next_to(y_dot, UP)
-            
-            # Create curved arrow
-            arrow = CurvedArrow(
-                start_point=x_dot.get_center(),
-                end_point=y_dot.get_center(),
-                color=colors[i],
-                stroke_width=2,
-                angle=PI/4
-            )
-
-            # Animate elements
-            self.play(
-                Create(x_dot),
-                Write(x_text),
-                Create(arrow),
-                Create(y_dot),
-                Write(y_text),
-                run_time=1
-            )
-            self.wait(0.5)
-
-        # Final pause and fadeout
-        self.wait(1)
+        # Animate dot movement
+        self.play(
+            FadeIn(dot),
+            Create(v_line),
+            Create(h_line),
+            Write(input_label),
+            Write(output_label),
+            run_time=2
+        )
+        
+        # Hold final state
+        self.wait(2)
+        
+        # Fade everything out
         self.play(
             *[FadeOut(mob) for mob in self.mobjects],
-            run_time=1
+            run_time=1.5
         )

@@ -1,89 +1,96 @@
 from manim import *
 
-class SingleNeuronStructure(Scene):
+class SingleNeuronBasics(Scene):
     def construct(self):
-        # Title
-        title = Text("Single Neuron Structure", font_size=48)
-        title.to_edge(UP, buff=0.5)
-        title_initial = title.copy().scale(1.5).shift(UP)
+        # 1. Title Display
+        title = Text("Single Artificial Neuron", font_size=48).to_edge(UP, buff=0.5)
+        self.play(FadeIn(title), run_time=1)
         
-        # Animate title
-        self.play(FadeIn(title_initial))
-        self.wait(1)
-        self.play(Transform(title_initial, title))
+        # 2. Basic Neuron Structure
+        # Create neuron body
+        neuron = Circle(radius=0.5, color=WHITE)
         
-        # Input nodes
-        inputs = VGroup()
-        input_labels = ["x1", "x2", "x3"]
-        input_values = ["0.5", "0.3", "0.8"]
-        for i, (label, val) in enumerate(zip(input_labels, input_values)):
-            circle = Circle(radius=0.3, color=BLUE)
-            text = Text(label, font_size=24)
-            value = Text(f"={val}", font_size=20).next_to(circle, UP, buff=0.1)
-            node = VGroup(circle, text, value).shift(LEFT * 6 + (1-i) * UP)
-            inputs.add(node)
-        
-        # Weight nodes
-        weights = VGroup()
-        weight_labels = ["w1", "w2", "w3"]
-        weight_values = ["0.4", "0.6", "0.2"]
-        for i, (label, val) in enumerate(zip(weight_labels, weight_values)):
-            rect = Rectangle(height=0.4, width=0.6, color=GREEN)
-            text = Text(label, font_size=24)
-            value = Text(f"={val}", font_size=20).next_to(rect, UP, buff=0.1)
-            node = VGroup(rect, text, value).shift(LEFT * 4 + (1-i) * UP)
-            weights.add(node)
-        
-        # Summation node
-        sum_circle = Circle(radius=0.5, color=WHITE)
-        sum_symbol = Text("Σ", font_size=36)
-        bias = Text("b=0.1", font_size=24).next_to(sum_circle, UP, buff=0.2)
-        sum_node = VGroup(sum_circle, sum_symbol)
-        
-        # Activation function
-        activation = RoundedRectangle(height=1, width=1.5, corner_radius=0.2, color=PURPLE)
-        activation_label = Text("f", font_size=36)
-        activation_text = Text("ReLU", font_size=20).next_to(activation, UP, buff=0.2)
-        activation_group = VGroup(activation, activation_label, activation_text).shift(RIGHT * 3)
-        
-        # Output node
-        output_circle = Circle(radius=0.3, color=RED).shift(RIGHT * 6)
-        output_label = Text("y", font_size=24)
-        output_value = Text("=0.57", font_size=20).next_to(output_circle, UP, buff=0.1)
-        output_node = VGroup(output_circle, output_label, output_value)
-        
-        # Center all text elements in their shapes
-        for item in [*inputs, *weights, sum_node, activation_group, output_node]:
-            for child in item:
-                if isinstance(child, Text):
-                    child.move_to(item[0].get_center())
-        
-        # Arrows
-        input_arrows = VGroup(*[
-            Arrow(start[0].get_right(), end[0].get_left(), color=WHITE)
-            for start, end in zip(inputs, weights)
+        # Create input lines
+        input_lines = VGroup(*[
+            Line(start=np.array([-3, i, 0]), end=np.array([0, i, 0]), color="#2C88D9")
+            for i in [1, 0, -1]
         ])
         
-        weight_arrows = VGroup(*[
-            Arrow(start[0].get_right(), sum_circle.get_left(), color=WHITE)
-            for start in weights
+        # Create input labels
+        input_labels = VGroup(*[
+            MathTex(f"x_{i}", color=WHITE).move_to(np.array([-3.5, i, 0]))
+            for i in [1, 2, 3]
         ])
         
-        activation_arrow = Arrow(sum_circle.get_right(), activation.get_left(), color=WHITE)
-        output_arrow = Arrow(activation.get_right(), output_circle.get_left(), color=WHITE)
+        # Create weight labels
+        weight_labels = VGroup(*[
+            MathTex(f"w_{i}", color="#FFB6C1").move_to(np.array([-2, i, 0]))
+            for i in [1, 2, 3]
+        ])
         
-        # Animation sequence
-        self.play(FadeIn(inputs))
-        self.wait(0.5)
+        # Create output line
+        output_line = Line(
+            start=np.array([0.5, 0, 0]), 
+            end=np.array([3, 0, 0]), 
+            color="#98FB98"
+        )
         
-        self.play(FadeIn(weights), Create(input_arrows))
-        self.wait(0.5)
+        # Animate neuron structure
+        self.play(
+            Create(input_lines, run_time=1),
+            FadeIn(input_labels, run_time=1),
+        )
+        self.play(
+            FadeIn(weight_labels, run_time=1),
+            Create(neuron, run_time=1),
+        )
+        self.play(Create(output_line, run_time=0.5))
         
-        self.play(FadeIn(sum_node), FadeIn(bias), Create(weight_arrows))
-        self.wait(0.5)
+        # 3. Mathematical Expression
+        equation = MathTex(
+            "y = f(w_1x_1 + w_2x_2 + w_3x_3 + b)",
+            color=WHITE
+        ).shift(DOWN * 2)
         
-        self.play(FadeIn(activation_group), Create(activation_arrow))
-        self.wait(0.5)
+        activation_label = Text(
+            "activation function", 
+            font_size=24,
+            color=WHITE
+        ).next_to(equation, DOWN, buff=0.3)
         
-        self.play(FadeIn(output_node), Create(output_arrow))
+        self.play(
+            FadeIn(equation),
+            FadeIn(activation_label)
+        )
+        
+        # 4. Example Values
+        example_values = VGroup(
+            Text("Input values:", font_size=24),
+            Text("x₁ = 0.5", font_size=24),
+            Text("x₂ = -1.0", font_size=24),
+            Text("x₃ = 0.8", font_size=24),
+            Text("Weights:", font_size=24),
+            Text("w₁ = 0.3", font_size=24),
+            Text("w₂ = 0.6", font_size=24),
+            Text("w₃ = -0.2", font_size=24),
+            Text("bias = 0.1", font_size=24),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+        
+        # Create background rectangle
+        bg_rect = SurroundingRectangle(
+            example_values, 
+            color=WHITE, 
+            buff=0.2,
+            corner_radius=0.1
+        )
+        
+        example_group = VGroup(bg_rect, example_values).move_to(
+            np.array([4, -0.5, 0])
+        ).scale(0.8)
+        
+        self.play(
+            FadeIn(example_group, run_time=1)
+        )
+        
+        # Hold final frame
         self.wait(2)

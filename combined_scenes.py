@@ -14,432 +14,455 @@ class CombinedScene(VoiceoverScene):
 
 
         # Scene 1
-        with self.voiceover(text="""A linear function transforms input values into output values using a simple rule. When we input numbers like 0, 1, and 2, our function multiplies each by 2 and adds 1 to produce the corresponding outputs of 1, 3, and 5.""") as tracker:
+        with self.voiceover(text="""Let's explore functions, starting with y equals 2x. Watch as we plot this line and see how each input x gives us an output y that's twice its value. For example, when x is 1, y becomes 2.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Part 1: Function Introduction
-            title = Text("Linear Function", font_size=36).shift(UP * 3)
-            function = MathTex("y = 2x + 1", font_size=36).shift(UP * 2)
-            self.play(
-                Write(title),
-                Write(function)
-            )
-            self.wait(0.5)
-            # Part 2: Create number lines
-            x_line = NumberLine(
-                x_range=[-3, 5],
-                length=6,
-                include_numbers=True,
-                include_tip=True
-            ).shift(LEFT * 3)
-            y_line = NumberLine(
-                x_range=[-3, 5],
-                length=6,
-                include_numbers=True,
-                include_tip=True
-            ).shift(RIGHT * 3)
-            x_label = Text("x", font_size=24).next_to(x_line, DOWN)
-            y_label = Text("y", font_size=24).next_to(y_line, DOWN)
-            self.play(
-                Create(x_line),
-                Create(y_line),
-                Write(x_label),
-                Write(y_label)
-            )
-            # Create function box
-            function_box = Rectangle(height=1, width=2, fill_color=LIGHT_GRAY, 
-                                   fill_opacity=0.3, stroke_color=GRAY)
-            box_text = MathTex("f(x) = 2x + 1", font_size=24)
-            box_group = VGroup(function_box, box_text)
-            self.play(
-                Create(function_box),
-                Write(box_text)
-            )
-            # Create dots and arrows
-            input_outputs = [(0, 1), (1, 3), (2, 5)]
-            colors = [BLUE, GREEN, RED]
-            for i, (x_val, y_val) in enumerate(input_outputs):
-                # Create dots
-                x_dot = Dot(x_line.number_to_point(x_val), color=colors[i])
-                y_dot = Dot(y_line.number_to_point(y_val), color=colors[i])
-                # Create labels
-                x_text = MathTex(f"x={x_val}", font_size=24, color=colors[i])\
-                    .next_to(x_dot, UP)
-                y_text = MathTex(f"y={y_val}", font_size=24, color=colors[i])\
-                    .next_to(y_dot, UP)
-                # Create curved arrow
-                arrow = CurvedArrow(
-                    start_point=x_dot.get_center(),
-                    end_point=y_dot.get_center(),
-                    color=colors[i],
-                    stroke_width=2,
-                    angle=PI/4
-                )
-                # Animate elements
-                self.play(
-                    Create(x_dot),
-                    Write(x_text),
-                    Create(arrow),
-                    Create(y_dot),
-                    Write(y_text),
-                    run_time=1
-                )
-                self.wait(0.5)
-            # Final pause and fadeout
-            self.wait(1)
-            self.play(
-                *[FadeOut(mob) for mob in self.mobjects],
-                run_time=1
-            )
-
-        # Scene 2
-        with self.voiceover(text="""Here's a neuron multiplying inputs with weights, adding a bias, then applying an activation function to produce its output. Watch how information flows through each component, transforming the input signals into a final result.""") as tracker:
-
-            # Transition
-            self.wait(0.5)  # Wait for a moment
-            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-            self.wait(0.5)  # Brief pause before next scene
-
-            # Title
-            title = Text("Single Neuron Structure", font_size=48)
+            # Set background color to light gray
+            self.camera.background_color = "#FFFFFF"
+            # 1. Initial Setup - Title
+            title = Text("Functions: The Building Blocks", font_size=40)
+            title.set_color("#3B82F6")
             title.to_edge(UP, buff=0.5)
-            title_initial = title.copy().scale(1.5).shift(UP)
-            # Animate title
-            self.play(FadeIn(title_initial))
-            self.wait(1)
-            self.play(Transform(title_initial, title))
-            # Input nodes
-            inputs = VGroup()
-            input_labels = ["x1", "x2", "x3"]
-            input_values = ["0.5", "0.3", "0.8"]
-            for i, (label, val) in enumerate(zip(input_labels, input_values)):
-                circle = Circle(radius=0.3, color=BLUE)
-                text = Text(label, font_size=24)
-                value = Text(f"={val}", font_size=20).next_to(circle, UP, buff=0.1)
-                node = VGroup(circle, text, value).shift(LEFT * 6 + (1-i) * UP)
-                inputs.add(node)
-            # Weight nodes
-            weights = VGroup()
-            weight_labels = ["w1", "w2", "w3"]
-            weight_values = ["0.4", "0.6", "0.2"]
-            for i, (label, val) in enumerate(zip(weight_labels, weight_values)):
-                rect = Rectangle(height=0.4, width=0.6, color=GREEN)
-                text = Text(label, font_size=24)
-                value = Text(f"={val}", font_size=20).next_to(rect, UP, buff=0.1)
-                node = VGroup(rect, text, value).shift(LEFT * 4 + (1-i) * UP)
-                weights.add(node)
-            # Summation node
-            sum_circle = Circle(radius=0.5, color=WHITE)
-            sum_symbol = Text("Σ", font_size=36)
-            bias = Text("b=0.1", font_size=24).next_to(sum_circle, UP, buff=0.2)
-            sum_node = VGroup(sum_circle, sum_symbol)
-            # Activation function
-            activation = RoundedRectangle(height=1, width=1.5, corner_radius=0.2, color=PURPLE)
-            activation_label = Text("f", font_size=36)
-            activation_text = Text("ReLU", font_size=20).next_to(activation, UP, buff=0.2)
-            activation_group = VGroup(activation, activation_label, activation_text).shift(RIGHT * 3)
-            # Output node
-            output_circle = Circle(radius=0.3, color=RED).shift(RIGHT * 6)
-            output_label = Text("y", font_size=24)
-            output_value = Text("=0.57", font_size=20).next_to(output_circle, UP, buff=0.1)
-            output_node = VGroup(output_circle, output_label, output_value)
-            # Center all text elements in their shapes
-            for item in [*inputs, *weights, sum_node, activation_group, output_node]:
-                for child in item:
-                    if isinstance(child, Text):
-                        child.move_to(item[0].get_center())
-            # Arrows
-            input_arrows = VGroup(*[
-                Arrow(start[0].get_right(), end[0].get_left(), color=WHITE)
-                for start, end in zip(inputs, weights)
-            ])
-            weight_arrows = VGroup(*[
-                Arrow(start[0].get_right(), sum_circle.get_left(), color=WHITE)
-                for start in weights
-            ])
-            activation_arrow = Arrow(sum_circle.get_right(), activation.get_left(), color=WHITE)
-            output_arrow = Arrow(activation.get_right(), output_circle.get_left(), color=WHITE)
+            # 2. Function Introduction
+            function_eq = MathTex("y = 2x")
+            function_eq.next_to(title, DOWN, buff=0.5)
+            # Create coordinate system
+            axes = Axes(
+                x_range=[-3, 3],
+                y_range=[-3, 3],
+                axis_config={
+                    "color": BLACK,
+                    "stroke_width": 2,
+                    "include_tip": True,
+                },
+                x_length=6,
+                y_length=6
+            )
+            axes.shift(DOWN * 0.5)
+            # Add labels
+            x_label = axes.get_x_axis_label("x")
+            y_label = axes.get_y_axis_label("y")
+            # Create function line
+            line = axes.plot(lambda x: 2*x, color="#EF4444")
+            # Create dot and its labels
+            dot = Dot(color="#10B981")
+            dot.move_to(axes.c2p(1, 2))
+            input_label = MathTex("\\text{Input: }1").scale(0.8)
+            output_label = MathTex("\\text{Output: }2").scale(0.8)
+            # Position labels near the dot
+            input_label.next_to(axes.c2p(1, 0), DOWN)
+            output_label.next_to(axes.c2p(0, 2), LEFT)
+            # Create dashed lines
+            v_line = DashedLine(
+                axes.c2p(1, 0),
+                axes.c2p(1, 2),
+                color=GRAY
+            )
+            h_line = DashedLine(
+                axes.c2p(0, 2),
+                axes.c2p(1, 2),
+                color=GRAY
+            )
             # Animation sequence
-            self.play(FadeIn(inputs))
-            self.wait(0.5)
-            self.play(FadeIn(weights), Create(input_arrows))
-            self.wait(0.5)
-            self.play(FadeIn(sum_node), FadeIn(bias), Create(weight_arrows))
-            self.wait(0.5)
-            self.play(FadeIn(activation_group), Create(activation_arrow))
-            self.wait(0.5)
-            self.play(FadeIn(output_node), Create(output_arrow))
-            self.wait(2)
-
-        # Scene 3
-        with self.voiceover(text="""Let's look at a simple neural network. Starting with our input layer of three neurons, connecting to two hidden layer neurons, and finally linking to a single output neuron. Each connection represents how information flows through the network.""") as tracker:
-
-            # Transition
-            self.wait(0.5)  # Wait for a moment
-            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-            self.wait(0.5)  # Brief pause before next scene
-
-            # Colors
-            input_color = "#4B8BBE"
-            hidden_color = "#946B9E"
-            output_color = "#3F6B4F"
-            # Title
-            title = Text("Neural Network Architecture").scale(0.8)
-            title.to_edge(UP, buff=0.5)
-            self.play(FadeIn(title))
-            self.wait(0.5)
-            # Create layers
-            # Input Layer
-            input_neurons = VGroup()
-            input_labels = VGroup()
-            for i in range(3):
-                neuron = Circle(radius=0.3, color=input_color, fill_opacity=0.5)
-                neuron.shift(LEFT * 2.5 + (i-1) * UP)
-                label = MathTex(f"x_{i+1}").next_to(neuron, DOWN, buff=0.2)
-                input_neurons.add(neuron)
-                input_labels.add(label)
-            # Hidden Layer
-            hidden_neurons = VGroup()
-            hidden_labels = VGroup()
-            for i in range(2):
-                neuron = Circle(radius=0.3, color=hidden_color, fill_opacity=0.5)
-                neuron.shift((i-0.5) * UP)
-                label = MathTex(f"h_{i+1}").next_to(neuron, DOWN, buff=0.2)
-                hidden_neurons.add(neuron)
-                hidden_labels.add(label)
-            # Output Layer
-            output_neuron = Circle(radius=0.3, color=output_color, fill_opacity=0.5)
-            output_neuron.shift(RIGHT * 2.5)
-            output_label = MathTex("y").next_to(output_neuron, DOWN, buff=0.2)
-            # Layer labels
-            input_layer_label = Text("Input Layer", font_size=24).next_to(input_neurons, DOWN, buff=0.8)
-            hidden_layer_label = Text("Hidden Layer", font_size=24).next_to(hidden_neurons, DOWN, buff=0.8)
-            output_layer_label = Text("Output Layer", font_size=24).next_to(output_neuron, DOWN, buff=0.8)
-            # Animate input layer
-            for neuron, label in zip(input_neurons, input_labels):
-                self.play(
-                    Create(neuron),
-                    Write(label),
-                    run_time=0.5
-                )
-            self.play(Write(input_layer_label))
-            self.wait(0.5)
-            # Animate hidden layer and connections
-            connections_in_to_hidden = VGroup()
-            for h_neuron in hidden_neurons:
-                for i_neuron in input_neurons:
-                    line = Line(
-                        i_neuron.get_center(), 
-                        h_neuron.get_center(),
-                        stroke_opacity=0.6,
-                        stroke_width=2
-                    )
-                    connections_in_to_hidden.add(line)
-            for neuron, label in zip(hidden_neurons, hidden_labels):
-                self.play(
-                    Create(neuron),
-                    Write(label),
-                    *[Create(conn) for conn in connections_in_to_hidden if np.array_equal(conn.get_end(), neuron.get_center())],
-                    run_time=0.5
-                )
-            self.play(Write(hidden_layer_label))
-            self.wait(0.5)
-            # Animate output layer and connections
-            connections_hidden_to_out = VGroup()
-            for h_neuron in hidden_neurons:
-                line = Line(
-                    h_neuron.get_center(),
-                    output_neuron.get_center(),
-                    stroke_opacity=0.6,
-                    stroke_width=2
-                )
-                connections_hidden_to_out.add(line)
+            self.play(FadeIn(title), run_time=1)
+            self.play(Write(function_eq), run_time=1)
             self.play(
-                Create(output_neuron),
+                Create(axes),
+                Write(x_label),
+                Write(y_label),
+                run_time=2
+            )
+            self.play(Create(line), run_time=2)
+            # Animate dot movement
+            self.play(
+                FadeIn(dot),
+                Create(v_line),
+                Create(h_line),
+                Write(input_label),
                 Write(output_label),
-                *[Create(conn) for conn in connections_hidden_to_out],
-                run_time=0.5
-            )
-            self.play(Write(output_layer_label))
-            # Final pause
-            self.wait(2)
-
-        # Scene 4
-        with self.voiceover(text="""Let's see how a neural network processes inputs through its layers. As our inputs, 0.5 and 1.0, flow through the weighted connections, they combine at the hidden layer, get adjusted by a bias, and transform into our final output of 0.425.""") as tracker:
-
-            # Transition
-            self.wait(0.5)  # Wait for a moment
-            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-            self.wait(0.5)  # Brief pause before next scene
-
-            # Configure scene
-            self.camera.background_color = WHITE
-            # Title
-            title = Text("Forward Pass Example", color=DARK_GRAY).scale(1.2)
-            title.to_edge(UP, buff=0.5)
-            # Create network components
-            # Neurons
-            input1 = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-            input2 = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-            hidden = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-            output = Circle(radius=0.3, color=DARK_GRAY, fill_opacity=0.1)
-            # Position neurons
-            input1.move_to(LEFT * 4 + UP * 1)
-            input2.move_to(LEFT * 4 + DOWN * 1)
-            hidden.move_to(LEFT * 1)
-            output.move_to(RIGHT * 2)
-            # Create connections
-            conn1 = Line(input1.get_right(), hidden.get_left(), color=DARK_GRAY)
-            conn2 = Line(input2.get_right(), hidden.get_left(), color=DARK_GRAY)
-            conn3 = Line(hidden.get_right(), output.get_right(), color=DARK_GRAY)
-            # Input values
-            input1_val = MathTex("0.5", color=DARK_GRAY).next_to(input1, LEFT)
-            input2_val = MathTex("1.0", color=DARK_GRAY).next_to(input2, LEFT)
-            # Weights
-            w1 = MathTex("w_1=0.3", color=BLUE_D).next_to(conn1, UP, buff=0.2)
-            w2 = MathTex("w_2=0.2", color=BLUE_D).next_to(conn2, DOWN, buff=0.2)
-            w3 = MathTex("w_3=0.5", color=BLUE_D).next_to(conn3, UP, buff=0.2)
-            # Hidden layer calculations
-            calc_hidden = VGroup(
-                MathTex("(0.5 × 0.3) + (1.0 × 0.2)", color=DARK_GRAY),
-                MathTex("= 0.35", color=DARK_GRAY),
-                MathTex("+ b_1(0.1) = 0.45", color=BLUE_D),
-                MathTex("ReLU(0.45) = 0.45", color=DARK_GRAY)
-            ).arrange(DOWN, aligned_edge=LEFT).next_to(hidden, UP, buff=1)
-            # Output layer calculations
-            calc_output = VGroup(
-                MathTex("0.45 × 0.5 = 0.225", color=DARK_GRAY),
-                MathTex("+ b_2(0.2) = 0.425", color=BLUE_D)
-            ).arrange(DOWN, aligned_edge=LEFT).next_to(output, UP, buff=1)
-            final_output = MathTex("0.425", color=RED_D).next_to(output, RIGHT)
-            # Animations
-            self.play(Write(title))
-            # Draw network
-            self.play(
-                Create(VGroup(input1, input2, hidden, output)),
-                Create(VGroup(conn1, conn2, conn3))
-            )
-            # Show inputs and weights
-            self.play(
-                Write(input1_val),
-                Write(input2_val)
-            )
-            self.play(
-                Write(w1),
-                Write(w2)
-            )
-            # Hidden layer calculations
-            for calc in calc_hidden:
-                self.play(Write(calc), run_time=0.8)
-            # Output layer calculations
-            self.play(Write(w3))
-            for calc in calc_output:
-                self.play(Write(calc), run_time=0.8)
-            # Show final output
-            self.play(Write(final_output))
-            self.play(
-                final_output.animate.scale(1.2),
-                final_output.animate.set_color(RED_D)
-            )
-            self.wait(1)
-            # Clean fade out
-            self.play(
-                *[FadeOut(mob) for mob in self.mobjects]
-            )
-
-        # Scene 5
-        with self.voiceover(text="""When the network makes a prediction of 0.8, but the actual value is 0.3, it recognizes this error and adjusts its internal weights, gradually improving its accuracy through this learning process.""") as tracker:
-
-            # Transition
-            self.wait(0.5)  # Wait for a moment
-            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-            self.wait(0.5)  # Brief pause before next scene
-
-            # Part 1: Create Neural Network
-            # Create nodes
-            input_layer = VGroup(*[Circle(radius=0.3) for _ in range(2)])
-            hidden_layer = VGroup(*[Circle(radius=0.3) for _ in range(2)])
-            output_layer = Circle(radius=0.3)
-            # Position nodes
-            input_layer.arrange(DOWN, buff=1)
-            hidden_layer.arrange(DOWN, buff=1)
-            output_layer.move_to(RIGHT * 2)
-            # Position layers
-            input_layer.move_to(LEFT * 2)
-            hidden_layer.move_to(ORIGIN)
-            # Group all nodes
-            all_nodes = VGroup(input_layer, hidden_layer, output_layer)
-            all_nodes.move_to(ORIGIN)
-            all_nodes.shift(UP * 1)  # Move network above center
-            # Create connections
-            connections = VGroup()
-            for input_node in input_layer:
-                for hidden_node in hidden_layer:
-                    connections.add(Arrow(input_node.get_center(), hidden_node.get_center(),
-                                       buff=0.3))
-            for hidden_node in hidden_layer:
-                connections.add(Arrow(hidden_node.get_center(), output_layer.get_center(),
-                                    buff=0.3))
-            # Fade in network
-            self.play(
-                FadeIn(all_nodes),
-                Create(connections),
                 run_time=2
-            )
-            # Part 2: Prediction Example
-            prediction = Text("Prediction: 0.8", color=RED).scale(0.8)
-            actual = Text("Actual: 0.3", color=GREEN).scale(0.8)
-            error_text = Text("Error!", color=RED).scale(0.8)
-            # Position texts
-            prediction.next_to(all_nodes, DOWN, buff=0.5)
-            actual.next_to(prediction, DOWN, buff=0.5)
-            error_text.next_to(actual, DOWN, buff=0.5)
-            # Create X mark
-            x_mark = Cross(output_layer, stroke_color=RED)
-            # Fade in prediction info
-            self.play(
-                FadeIn(prediction),
-                FadeIn(actual),
-                run_time=1
-            )
-            self.play(
-                FadeIn(error_text),
-                Create(x_mark),
-                run_time=1
-            )
-            # Part 3: Weight Adjustment
-            # Create rotating arrows for weight adjustment
-            adjustment_arrows = VGroup()
-            for connection in connections[:2]:  # Only add to some connections
-                curve = ArcBetweenPoints(
-                    connection.get_start() + RIGHT * 0.3 + UP * 0.3,
-                    connection.get_end() + LEFT * 0.3 + UP * 0.3,
-                    angle=-TAU/4
-                ).set_color(YELLOW)
-                adjustment_arrows.add(curve)
-            adjusting_text = Text("Adjusting weights", color=YELLOW).scale(0.7)
-            adjusting_text.next_to(hidden_layer, UP, buff=0.3)
-            final_text = Text("Network learns by updating weights").scale(0.7)
-            final_text.to_edge(DOWN, buff=0.5)
-            # Create animation for rotating arrows
-            self.play(
-                Create(adjustment_arrows),
-                FadeIn(adjusting_text),
-                run_time=1
-            )
-            # Animate arrows rotation
-            self.play(
-                Rotate(adjustment_arrows, angle=TAU/2, about_point=adjustment_arrows.get_center()),
-                run_time=2
-            )
-            # Add final text
-            self.play(
-                FadeIn(final_text),
-                run_time=1
             )
             # Hold final state
             self.wait(2)
+            # Fade everything out
+            self.play(
+                *[FadeOut(mob) for mob in self.mobjects],
+                run_time=1.5
+            )
+
+        # Scene 2
+        with self.voiceover(text="""Let's explore a single artificial neuron - the building block of neural networks. As we draw it, notice how inputs flow through weighted connections into the neuron body, which then processes and outputs a signal using an activation function.""") as tracker:
+
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # 1. Title Display
+            title = Text("Single Artificial Neuron", font_size=48).to_edge(UP, buff=0.5)
+            self.play(FadeIn(title), run_time=1)
+            # 2. Basic Neuron Structure
+            # Create neuron body
+            neuron = Circle(radius=0.5, color=WHITE)
+            # Create input lines
+            input_lines = VGroup(*[
+                Line(start=np.array([-3, i, 0]), end=np.array([0, i, 0]), color="#2C88D9")
+                for i in [1, 0, -1]
+            ])
+            # Create input labels
+            input_labels = VGroup(*[
+                MathTex(f"x_{i}", color=WHITE).move_to(np.array([-3.5, i, 0]))
+                for i in [1, 2, 3]
+            ])
+            # Create weight labels
+            weight_labels = VGroup(*[
+                MathTex(f"w_{i}", color="#FFB6C1").move_to(np.array([-2, i, 0]))
+                for i in [1, 2, 3]
+            ])
+            # Create output line
+            output_line = Line(
+                start=np.array([0.5, 0, 0]), 
+                end=np.array([3, 0, 0]), 
+                color="#98FB98"
+            )
+            # Animate neuron structure
+            self.play(
+                Create(input_lines, run_time=1),
+                FadeIn(input_labels, run_time=1),
+            )
+            self.play(
+                FadeIn(weight_labels, run_time=1),
+                Create(neuron, run_time=1),
+            )
+            self.play(Create(output_line, run_time=0.5))
+            # 3. Mathematical Expression
+            equation = MathTex(
+                "y = f(w_1x_1 + w_2x_2 + w_3x_3 + b)",
+                color=WHITE
+            ).shift(DOWN * 2)
+            activation_label = Text(
+                "activation function", 
+                font_size=24,
+                color=WHITE
+            ).next_to(equation, DOWN, buff=0.3)
+            self.play(
+                FadeIn(equation),
+                FadeIn(activation_label)
+            )
+            # 4. Example Values
+            example_values = VGroup(
+                Text("Input values:", font_size=24),
+                Text("x₁ = 0.5", font_size=24),
+                Text("x₂ = -1.0", font_size=24),
+                Text("x₃ = 0.8", font_size=24),
+                Text("Weights:", font_size=24),
+                Text("w₁ = 0.3", font_size=24),
+                Text("w₂ = 0.6", font_size=24),
+                Text("w₃ = -0.2", font_size=24),
+                Text("bias = 0.1", font_size=24),
+            ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+            # Create background rectangle
+            bg_rect = SurroundingRectangle(
+                example_values, 
+                color=WHITE, 
+                buff=0.2,
+                corner_radius=0.1
+            )
+            example_group = VGroup(bg_rect, example_values).move_to(
+                np.array([4, -0.5, 0])
+            ).scale(0.8)
+            self.play(
+                FadeIn(example_group, run_time=1)
+            )
+            # Hold final frame
+            self.wait(2)
+
+        # Scene 3
+        with self.voiceover(text="""Here's our neural network with three layers. Input nodes in blue receive data, which flows through green hidden nodes, and finally reaches red output nodes - creating a complete pathway for information processing.""") as tracker:
+
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # Define colors
+            input_color = "#3498db"
+            hidden_color = "#2ecc71"
+            output_color = "#e74c3c"
+            connection_color = "#95a5a6"
+            # Create input layer neurons
+            input_neurons = VGroup()
+            input_labels = VGroup()
+            for i, y in enumerate([1, -1]):
+                neuron = Circle(radius=0.3, color=input_color, fill_opacity=0.5)
+                neuron.move_to(np.array([-4, y, 0]))
+                label = MathTex(f"x_{i+1}").next_to(neuron, DOWN)
+                input_neurons.add(neuron)
+                input_labels.add(label)
+            # Create hidden layer neurons
+            hidden_neurons = VGroup()
+            for y in [1.5, 0, -1.5]:
+                neuron = Circle(radius=0.3, color=hidden_color, fill_opacity=0.5)
+                neuron.move_to(np.array([0, y, 0]))
+                hidden_neurons.add(neuron)
+            # Create output layer neurons
+            output_neurons = VGroup()
+            output_labels = VGroup()
+            for i, y in enumerate([1, -1]):
+                neuron = Circle(radius=0.3, color=output_color, fill_opacity=0.5)
+                neuron.move_to(np.array([4, y, 0]))
+                label = MathTex(f"y_{i+1}").next_to(neuron, DOWN)
+                output_neurons.add(neuron)
+                output_labels.add(label)
+            # Create connections
+            input_connections = VGroup()
+            output_connections = VGroup()
+            # Input to hidden connections
+            for in_neuron in input_neurons:
+                for hidden_neuron in hidden_neurons:
+                    connection = Arrow(
+                        start=in_neuron.get_center(),
+                        end=hidden_neuron.get_center(),
+                        color=connection_color,
+                        buff=0.3,
+                        stroke_opacity=0.7
+                    )
+                    input_connections.add(connection)
+            # Hidden to output connections
+            for hidden_neuron in hidden_neurons:
+                for out_neuron in output_neurons:
+                    connection = Arrow(
+                        start=hidden_neuron.get_center(),
+                        end=out_neuron.get_center(),
+                        color=connection_color,
+                        buff=0.3,
+                        stroke_opacity=0.7
+                    )
+                    output_connections.add(connection)
+            # Animation sequence
+            # 1. Input Layer
+            self.play(
+                FadeIn(input_neurons),
+                FadeIn(input_labels),
+                run_time=2
+            )
+            # 2. Hidden Layer and connections
+            self.play(
+                FadeIn(hidden_neurons),
+                Create(input_connections),
+                run_time=3
+            )
+            # 3. Output Layer and connections
+            self.play(
+                FadeIn(output_neurons),
+                FadeIn(output_labels),
+                Create(output_connections),
+                run_time=3
+            )
+            # 4. Information flow animation
+            path_dots = []
+            # Define path: input[0] -> hidden[1] -> output[0]
+            path_points = [
+                input_neurons[0].get_center(),
+                hidden_neurons[1].get_center(),
+                output_neurons[0].get_center()
+            ]
+            # Create dots for animation
+            for i in range(len(path_points) - 1):
+                dot = Dot(color=WHITE)
+                dot.move_to(path_points[i])
+                path_dots.append(dot)
+                self.play(
+                    dot.animate.move_to(path_points[i + 1]),
+                    rate_func=linear,
+                    run_time=1
+                )
+                self.play(FadeOut(dot), run_time=0.5)
+            # Pause at the end to show final structure
+            self.wait(1)
+
+        # Scene 4
+        with self.voiceover(text="""Let's see how a simple neural network learns. Starting with two weights connecting three nodes, we'll process an input of 2 to predict an output. After seeing the error, the network adjusts its weights to get closer to the desired result of 1.""") as tracker:
+
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # Create neural network nodes
+            input_node = Circle(radius=0.3).move_to(LEFT * 3)
+            hidden_node = Circle(radius=0.2)
+            output_node = Circle(radius=0.3).move_to(RIGHT * 3)
+            nodes = VGroup(input_node, hidden_node, output_node)
+            nodes.shift(UP)
+            # Create arrows
+            arrow1 = Arrow(input_node.get_right(), hidden_node.get_left())
+            arrow2 = Arrow(hidden_node.get_right(), output_node.get_left())
+            arrows = VGroup(arrow1, arrow2)
+            # Create labels
+            input_label = MathTex("x=2").next_to(input_node, DOWN)
+            output_label = MathTex("\\hat{y}").next_to(output_node, DOWN)
+            w1_label = MathTex("w_1=0.5").next_to(arrow1, UP)
+            w2_label = MathTex("w_2=0.3").next_to(arrow2, UP)
+            # Group initial network elements
+            network = VGroup(nodes, arrows, input_label, output_label, w1_label, w2_label)
+            # 1. Initial Network Display
+            self.play(
+                FadeIn(nodes),
+                Create(arrows),
+                Write(input_label),
+                Write(output_label),
+                Write(w1_label),
+                Write(w2_label)
+            )
+            self.wait()
+            # 2. Forward Pass
+            forward_pass = Text("Forward Pass:", font_size=30).move_to(DOWN * 0.5)
+            calculation = MathTex(
+                "2 \\rightarrow 2(0.5) = 1 \\rightarrow 1(0.3) = 0.3"
+            ).next_to(forward_pass, DOWN)
+            prediction = Text(
+                "Predicted: 0.3, Desired: 1.0",
+                font_size=30
+            ).next_to(calculation, DOWN)
+            error = Text(
+                "Error = 0.7",
+                font_size=30
+            ).next_to(prediction, DOWN)
+            self.play(Write(forward_pass))
+            self.play(Write(calculation))
+            self.play(Write(prediction))
+            self.play(Write(error))
+            self.wait()
+            # 3. Weight Update
+            updating = Text(
+                "Updating weights...",
+                font_size=30
+            ).move_to(DOWN * 3)
+            # New weight labels
+            w1_new = MathTex("w_1=0.7").next_to(arrow1, UP).set_color(GREEN)
+            w2_new = MathTex("w_2=0.5").next_to(arrow2, UP).set_color(GREEN)
+            self.play(Write(updating))
+            self.play(
+                ReplacementTransform(w1_label, w1_new),
+                ReplacementTransform(w2_label, w2_new)
+            )
+            final_text = Text(
+                "Network adjusted to reduce error",
+                font_size=30
+            ).next_to(updating, DOWN)
+            self.play(Write(final_text))
+            self.wait()
+
+        # Scene 5
+        with self.voiceover(text="""Here's a written digit 7, passed through a neural network. As the pixels flow into input nodes, they connect through a hidden layer, leading to ten possible digit outputs. The network confidently identifies this as the number 7.""") as tracker:
+
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # 1. Initial Setup
+            title = Text("Digit Recognition").move_to([0, 3, 0])
+            self.play(FadeIn(title))
+            self.wait(1.5)
+            self.play(FadeOut(title))
+            # 2. Input Visualization
+            # Create 5x5 grid
+            pixel_pattern = [
+                [1, 1, 1, 1, 1],
+                [0, 0, 0, 0, 1],
+                [0, 0, 0, 1, 0],
+                [0, 0, 1, 0, 0],
+                [0, 1, 0, 0, 0]
+            ]
+            grid = VGroup()
+            cell_size = 0.4
+            for i in range(5):
+                for j in range(5):
+                    cell = Square(side_length=cell_size)
+                    cell.move_to([-3 + j*cell_size, 1 - i*cell_size, 0])
+                    if pixel_pattern[i][j] == 1:
+                        cell.set_fill(color=GRAY, opacity=0.8)
+                    cell.set_stroke(color=GRAY_C, width=1)
+                    grid.add(cell)
+            self.play(Create(grid))
+            self.wait(0.3)
+            # 3. Neural Network Layers
+            # a) Input Layer
+            input_layer = VGroup()
+            input_nodes = []
+            for i in range(25):
+                node = Circle(radius=0.1, color=LIGHT_GRAY)
+                row = i // 5
+                y_pos = 1.5 - (row * 0.6)
+                node.move_to([-1.5, y_pos, 0])
+                input_layer.add(node)
+                input_nodes.append(node)
+            self.play(Create(input_layer))
+            # Grid to input connections
+            grid_connections = VGroup()
+            for i in range(25):
+                if pixel_pattern[i//5][i%5] == 1:
+                    start = grid[i].get_center()
+                    end = input_nodes[i].get_center()
+                    line = Line(start, end, stroke_width=0.5, color=LIGHT_GRAY)
+                    grid_connections.add(line)
+            self.play(Create(grid_connections))
+            # b) Hidden Layer
+            hidden_layer = VGroup()
+            hidden_nodes = []
+            for i in range(10):
+                node = Circle(radius=0.1, color=LIGHT_GRAY)
+                y_pos = 1.2 - (i * 0.27)
+                node.move_to([0, y_pos, 0])
+                hidden_layer.add(node)
+                hidden_nodes.append(node)
+            self.play(Create(hidden_layer))
+            # Input to hidden connections (30% of connections)
+            hidden_connections = VGroup()
+            for i in range(25):
+                for j in range(10):
+                    if np.random.random() < 0.3:
+                        start = input_nodes[i].get_center()
+                        end = hidden_nodes[j].get_center()
+                        line = Line(start, end, stroke_width=0.5, color=LIGHT_GRAY)
+                        hidden_connections.add(line)
+            self.play(Create(hidden_connections))
+            # c) Output Layer
+            output_layer = VGroup()
+            output_nodes = []
+            for i in range(10):
+                node = Circle(radius=0.1, color=LIGHT_GRAY)
+                y_pos = 1.2 - (i * 0.27)
+                node.move_to([1.5, y_pos, 0])
+                label = Text(str(i), font_size=16).next_to(node, RIGHT, buff=0.1)
+                output_layer.add(VGroup(node, label))
+                output_nodes.append(node)
+            self.play(Create(output_layer))
+            # Hidden to output connections (30% of connections)
+            output_connections = VGroup()
+            for i in range(10):
+                for j in range(10):
+                    if np.random.random() < 0.3:
+                        start = hidden_nodes[i].get_center()
+                        end = output_nodes[j].get_center()
+                        line = Line(start, end, stroke_width=0.5, color=LIGHT_GRAY)
+                        output_connections.add(line)
+            self.play(Create(output_connections))
+            # 4. Final Prediction
+            target_node = output_nodes[7]  # Node for digit 7
+            self.play(
+                target_node.animate.set_color(BLUE).set_fill(BLUE, opacity=0.3)
+            )
+            prediction_text = Text("Prediction: 7", font_size=24).move_to([2.5, 0.2, 0])
+            confidence_text = Text("Confidence: 99.2%", font_size=24).move_to([2.5, -0.2, 0])
+            self.play(
+                Write(prediction_text),
+                Write(confidence_text)
+            )
+            self.wait(1)

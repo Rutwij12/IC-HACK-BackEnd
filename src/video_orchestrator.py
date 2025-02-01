@@ -50,7 +50,8 @@ class VideoOrchestrator:
         async def plan_single_scene(idea):
             print(f"single scene plan created")
             planner = ScenePlanner(
-                f"{idea}"
+                f"{idea}",
+                max_iterations=3
             )
             result = await planner.generate_scene_with_feedback()
             return result["current_plan"]
@@ -68,7 +69,8 @@ class VideoOrchestrator:
             print(f"single scene code index {idx} created")
             generator = CodeGenerator(
                 plan,
-                temp_file_prefix=f"scene_{idx}"
+                temp_file_prefix=f"scene_{idx}",
+                max_iterations=8
             )
             result = await generator.generate_code_with_feedback()
             if "current_code" not in result:

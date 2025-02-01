@@ -1,105 +1,124 @@
 from manim import *
+import numpy as np
 
-class LearningProcessOverview(Scene):
+class NeuralNetworkDigitRecognition(Scene):
     def construct(self):
-        # Part 1: Create Neural Network
-        # Create nodes
-        input_layer = VGroup(*[Circle(radius=0.3) for _ in range(2)])
-        hidden_layer = VGroup(*[Circle(radius=0.3) for _ in range(2)])
-        output_layer = Circle(radius=0.3)
+        # 1. Initial Setup
+        title = Text("Digit Recognition").move_to([0, 3, 0])
+        self.play(FadeIn(title))
+        self.wait(1.5)
+        self.play(FadeOut(title))
 
-        # Position nodes
-        input_layer.arrange(DOWN, buff=1)
-        hidden_layer.arrange(DOWN, buff=1)
-        output_layer.move_to(RIGHT * 2)
-
-        # Position layers
-        input_layer.move_to(LEFT * 2)
-        hidden_layer.move_to(ORIGIN)
+        # 2. Input Visualization
+        # Create 5x5 grid
+        pixel_pattern = [
+            [1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 1],
+            [0, 0, 0, 1, 0],
+            [0, 0, 1, 0, 0],
+            [0, 1, 0, 0, 0]
+        ]
         
-        # Group all nodes
-        all_nodes = VGroup(input_layer, hidden_layer, output_layer)
-        all_nodes.move_to(ORIGIN)
-        all_nodes.shift(UP * 1)  # Move network above center
+        grid = VGroup()
+        cell_size = 0.4
+        for i in range(5):
+            for j in range(5):
+                cell = Square(side_length=cell_size)
+                cell.move_to([-3 + j*cell_size, 1 - i*cell_size, 0])
+                if pixel_pattern[i][j] == 1:
+                    cell.set_fill(color=GRAY, opacity=0.8)
+                cell.set_stroke(color=GRAY_C, width=1)
+                grid.add(cell)
 
-        # Create connections
-        connections = VGroup()
-        for input_node in input_layer:
-            for hidden_node in hidden_layer:
-                connections.add(Arrow(input_node.get_center(), hidden_node.get_center(),
-                                   buff=0.3))
+        self.play(Create(grid))
+        self.wait(0.3)
+
+        # 3. Neural Network Layers
+        # a) Input Layer
+        input_layer = VGroup()
+        input_nodes = []
+        for i in range(25):
+            node = Circle(radius=0.1, color=LIGHT_GRAY)
+            row = i // 5
+            y_pos = 1.5 - (row * 0.6)
+            node.move_to([-1.5, y_pos, 0])
+            input_layer.add(node)
+            input_nodes.append(node)
+
+        self.play(Create(input_layer))
         
-        for hidden_node in hidden_layer:
-            connections.add(Arrow(hidden_node.get_center(), output_layer.get_center(),
-                                buff=0.3))
+        # Grid to input connections
+        grid_connections = VGroup()
+        for i in range(25):
+            if pixel_pattern[i//5][i%5] == 1:
+                start = grid[i].get_center()
+                end = input_nodes[i].get_center()
+                line = Line(start, end, stroke_width=0.5, color=LIGHT_GRAY)
+                grid_connections.add(line)
+        
+        self.play(Create(grid_connections))
 
-        # Fade in network
+        # b) Hidden Layer
+        hidden_layer = VGroup()
+        hidden_nodes = []
+        for i in range(10):
+            node = Circle(radius=0.1, color=LIGHT_GRAY)
+            y_pos = 1.2 - (i * 0.27)
+            node.move_to([0, y_pos, 0])
+            hidden_layer.add(node)
+            hidden_nodes.append(node)
+
+        self.play(Create(hidden_layer))
+
+        # Input to hidden connections (30% of connections)
+        hidden_connections = VGroup()
+        for i in range(25):
+            for j in range(10):
+                if np.random.random() < 0.3:
+                    start = input_nodes[i].get_center()
+                    end = hidden_nodes[j].get_center()
+                    line = Line(start, end, stroke_width=0.5, color=LIGHT_GRAY)
+                    hidden_connections.add(line)
+
+        self.play(Create(hidden_connections))
+
+        # c) Output Layer
+        output_layer = VGroup()
+        output_nodes = []
+        for i in range(10):
+            node = Circle(radius=0.1, color=LIGHT_GRAY)
+            y_pos = 1.2 - (i * 0.27)
+            node.move_to([1.5, y_pos, 0])
+            label = Text(str(i), font_size=16).next_to(node, RIGHT, buff=0.1)
+            output_layer.add(VGroup(node, label))
+            output_nodes.append(node)
+
+        self.play(Create(output_layer))
+
+        # Hidden to output connections (30% of connections)
+        output_connections = VGroup()
+        for i in range(10):
+            for j in range(10):
+                if np.random.random() < 0.3:
+                    start = hidden_nodes[i].get_center()
+                    end = output_nodes[j].get_center()
+                    line = Line(start, end, stroke_width=0.5, color=LIGHT_GRAY)
+                    output_connections.add(line)
+
+        self.play(Create(output_connections))
+
+        # 4. Final Prediction
+        target_node = output_nodes[7]  # Node for digit 7
         self.play(
-            FadeIn(all_nodes),
-            Create(connections),
-            run_time=2
+            target_node.animate.set_color(BLUE).set_fill(BLUE, opacity=0.3)
         )
 
-        # Part 2: Prediction Example
-        prediction = Text("Prediction: 0.8", color=RED).scale(0.8)
-        actual = Text("Actual: 0.3", color=GREEN).scale(0.8)
-        error_text = Text("Error!", color=RED).scale(0.8)
-
-        # Position texts
-        prediction.next_to(all_nodes, DOWN, buff=0.5)
-        actual.next_to(prediction, DOWN, buff=0.5)
-        error_text.next_to(actual, DOWN, buff=0.5)
-
-        # Create X mark
-        x_mark = Cross(output_layer, stroke_color=RED)
-
-        # Fade in prediction info
+        prediction_text = Text("Prediction: 7", font_size=24).move_to([2.5, 0.2, 0])
+        confidence_text = Text("Confidence: 99.2%", font_size=24).move_to([2.5, -0.2, 0])
+        
         self.play(
-            FadeIn(prediction),
-            FadeIn(actual),
-            run_time=1
+            Write(prediction_text),
+            Write(confidence_text)
         )
-        self.play(
-            FadeIn(error_text),
-            Create(x_mark),
-            run_time=1
-        )
-
-        # Part 3: Weight Adjustment
-        # Create rotating arrows for weight adjustment
-        adjustment_arrows = VGroup()
-        for connection in connections[:2]:  # Only add to some connections
-            curve = ArcBetweenPoints(
-                connection.get_start() + RIGHT * 0.3 + UP * 0.3,
-                connection.get_end() + LEFT * 0.3 + UP * 0.3,
-                angle=-TAU/4
-            ).set_color(YELLOW)
-            adjustment_arrows.add(curve)
-
-        adjusting_text = Text("Adjusting weights", color=YELLOW).scale(0.7)
-        adjusting_text.next_to(hidden_layer, UP, buff=0.3)
-
-        final_text = Text("Network learns by updating weights").scale(0.7)
-        final_text.to_edge(DOWN, buff=0.5)
-
-        # Create animation for rotating arrows
-        self.play(
-            Create(adjustment_arrows),
-            FadeIn(adjusting_text),
-            run_time=1
-        )
-
-        # Animate arrows rotation
-        self.play(
-            Rotate(adjustment_arrows, angle=TAU/2, about_point=adjustment_arrows.get_center()),
-            run_time=2
-        )
-
-        # Add final text
-        self.play(
-            FadeIn(final_text),
-            run_time=1
-        )
-
-        # Hold final state
-        self.wait(2)
+        
+        self.wait(1)
