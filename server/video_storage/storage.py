@@ -15,11 +15,11 @@ print(VIDEO_TABLE)
 table = db.Table(VIDEO_TABLE)
 
 
-def upload_video(video_path, video_id) -> str | None:
+def upload_video(video_path, id) -> str | None:
     try:
         print(os.getcwd())
         if os.path.exists(video_path):
-            object_name = f"videos/{video_id}.mp4"
+            object_name = f"videos/{id}.mp4"
             s3.upload_file(video_path, BUCKET_NAME, object_name)
             public_url = f"https://{BUCKET_NAME}.s3.eu-west-2.amazonaws.com/{object_name}"
             return public_url
@@ -27,12 +27,25 @@ def upload_video(video_path, video_id) -> str | None:
         print(e)
     return None
 
-def store_video_metadata(url, video_id, **kargs):
+def upload_image(image_path, id) -> str | None:
+    try:
+        if os.path.exists(image_path):
+            object_name = f"images/{id}.png"
+            s3.upload_file(image_path, BUCKET_NAME, object_name)
+            public_url = f"https://{BUCKET_NAME}.s3.eu-west-2.amazonaws.com/{object_name}"
+            return public_url
+    except Exception as e:
+        print(e)
+    return None
+
+
+def store_video_metadata(video_url, image_url, id, **kargs):
     try:
         res = table.put_item(Item={
-            "id": video_id,
+            "id": id,
             **kargs,
-            "url": url,
+            "video_url": video_url,
+            "image_url": image_url,
             "created_at": int(time()),
         })
         return res.get("ResponseMetadata").get("HTTPStatusCode") == 200
