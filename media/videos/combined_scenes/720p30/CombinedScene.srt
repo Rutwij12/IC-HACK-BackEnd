@@ -1,76 +1,84 @@
 1
-00:00:00,000 --> 00:00:05,610
-Let's explore functions, starting with y equals 2x. Watch as we plot this
+00:00:00,000 --> 00:00:03,715
+Let's explore a two-by-two matrix where each row represents a
 
 2
-00:00:05,710 --> 00:00:10,069
-line and see how each input x gives us an output y that's
+00:00:03,815 --> 00:00:07,030
+point in space. As we highlight these rows, watch how
 
 3
-00:00:10,169 --> 00:00:14,372
-twice its value. For example, when x is 1, y becomes 2.
+00:00:07,130 --> 00:00:10,532
+they map directly to coordinates on our grid, creating a
 
 4
-00:00:14,466 --> 00:00:18,072
-Let's explore a single artificial neuron - the building block
+00:00:10,632 --> 00:00:14,348
+visual connection between matrix values and geometric points.
 
 5
-00:00:18,172 --> 00:00:21,231
-of neural networks. As we draw it, notice how inputs
+00:00:14,500 --> 00:00:18,266
+When multiplying matrices, we start with a 2 by 3 matrix A
 
 6
-00:00:21,331 --> 00:00:25,241
-flow through weighted connections into the neuron body, which then
+00:00:18,366 --> 00:00:22,000
+and a 3 by 2 matrix B. Notice how their inner dimensions
 
 7
-00:00:25,341 --> 00:00:28,886
-processes and outputs a signal using an activation function.
+00:00:22,100 --> 00:00:26,666
+both equal 3 - this matching is essential for matrix multiplication to
 
 8
-00:00:28,966 --> 00:00:32,245
-Here's our neural network with three layers. Input nodes
+00:00:26,766 --> 00:00:29,400
+work. The result will be a 2 by 2 matrix.
 
 9
-00:00:32,345 --> 00:00:35,504
-in blue receive data, which flows through green hidden
+00:00:30,500 --> 00:00:35,715
+Let's see how a single element in matrix multiplication is computed through the
 
 10
-00:00:35,604 --> 00:00:38,762
-nodes, and finally reaches red output nodes - creating
+00:00:35,815 --> 00:00:40,426
+dot product. When we multiply these matrices, we take the row values 2
 
 11
-00:00:38,862 --> 00:00:41,538
-a complete pathway for information processing.
+00:00:40,526 --> 00:00:44,665
+and 3, and multiply them with the column values 4 and 5. Adding
 
 12
-00:00:42,966 --> 00:00:46,930
-Let's see how a simple neural network learns. Starting with two
+00:00:44,765 --> 00:00:48,232
+the products together gives us our final value of 23.
 
 13
-00:00:47,030 --> 00:00:50,929
-weights connecting three nodes, we'll process an input of 2 to
+00:00:48,500 --> 00:00:53,049
+Let's multiply these two matrices by calculating each element one at
 
 14
-00:00:51,029 --> 00:00:55,186
-predict an output. After seeing the error, the network adjusts its
+00:00:53,149 --> 00:00:56,468
+a time. Watch how we multiply the rows of matrix A
 
 15
-00:00:55,286 --> 00:00:58,346
-weights to get closer to the desired result of 1.
+00:00:56,568 --> 00:00:59,956
+by the columns of matrix B to form our result. Each
 
 16
-00:00:59,966 --> 00:01:03,714
-Here's a written digit 7, passed through a neural network.
+00:01:00,056 --> 00:01:04,264
+new number we calculate fills one position in our final matrix.
 
 17
-00:01:03,814 --> 00:01:07,496
-As the pixels flow into input nodes, they connect through
+00:01:04,333 --> 00:01:08,324
+Let's start by looking at point P at coordinates (2,1). When
 
 18
-00:01:07,596 --> 00:01:11,344
-a hidden layer, leading to ten possible digit outputs. The
+00:01:08,424 --> 00:01:12,482
+we apply a 45-degree rotation matrix, we can follow the point
 
 19
-00:01:11,444 --> 00:01:14,794
-network confidently identifies this as the number 7.
+00:01:12,582 --> 00:01:16,505
+as it rotates around the origin, ending at its new position
+
+20
+00:01:16,605 --> 00:01:22,436
+P-prime at approximately (0.7, 2.1). This transformation preserves the point's distance
+
+21
+00:01:22,536 --> 00:01:25,641
+from the origin while changing its orientation.
 

@@ -7,7 +7,7 @@ async def main():
     load_dotenv(override=True)
     
     video_prompt = """
-    Create a video explaining neural networks simply
+    Create a video explaining matrix multiplication
     """
     
     orchestrator = VideoOrchestrator(

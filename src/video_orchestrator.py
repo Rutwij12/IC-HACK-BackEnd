@@ -157,6 +157,15 @@ class VideoOrchestrator:
                     # Add only 8 spaces (2 levels) for scene content
                     combined_code.append(f"    {line}")
 
+        combined_code.extend([
+                  "",
+                  "        # Transition",
+                  "        self.wait(0.5)  # Wait for a moment",
+                  "        self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen",
+                  "        self.wait(0.5)  # Brief pause before next scene",
+                  ""
+              ])
+
         # Join all lines with proper newlines
         final_code = "\n".join(combined_code)
         

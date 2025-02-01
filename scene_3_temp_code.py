@@ -1,82 +1,112 @@
 from manim import *
 
-class SimpleLearningProcess(Scene):
+class MatrixMultiplication(Scene):
     def construct(self):
-        # Create neural network nodes
-        input_node = Circle(radius=0.3).move_to(LEFT * 3)
-        hidden_node = Circle(radius=0.2)
-        output_node = Circle(radius=0.3).move_to(RIGHT * 3)
-        
-        nodes = VGroup(input_node, hidden_node, output_node)
-        nodes.shift(UP)
-        
-        # Create arrows
-        arrow1 = Arrow(input_node.get_right(), hidden_node.get_left())
-        arrow2 = Arrow(hidden_node.get_right(), output_node.get_left())
-        arrows = VGroup(arrow1, arrow2)
-        
+        # Define matrices
+        matrix_a = Matrix([["2", "1"], ["3", "4"]])
+        matrix_b = Matrix([["5", "6"], ["7", "8"]])
+        result_matrix = Matrix([["", ""], ["", ""]])
+        final_result = Matrix([["17", "20"], ["43", "50"]])
+
+        # Position matrices
+        matrix_a.scale(0.8).move_to([-4, 2, 0])
+        matrix_b.scale(0.8).move_to([0, 2, 0])
+        result_matrix.scale(0.8).move_to([4, 2, 0])
+
         # Create labels
-        input_label = MathTex("x=2").next_to(input_node, DOWN)
-        output_label = MathTex("\\hat{y}").next_to(output_node, DOWN)
-        w1_label = MathTex("w_1=0.5").next_to(arrow1, UP)
-        w2_label = MathTex("w_2=0.3").next_to(arrow2, UP)
-        
-        # Group initial network elements
-        network = VGroup(nodes, arrows, input_label, output_label, w1_label, w2_label)
-        
-        # 1. Initial Network Display
+        label_a = Text("A", font_size=36).next_to(matrix_a, DOWN, buff=0.3)
+        label_b = Text("B", font_size=36).next_to(matrix_b, DOWN, buff=0.3)
+        label_result = Text("Result", font_size=36).next_to(result_matrix, DOWN, buff=0.3)
+        mult_symbol = Text("×", font_size=48).move_to([-2, 2, 0])
+
+        # Initial display
         self.play(
-            FadeIn(nodes),
-            Create(arrows),
-            Write(input_label),
-            Write(output_label),
-            Write(w1_label),
-            Write(w2_label)
+            FadeIn(matrix_a), FadeIn(label_a),
+            FadeIn(matrix_b), FadeIn(label_b),
+            FadeIn(result_matrix), FadeIn(label_result),
+            FadeIn(mult_symbol),
+            run_time=2
         )
-        self.wait()
-        
-        # 2. Forward Pass
-        forward_pass = Text("Forward Pass:", font_size=30).move_to(DOWN * 0.5)
-        calculation = MathTex(
-            "2 \\rightarrow 2(0.5) = 1 \\rightarrow 1(0.3) = 0.3"
-        ).next_to(forward_pass, DOWN)
-        
-        prediction = Text(
-            "Predicted: 0.3, Desired: 1.0",
-            font_size=30
-        ).next_to(calculation, DOWN)
-        
-        error = Text(
-            "Error = 0.7",
-            font_size=30
-        ).next_to(prediction, DOWN)
-        
-        self.play(Write(forward_pass))
-        self.play(Write(calculation))
-        self.play(Write(prediction))
-        self.play(Write(error))
-        self.wait()
-        
-        # 3. Weight Update
-        updating = Text(
-            "Updating weights...",
-            font_size=30
-        ).move_to(DOWN * 3)
-        
-        # New weight labels
-        w1_new = MathTex("w_1=0.7").next_to(arrow1, UP).set_color(GREEN)
-        w2_new = MathTex("w_2=0.5").next_to(arrow2, UP).set_color(GREEN)
-        
-        self.play(Write(updating))
+
+        # Helper function for creating calculation text
+        def create_calc_text(text):
+            return MathTex(text, font_size=40).move_to([0, -2, 0])
+
+        # Function to highlight row and column
+        def highlight_elements(row_idx, col_idx):
+            row_elements = VGroup(*[matrix_a.get_entries()[i] for i in range(2*row_idx, 2*row_idx+2)])
+            col_elements = VGroup(*[matrix_b.get_entries()[i] for i in range(col_idx, 4, 2)])
+            
+            row_highlight = SurroundingRectangle(row_elements, color=RED, fill_opacity=0.4)
+            col_highlight = SurroundingRectangle(col_elements, color=BLUE, fill_opacity=0.4)
+            
+            return row_highlight, col_highlight
+
+        # Calculations for each position
+        calculations = [
+            ("(2×5) + (1×7)", "10 + 7", "17", 0, 0),
+            ("(2×6) + (1×8)", "12 + 8", "20", 0, 1),
+            ("(3×5) + (4×7)", "15 + 28", "43", 1, 0),
+            ("(3×6) + (4×8)", "18 + 32", "50", 1, 1)
+        ]
+
+        # Process each calculation
+        for calc, mid, result, row, col in calculations:
+            # Create highlights
+            row_rect, col_rect = highlight_elements(row, col)
+            
+            # Create calculation steps
+            calc_text = create_calc_text(calc)
+            mid_text = create_calc_text(mid)
+            result_text = create_calc_text(result)
+
+            # Show highlights and calculation
+            self.play(
+                FadeIn(row_rect),
+                FadeIn(col_rect),
+                Write(calc_text),
+                run_time=0.5
+            )
+
+            # Transform calculations
+            self.play(
+                Transform(calc_text, mid_text),
+                run_time=0.5
+            )
+            self.play(
+                Transform(calc_text, result_text),
+                run_time=0.5
+            )
+
+            # Fill result in matrix
+            result_entry = MathTex(result, font_size=40)
+            result_entry.move_to(result_matrix.get_entries()[2*row + col].get_center())
+            
+            self.play(
+                Write(result_entry),
+                run_time=0.5
+            )
+
+            # Clean up
+            self.play(
+                FadeOut(row_rect),
+                FadeOut(col_rect),
+                FadeOut(calc_text),
+                run_time=0.3
+            )
+
+        # Final display
         self.play(
-            ReplacementTransform(w1_label, w1_new),
-            ReplacementTransform(w2_label, w2_new)
+            Transform(result_matrix, final_result.scale(0.8).move_to([4, 2, 0])),
+            run_time=0.5
         )
         
-        final_text = Text(
-            "Network adjusted to reduce error",
-            font_size=30
-        ).next_to(updating, DOWN)
-        
-        self.play(Write(final_text))
-        self.wait()
+        # Scale up result briefly
+        self.play(
+            result_matrix.animate.scale(1.1),
+            run_time=0.2
+        )
+        self.play(
+            result_matrix.animate.scale(1/1.1),
+            run_time=0.2
+        )

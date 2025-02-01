@@ -1,112 +1,75 @@
 from manim import *
 
-class NetworkArchitecture(Scene):
+class DotProductVisualization(Scene):
     def construct(self):
         # Define colors
-        input_color = "#3498db"
-        hidden_color = "#2ecc71"
-        output_color = "#e74c3c"
-        connection_color = "#95a5a6"
-        
-        # Create input layer neurons
-        input_neurons = VGroup()
-        input_labels = VGroup()
-        for i, y in enumerate([1, -1]):
-            neuron = Circle(radius=0.3, color=input_color, fill_opacity=0.5)
-            neuron.move_to(np.array([-4, y, 0]))
-            label = MathTex(f"x_{i+1}").next_to(neuron, DOWN)
-            input_neurons.add(neuron)
-            input_labels.add(label)
-        
-        # Create hidden layer neurons
-        hidden_neurons = VGroup()
-        for y in [1.5, 0, -1.5]:
-            neuron = Circle(radius=0.3, color=hidden_color, fill_opacity=0.5)
-            neuron.move_to(np.array([0, y, 0]))
-            hidden_neurons.add(neuron)
-        
-        # Create output layer neurons
-        output_neurons = VGroup()
-        output_labels = VGroup()
-        for i, y in enumerate([1, -1]):
-            neuron = Circle(radius=0.3, color=output_color, fill_opacity=0.5)
-            neuron.move_to(np.array([4, y, 0]))
-            label = MathTex(f"y_{i+1}").next_to(neuron, DOWN)
-            output_neurons.add(neuron)
-            output_labels.add(label)
-        
-        # Create connections
-        input_connections = VGroup()
-        output_connections = VGroup()
-        
-        # Input to hidden connections
-        for in_neuron in input_neurons:
-            for hidden_neuron in hidden_neurons:
-                connection = Arrow(
-                    start=in_neuron.get_center(),
-                    end=hidden_neuron.get_center(),
-                    color=connection_color,
-                    buff=0.3,
-                    stroke_opacity=0.7
-                )
-                input_connections.add(connection)
-        
-        # Hidden to output connections
-        for hidden_neuron in hidden_neurons:
-            for out_neuron in output_neurons:
-                connection = Arrow(
-                    start=hidden_neuron.get_center(),
-                    end=out_neuron.get_center(),
-                    color=connection_color,
-                    buff=0.3,
-                    stroke_opacity=0.7
-                )
-                output_connections.add(connection)
-        
-        # Animation sequence
-        # 1. Input Layer
+        blue_color = "#3498db"
+        green_color = "#2ecc71"
+
+        # Create matrices
+        matrix_a = Matrix([[2, 3]], element_alignment_corner=DR)
+        matrix_a.scale(1.0).set_color(blue_color)
+        matrix_a.shift(LEFT * 2)
+
+        matrix_b = Matrix([[4], [5]], element_alignment_corner=DR)
+        matrix_b.scale(1.0).set_color(green_color)
+        matrix_b.shift(RIGHT * 2)
+
+        # Create title
+        title = Text("Computing Single Element Using Dot Product", font_size=36)
+        title.to_edge(UP)
+
+        # Step 1: Initial fade in
         self.play(
-            FadeIn(input_neurons),
-            FadeIn(input_labels),
-            run_time=2
+            FadeIn(matrix_a),
+            FadeIn(matrix_b),
+            Write(title)
         )
-        
-        # 2. Hidden Layer and connections
+        self.wait(2)
+        self.play(FadeOut(title))
+
+        # Step 2: Highlight row and column
+        row = matrix_a.copy()
+        column = matrix_b.copy()
+        row.set_color(BLUE_A)
+        column.set_color(GREEN_A)
+
+        dot_product_text = Text("Row × Column = Dot Product", font_size=32)
+        dot_product_text.to_edge(UP)
+
         self.play(
-            FadeIn(hidden_neurons),
-            Create(input_connections),
-            run_time=3
+            ShowPassingFlash(row),
+            ShowPassingFlash(column),
+            Write(dot_product_text)
         )
-        
-        # 3. Output Layer and connections
+        self.wait()
+
+        # Step 3: Move to calculation format
+        calculation = MathTex(
+            "(2 \\times 4) + (3 \\times 5)",
+            font_size=36
+        ).shift(DOWN)
+
         self.play(
-            FadeIn(output_neurons),
-            FadeIn(output_labels),
-            Create(output_connections),
-            run_time=3
+            Write(calculation),
+            matrix_a.animate.shift(UP),
+            matrix_b.animate.shift(UP)
         )
-        
-        # 4. Information flow animation
-        path_dots = []
-        # Define path: input[0] -> hidden[1] -> output[0]
-        path_points = [
-            input_neurons[0].get_center(),
-            hidden_neurons[1].get_center(),
-            output_neurons[0].get_center()
-        ]
-        
-        # Create dots for animation
-        for i in range(len(path_points) - 1):
-            dot = Dot(color=WHITE)
-            dot.move_to(path_points[i])
-            path_dots.append(dot)
-            
-            self.play(
-                dot.animate.move_to(path_points[i + 1]),
-                rate_func=linear,
-                run_time=1
-            )
-            self.play(FadeOut(dot), run_time=0.5)
-        
-        # Pause at the end to show final structure
-        self.wait(1)
+        self.wait()
+
+        # Step 4: Show result
+        result_step1 = MathTex("(8) + (15)", font_size=36).shift(DOWN * 2)
+        final_result = MathTex("= 23", font_size=36).shift(DOWN * 3)
+
+        self.play(Write(result_step1))
+        self.wait()
+        self.play(Write(final_result))
+        self.wait()
+
+        # Final fadeout
+        all_objects = VGroup(
+            matrix_a, matrix_b, dot_product_text,
+            calculation, result_step1, final_result
+        )
+        self.play(FadeOut(all_objects))
+        self.wait()
