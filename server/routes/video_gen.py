@@ -18,7 +18,7 @@ def gen_video(data: GenVideoInput):
     video_data = {
         "video_path": "../media/videos/scene_4_temp_code/480p15/LinearTransformationProperties.mp4",
         "id": "test1",
-        "image_path": "../media/images/scene_4_temp_code/480p15/LinearTransformationProperties.png",
+        "image_path": "/home/jay/Repos/IC-HACK-BackEnd/media/images/tree-736885_1280.jpg",
     }
 
     if not video_data or "video_path" not in video_data or "id" not in video_data:
