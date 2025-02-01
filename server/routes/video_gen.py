@@ -9,8 +9,9 @@ ERROR = {
     "message": "",
 }
 
+
 @router.post("/gen_video")
-def gen_video(data : GenVideoInput):
+def gen_video(data: GenVideoInput):
     prompt = data.prompt
 
     # call claude here - return video path, id, metadata key : args
@@ -35,7 +36,3 @@ def gen_video(data : GenVideoInput):
     return {
         "url": url
     }
-
-
-
-
