@@ -15,7 +15,9 @@ dependencies = [
     "langchain-openai (>=0.3.3,<0.4.0)",
     "python-dotenv (>=1.0.1,<2.0.0)",
     "aiofiles (>=24.1.0,<25.0.0)",
-    "manim (==0.18.1)"
+    "manim (==0.18.1)",
+    "boto3 (>=1.36.11,<2.0.0)",
+    "fastapi[standard] (>=0.115.8,<0.116.0)"
 ]
 
 
