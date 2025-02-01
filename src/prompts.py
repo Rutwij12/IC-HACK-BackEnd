@@ -35,7 +35,7 @@ SCENE_EVALUATOR_SYSTEM_PROMPT = """Evaluate the plan for the Manim animation.
 The plan must contain the following characteristics:
  - The examples used must be mathematically correct and rigorous
  - The plan must ensure that text is not overlapping other objects
- - This plan should fade out elements before introducing new elements in each part of the plan
+ - Ensure 
  """
 
 SCENE_EVALUATION_USER_PROMPT = """Evaluate this scene plan and respond with feeback if it does not meet the criteria.
