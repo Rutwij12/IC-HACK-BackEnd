@@ -13,9 +13,16 @@ app = Celery(
 # requires "video_path", "id" and "image_path" keys
 # you can inlcude any other keys as well
 @app.task
-def start_vid_pipeline(video_data):
+def start_vid_pipeline():
     print("Starting video pipeline")
-    print(video_data)
+    # call claude here
+    # return dictionary with keys: "video_path", "id" and "image_path"
+    # and any other keys you want
+    video_data = {
+        "video_path": "../media/videos/scene_4_temp_code/480p15/LinearTransformationProperties.mp4",
+        "id": "test1",
+        "image_path": "/home/jay/Repos/IC-HACK-BackEnd/media/images/tree-736885_1280.jpg",
+    }
     time.sleep(5)
     data = run_video_pipeline(video_data)
     return {

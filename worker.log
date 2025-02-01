@@ -1,0 +1,23 @@
+[1;36m 
+ -------------- celery@jellyware v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39 2025-02-01 22:20:23
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         worker:0x7fc912507380
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 12 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+[0m[0m
+[tasks]
+  . server.worker.start_vid_pipeline
+[0m
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)

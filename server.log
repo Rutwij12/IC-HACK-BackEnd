@@ -1,0 +1,7 @@
+
+   FastAPI   Starting development server 🚀
+ 
+             Searching for package file structure from directories with __init__.py files
+ERROR    Import error: No module named 'server'                                                                                            
+WARNING  Ensure all the package directories have an __init__.py file                                                                       
+
