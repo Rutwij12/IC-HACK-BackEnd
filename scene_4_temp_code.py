@@ -1,81 +1,81 @@
 from manim import *
-import numpy as np
 
-class MatrixRotationExample(Scene):
+class RowOperationsExample(Scene):
     def construct(self):
-        # 1. Initial Setup
-        title = Text("Matrix Rotation Example").scale(0.8).move_to(UP * 3.5)
+        # Initial Setup
+        title = Text("Row Operations Example").set_color(BLACK).to_edge(UP, buff=0.5)
         
-        # Create coordinate plane
-        plane = NumberPlane(
-            x_range=[-3, 3, 1],
-            y_range=[-3, 3, 1],
-            x_length=6,
-            y_length=6,
-            background_line_style={
-                "stroke_color": "#CCCCCC",
-                "stroke_opacity": 0.5
-            },
-            axis_config={"stroke_color": "#999999"}
+        # Create initial matrix
+        initial_matrix = Matrix(
+            [[4, 6],
+             [2, 5]],
+            element_to_mobject_config={"color": BLACK}
         ).scale(0.8)
-
-        # Original point and label
-        original_point = Dot(plane.coords_to_point(2, 1), color=BLUE)
-        original_label = Text("P(2,1)").scale(0.6).set_color(BLUE).next_to(original_point, UR * 0.3)
-
-        # 2. Matrix elements
-        rotation_matrix = MathTex(
-            "R = \\begin{bmatrix} 0.707 & -0.707 \\\\ 0.707 & 0.707 \\end{bmatrix}"
-        ).scale(0.8).move_to(LEFT * 5 + UP * 2)
+        initial_matrix.move_to(UP)
         
-        matrix_label = Text("45° Rotation Matrix").scale(0.6).next_to(rotation_matrix, UP * 0.5)
-
-        # 3. Matrix multiplication
-        multiplication = MathTex(
-            "\\begin{bmatrix} 0.707 & -0.707 \\\\ 0.707 & 0.707 \\end{bmatrix}",
-            "\\begin{bmatrix} 2 \\\\ 1 \\end{bmatrix}",
-            "=",
-            "\\begin{bmatrix} 0.707 \\\\ 2.121 \\end{bmatrix}"
-        ).scale(0.7).move_to(LEFT * 5)
-
-        # Final point and arc
-        end_point = Dot(plane.coords_to_point(0.707, 2.121), color=RED)
-        end_label = Text("P'(0.707, 2.121)").scale(0.6).set_color(RED).next_to(end_point, UR * 0.3)
-        
-        # Create rotation arc
-        start_angle = np.arctan2(1, 2)
-        radius = np.sqrt(5) * plane.get_x_unit_size()  # Fixed: using get_x_unit_size()
-        arc = Arc(
-            radius=radius,
-            arc_center=plane.get_origin(),
-            start_angle=start_angle,
-            angle=PI/4,
-            color=RED
-        )
-
-        # Animations
+        # Animation Phase 1: Show initial setup
         self.play(Write(title))
-        self.play(Create(plane))
-        self.play(Create(original_point), Write(original_label))
-        self.wait()
-
-        # Fade out title and show matrix
-        self.play(FadeOut(title))
+        self.play(Write(initial_matrix))
+        self.wait(1)
+        
+        # Highlight pivot element
+        pivot = initial_matrix.get_entries()[0]  # First element (4)
+        self.play(pivot.animate.set_color(RED))
+        
+        # Show operation text
+        operation = MathTex(r"R_2 \rightarrow R_2 - (\frac{1}{2})R_1", color=BLACK)
+        operation.next_to(initial_matrix, UP, buff=0.5)
+        self.play(Write(operation))
+        
+        # Create intermediate steps
+        mult_row = MathTex(r"\frac{1}{2}", r"[4 \quad 6]", r"= [2 \quad 3]", color=BLUE)
+        mult_row.next_to(initial_matrix, DOWN, buff=0.5)
+        
+        # Show multiplication step
+        self.play(Write(mult_row))
+        self.wait(1)
+        
+        # Create final matrix
+        final_matrix = Matrix(
+            [[4, 6],
+             [0, 2]],
+            element_to_mobject_config={"color": BLACK}
+        ).scale(0.8)
+        final_matrix.move_to(initial_matrix.get_center())
+        
+        # Transform to final matrix
         self.play(
-            Write(rotation_matrix),
-            Write(matrix_label)
+            ReplacementTransform(initial_matrix, final_matrix),
+            FadeOut(mult_row)
         )
-        self.wait()
-
-        # Show transformation
-        self.play(Write(multiplication))
+        
+        # Highlight the zero
+        zero_element = final_matrix.get_entries()[2]  # Element at position (2,1)
+        self.play(zero_element.animate.set_color(RED))
+        
+        # Add "Row Echelon Form" text
+        row_echelon_text = Text("Row Echelon Form:", color=BLACK).scale(0.8)
+        row_echelon_text.next_to(final_matrix, LEFT, buff=0.5)
+        
+        # Create box around final matrix
+        box = SurroundingRectangle(final_matrix, color=BLUE)
+        
+        # Show final elements
         self.play(
-            original_point.animate.set_opacity(0.5),
-            original_label.animate.set_opacity(0.5)
+            Write(row_echelon_text),
+            Create(box)
         )
+        
+        # Highlight stair-step pattern
+        stair_elements = [final_matrix.get_entries()[0], final_matrix.get_entries()[3]]  # [4, 2]
+        self.play(*[elem.animate.set_color(GREEN) for elem in stair_elements])
+        
+        # Final pause
+        self.wait(1)
+        
+        # Fade out operation text but keep the main result
         self.play(
-            Create(arc),
-            Create(end_point)
+            FadeOut(operation),
+            FadeOut(title)
         )
-        self.play(Write(end_label))
-        self.wait()
+        self.wait(1)

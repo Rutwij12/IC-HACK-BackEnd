@@ -1,84 +1,60 @@
 1
-00:00:00,000 --> 00:00:03,715
-Let's explore a two-by-two matrix where each row represents a
+00:00:00,000 --> 00:00:04,247
+In linear algebra, we can perform row operations on matrices.
 
 2
-00:00:03,815 --> 00:00:07,030
-point in space. As we highlight these rows, watch how
+00:00:04,347 --> 00:00:07,240
+When we subtract half of row 1 from row 2,
 
 3
-00:00:07,130 --> 00:00:10,532
-they map directly to coordinates on our grid, creating a
+00:00:07,340 --> 00:00:11,516
+we create an equivalent system that preserves all solutions.
 
 4
-00:00:10,632 --> 00:00:14,348
-visual connection between matrix values and geometric points.
+00:00:11,600 --> 00:00:15,700
+In elementary row operations, we can swap any two rows. Watch as
 
 5
-00:00:14,500 --> 00:00:18,266
-When multiplying matrices, we start with a 2 by 3 matrix A
+00:00:15,800 --> 00:00:19,112
+we swap rows 1 and 2 of this matrix, moving the rows
 
 6
-00:00:18,366 --> 00:00:22,000
-and a 3 by 2 matrix B. Notice how their inner dimensions
+00:00:19,212 --> 00:00:24,100
+into their new positions while maintaining the rest of the matrix unchanged.
 
 7
-00:00:22,100 --> 00:00:26,666
-both equal 3 - this matching is essential for matrix multiplication to
+00:00:24,600 --> 00:00:28,928
+We multiply each element in the first row by 2, transforming
 
 8
-00:00:26,766 --> 00:00:29,400
-work. The result will be a 2 by 2 matrix.
+00:00:29,028 --> 00:00:32,619
+the values. Watch as 2 becomes 4, 4 becomes 8, and
 
 9
-00:00:30,500 --> 00:00:35,715
-Let's see how a single element in matrix multiplication is computed through the
+00:00:32,719 --> 00:00:36,236
+1 becomes 2, while the other rows stay unchanged.
 
 10
-00:00:35,815 --> 00:00:40,426
-dot product. When we multiply these matrices, we take the row values 2
+00:00:42,100 --> 00:00:46,652
+When we add one row to another in a matrix, we add the numbers in
 
 11
-00:00:40,526 --> 00:00:44,665
-and 3, and multiply them with the column values 4 and 5. Adding
+00:00:46,752 --> 00:00:51,305
+each position. Watch as we add Row 1 to Row 2, combining 3 plus 2
 
 12
-00:00:44,765 --> 00:00:48,232
-the products together gives us our final value of 23.
+00:00:51,405 --> 00:00:54,384
+and 4 plus 1 to get our new row of 5 and 5.
 
 13
-00:00:48,500 --> 00:00:53,049
-Let's multiply these two matrices by calculating each element one at
+00:00:58,100 --> 00:01:02,995
+Lets simplify this matrix by performing row operations. We multiply the first
 
 14
-00:00:53,149 --> 00:00:56,468
-a time. Watch how we multiply the rows of matrix A
+00:01:03,095 --> 00:01:06,498
+row by one half and subtract it from the second row to
 
 15
-00:00:56,568 --> 00:00:59,956
-by the columns of matrix B to form our result. Each
-
-16
-00:01:00,056 --> 00:01:04,264
-new number we calculate fills one position in our final matrix.
-
-17
-00:01:04,333 --> 00:01:08,324
-Let's start by looking at point P at coordinates (2,1). When
-
-18
-00:01:08,424 --> 00:01:12,482
-we apply a 45-degree rotation matrix, we can follow the point
-
-19
-00:01:12,582 --> 00:01:16,505
-as it rotates around the origin, ending at its new position
-
-20
-00:01:16,605 --> 00:01:22,436
-P-prime at approximately (0.7, 2.1). This transformation preserves the point's distance
-
-21
-00:01:22,536 --> 00:01:25,641
-from the origin while changing its orientation.
+00:01:06,598 --> 00:01:10,456
+obtain zeros below our pivot, giving us our row echelon form.
 

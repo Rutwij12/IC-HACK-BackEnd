@@ -1,75 +1,90 @@
 from manim import *
 
-class DotProductVisualization(Scene):
+class ScalarRowMultiplication(Scene):
     def construct(self):
-        # Define colors
-        blue_color = "#3498db"
-        green_color = "#2ecc71"
+        # Initial matrix
+        matrix = Matrix([
+            [2, 4, 1],
+            [3, 1, 5],
+            [0, 2, 3]
+        ])
+        matrix.scale(0.8)
+        
+        # Position matrix in center
+        self.play(Write(matrix))
+        
+        # Title text
+        title = Text("Scalar Multiplication: R₁ → 2R₁", font_size=36)
+        title.to_edge(UP, buff=0.5)
+        self.play(Write(title))
 
-        # Create matrices
-        matrix_a = Matrix([[2, 3]], element_alignment_corner=DR)
-        matrix_a.scale(1.0).set_color(blue_color)
-        matrix_a.shift(LEFT * 2)
-
-        matrix_b = Matrix([[4], [5]], element_alignment_corner=DR)
-        matrix_b.scale(1.0).set_color(green_color)
-        matrix_b.shift(RIGHT * 2)
-
-        # Create title
-        title = Text("Computing Single Element Using Dot Product", font_size=36)
-        title.to_edge(UP)
-
-        # Step 1: Initial fade in
+        # Highlight first row - get the row elements
+        row_elements = VGroup(*[matrix.get_entries()[i] for i in range(3)])
+        row_highlight = SurroundingRectangle(row_elements, color=YELLOW)
+        self.play(Create(row_highlight))
+        
+        # Show multiplication operation
+        mult_text = MathTex("\\times 2").next_to(row_highlight, RIGHT)
+        self.play(Write(mult_text))
+        
+        # Show computations above first row
+        computations = VGroup(
+            MathTex("2\\times2=4"),
+            MathTex("2\\times4=8"),
+            MathTex("2\\times1=2")
+        ).arrange(RIGHT, buff=0.5)
+        computations.scale(0.7).next_to(matrix, UP, buff=0.5)
+        
+        # Small arrows pointing down
+        arrows = VGroup(*[
+            Arrow(
+                start=comp.get_bottom(),
+                end=matrix.get_entries()[i].get_top(),
+                buff=0.1,
+                color=BLUE_C,
+                max_tip_length_to_length_ratio=0.15
+            )
+            for i, comp in enumerate(computations)
+        ])
+        
+        # Show computations and arrows
+        self.play(Write(computations), Create(arrows))
+        self.wait()
+        
+        # New matrix
+        new_matrix = Matrix([
+            [4, 8, 2],
+            [3, 1, 5],
+            [0, 2, 3]
+        ])
+        new_matrix.scale(0.8).move_to(matrix)
+        
+        # Transform to new matrix
         self.play(
-            FadeIn(matrix_a),
-            FadeIn(matrix_b),
-            Write(title)
+            ReplacementTransform(matrix, new_matrix),
+            FadeOut(row_highlight),
+            FadeOut(computations),
+            FadeOut(arrows),
+            FadeOut(mult_text)
         )
-        self.wait(2)
-        self.play(FadeOut(title))
-
-        # Step 2: Highlight row and column
-        row = matrix_a.copy()
-        column = matrix_b.copy()
-        row.set_color(BLUE_A)
-        column.set_color(GREEN_A)
-
-        dot_product_text = Text("Row × Column = Dot Product", font_size=32)
-        dot_product_text.to_edge(UP)
-
+        
+        # Highlight new row in green
+        new_row_elements = VGroup(*[new_matrix.get_entries()[i] for i in range(3)])
+        new_row_highlight = SurroundingRectangle(new_row_elements, color=GREEN)
+        self.play(Create(new_row_highlight))
+        self.wait(0.5)
+        
+        # Final explanation text
+        explanation = Text("Each element in R₁ is multiplied by 2", font_size=32)
+        explanation.next_to(new_matrix, DOWN, buff=0.5)
+        self.play(Write(explanation))
+        
+        self.wait()
+        
+        # Fade everything out
         self.play(
-            ShowPassingFlash(row),
-            ShowPassingFlash(column),
-            Write(dot_product_text)
+            FadeOut(new_matrix),
+            FadeOut(new_row_highlight),
+            FadeOut(title),
+            FadeOut(explanation)
         )
-        self.wait()
-
-        # Step 3: Move to calculation format
-        calculation = MathTex(
-            "(2 \\times 4) + (3 \\times 5)",
-            font_size=36
-        ).shift(DOWN)
-
-        self.play(
-            Write(calculation),
-            matrix_a.animate.shift(UP),
-            matrix_b.animate.shift(UP)
-        )
-        self.wait()
-
-        # Step 4: Show result
-        result_step1 = MathTex("(8) + (15)", font_size=36).shift(DOWN * 2)
-        final_result = MathTex("= 23", font_size=36).shift(DOWN * 3)
-
-        self.play(Write(result_step1))
-        self.wait()
-        self.play(Write(final_result))
-        self.wait()
-
-        # Final fadeout
-        all_objects = VGroup(
-            matrix_a, matrix_b, dot_product_text,
-            calculation, result_step1, final_result
-        )
-        self.play(FadeOut(all_objects))
-        self.wait()

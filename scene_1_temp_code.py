@@ -1,83 +1,80 @@
 from manim import *
 
-class MatrixDimensions(Scene):
+class RowSwapOperation(Scene):
     def construct(self):
-        # Title
-        title = Text("Matrix Multiplication: Dimensions Matter", color=WHITE)
-        title.to_edge(UP)
+        # Create the initial matrix with row labels
+        matrix = Matrix(
+            [[2, 1, 4],
+             [5, 3, 7],
+             [1, 0, 2]],
+            v_buff=0.8  # Increased vertical buffer for clearer visualization
+        )
         
-        # Create matrices
-        matrix_a = Matrix(
-            [[1, 2, 3],
-             [4, 5, 6]],
-            left_bracket="[",
-            right_bracket="]"
-        ).set_color(BLUE)
-        matrix_a.shift(LEFT * 3)
+        # Create row labels
+        row_labels = VGroup()
+        for i in range(3):
+            label = MathTex(f"R_{{{i+1}}}")
+            label.next_to(matrix.get_rows()[i], LEFT, buff=0.5)
+            row_labels.add(label)
+            
+        # Create the swap operation text
+        swap_text = MathTex(r"R_1 \leftrightarrow R_2")
+        swap_text.next_to(matrix, UP, buff=0.5)
         
-        matrix_b = Matrix(
-            [[7, 8],
-             [9, 0],
-             [1, 2]],
-            left_bracket="[",
-            right_bracket="]"
-        ).set_color(RED)
-        matrix_b.shift(RIGHT * 3)
+        # Initial display of matrix and labels
+        self.play(
+            Write(matrix),
+            Write(row_labels),
+            run_time=2
+        )
+        self.wait(1)
         
-        # Create dimension labels
-        label_a = Text("A (2×3)", color=BLUE).scale(0.8)
-        label_a.next_to(matrix_a, DOWN)
-        
-        label_b = Text("B (3×2)", color=RED).scale(0.8)
-        label_b.next_to(matrix_b, DOWN)
-        
-        # Create highlighted parts
-        highlight_a = Text("3", color=BLUE).scale(0.8)
-        highlight_a.next_to(label_a, DOWN)
-        highlight_a.align_to(label_a.get_center() + RIGHT * 0.3, RIGHT)
-        
-        highlight_b = Text("3", color=RED).scale(0.8)
-        highlight_b.next_to(label_b, DOWN)
-        highlight_b.align_to(label_b.get_center() - RIGHT * 0.3, LEFT)
-        
-        # Create arrow and bottom text
-        arrow = CurvedArrow(
-            highlight_a.get_right(),
-            highlight_b.get_left(),
-            angle=-TAU/4
-        ).set_color(YELLOW)
-        
-        match_text = Text("Inner dimensions must match!", color=GREEN).scale(0.8)
-        match_text.to_edge(DOWN, buff=1)
-        
-        result_text = Text("(2×3) × (3×2) = (2×2)", color=WHITE).scale(0.7)
-        result_text.next_to(match_text, DOWN)
-        
-        # Animation sequence
-        self.play(FadeIn(title))
-        self.wait()
+        # Highlight rows to be swapped
+        row1 = matrix.get_rows()[0].copy()
+        row2 = matrix.get_rows()[1].copy()
+        row1_label = row_labels[0].copy()
+        row2_label = row_labels[1].copy()
         
         self.play(
-            Write(matrix_a),
-            FadeIn(label_a)
+            row1.animate.set_color(BLUE),
+            row2.animate.set_color(YELLOW),
+            Write(swap_text),
+            run_time=1
         )
-        self.wait()
+        self.wait(1)
         
+        # Calculate positions for smooth swap animation
+        row1_target = row2.get_center()
+        row2_target = row1.get_center()
+        label1_target = row2_label.get_center()
+        label2_target = row1_label.get_center()
+        
+        # Perform the swap animation
         self.play(
-            Write(matrix_b),
-            FadeIn(label_b)
+            row1.animate.move_to(row1_target),
+            row2.animate.move_to(row2_target),
+            row_labels[0].animate.move_to(label1_target),
+            row_labels[1].animate.move_to(label2_target),
+            rate_func=rate_functions.ease_in_out_sine,
+            run_time=3
         )
-        self.wait()
         
+        # Create the final matrix
+        final_matrix = Matrix(
+            [[5, 3, 7],
+             [2, 1, 4],
+             [1, 0, 2]],
+            v_buff=0.8
+        )
+        final_matrix.move_to(matrix)
+        
+        # Fade out colored rows and show final matrix
         self.play(
-            FadeIn(highlight_a),
-            FadeIn(highlight_b)
+            FadeOut(row1),
+            FadeOut(row2),
+            FadeIn(final_matrix),
+            run_time=1
         )
-        self.wait()
         
-        self.play(Create(arrow))
-        self.play(Write(match_text))
-        self.wait()
-        
-        self.play(FadeIn(result_text))
-        self.wait()
+        # Hold the final state
+        self.wait(2)
