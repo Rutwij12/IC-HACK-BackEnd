@@ -5,6 +5,10 @@ from .scene_planner import ScenePlanner
 from .code_generator import CodeGenerator
 from .llm_provider import LLMWrapper
 import asyncio
+import subprocess
+import aiofiles
+import re
+import os
 from .prompts import (
     VIDEO_IDEA_GENERATOR_SYSTEM_PROMPT,
     VIDEO_IDEA_GENERATOR_USER_PROMPT,
@@ -241,3 +245,66 @@ class VideoOrchestrator:
         }
         
         return await self.app.ainvoke(initial_state)
+
+    async def generate_and_render_video(self) -> dict:
+        """
+        Orchestrate video creation and render the final video and thumbnail.
+        
+        Returns:
+            dict: Contains paths to the rendered video and thumbnail
+        """
+        # First generate all the code and assets
+        #result = await self.orchestrate_video()
+        
+        # Ensure the output directory exists
+        os.makedirs("media", exist_ok=True)
+        
+        # Render the full video
+        video_cmd = ["manim", "-pqm", "combined_scenes.py", "CombinedScene"]
+        video_process = await asyncio.create_subprocess_exec(
+            *video_cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        await video_process.communicate()
+
+        filename = "scene_1_temp_code.py"
+        async with aiofiles.open(filename) as f:
+                code_content = await f.read()
+
+        # Extract the class name from the code
+        class_match = re.search(r'class\s+(\w+)\s*\(', code_content)
+        if not class_match:
+            raise Exception("file for class regex not working")
+        
+        class_name = class_match.group(1)
+        
+        # Generate thumbnail by saving the last frame
+        thumbnail_cmd = ["manim", "-s", "--format=png", filename, class_name]
+        thumbnail_process = await asyncio.create_subprocess_exec(
+            *thumbnail_cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        await thumbnail_process.communicate()
+        
+        # Find the generated files
+        video_path = None
+        thumbnail_path = None
+        
+        for root, _, files in os.walk("media/videos"):
+            for file in files:
+                if file.endswith(".mp4"):
+                    video_path = os.path.join(root, file)
+                    break
+        
+        for root, _, files in os.walk("media/images"):
+            for file in files:
+                if file.endswith(".png"):
+                    thumbnail_path = os.path.join(root, file)
+                    break
+        
+        return {
+            "video_path": "media/videos/combined_scenes/720p30/CombinedScene.mp4",
+            "thumbnail_path": thumbnail_path,
+        }

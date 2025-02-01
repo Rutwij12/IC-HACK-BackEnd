@@ -42,10 +42,13 @@ class CodeGenerator:
         
         response = await self.llm.ainvoke(messages)
         # Trim any trailing whitespace from the response content
-        cleaned_content = response.content.rstrip()
+        try:
+            cleaned_content = response.content.rstrip()
+        except:
+            print(f"Response content: {response.content}")
+            raise Exception("Failed to get content from response when doing rstrip")
         messages.append(("assistant", cleaned_content))
         print(f"state of messages after call: {self.temp_file_prefix}")
-        print(messages)
         return {
             "messages": messages,
             "iterations": iterations + 1
