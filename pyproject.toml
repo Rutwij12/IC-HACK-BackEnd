@@ -15,7 +15,8 @@ dependencies = [
     "langchain-openai (>=0.3.3,<0.4.0)",
     "python-dotenv (>=1.0.1,<2.0.0)",
     "aiofiles (>=24.1.0,<25.0.0)",
-    "manim (==0.18.1)"
+    "manim (==0.18.1)",
+    "pinecone (>=5.4.2,<6.0.0)"
 ]
 
 
