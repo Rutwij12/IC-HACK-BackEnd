@@ -184,15 +184,20 @@ class CodeGenerator:
             "current_code": code_to_execute
         }
 
+    async def _set_invalid_code(self, state: State):
+        """Set current code to empty string when max iterations reached"""
+        return {
+            "current_code": "",  # Indicate skip with empty code
+        }
+
     def _should_continue(self, state: State):
         """Determine whether to continue iteration"""
         if state["evaluation"].passes_criteria:
             print("---CODE PASSED EVALUATION---")
             return "end"
-        elif state["iterations"] >= self.max_iterations:  # Use max_iterations from instance
+        elif state["iterations"] >= self.max_iterations:
             print("---MAX ITERATIONS REACHED - SKIPPING SCENE---")
-            state["current_code"] = ""  # Set empty code to indicate skip
-            return "end"
+            return "invalid"  # New state to handle max iterations
         else:
             print("---CONTINUING TO NEXT ITERATION OF CODE GEN---")
             return "generate"
@@ -202,6 +207,7 @@ class CodeGenerator:
         workflow = StateGraph(State)
         workflow.add_node("generate", self._generate_code)
         workflow.add_node("evaluate", self._evaluate_code)
+        workflow.add_node("invalid", self._set_invalid_code)  # Add new invalid node
 
         workflow.add_edge(START, "generate")
         workflow.add_edge("generate", "evaluate")
@@ -210,9 +216,11 @@ class CodeGenerator:
             self._should_continue,
             {
                 "generate": "generate",
-                "end": END
+                "end": END,
+                "invalid": "invalid"  # Add path to invalid node
             }
         )
+        workflow.add_edge("invalid", END)  # Invalid node goes to END
         return workflow
 
     async def generate_code_with_feedback(self):
