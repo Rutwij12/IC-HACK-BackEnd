@@ -11,17 +11,9 @@ The scenes should only have a few elements present at a time, and should not be 
 
 VIDEO_IDEA_GENERATOR_USER_PROMPT = """The video topic is:
 
-{video_prompt}"""
+{video_prompt}""" 
 
 
-VIDEO_TITLE_GENERATOR_SYSTEM_PROMPT = """You are an expert creating catchy and descriptive titles for educational videos that explain complex concepts. 
-These videos should be designed to make difficult ideas easy to understand, with clear, step-by-step explanations that guide the viewer from confusion to confidence.
-The titles should be engaging and accurately reflect the content and goal of the video. Focus on making titles that are concise, yet informative enough to convey the main concept of the video without being overly complex.
-Each title should give an impression of simplicity and clarity, avoiding jargon or overly technical terms that might confuse a beginner.
-Ensure that the title hints at the progressive nature of the content, such as using phrases like "understanding," "step-by-step," or "beginner's guide."
-Aim for a title length of around 6-10 words, and feel free to add numbers or other engaging elements if they help make the video stand out.
-Only produce 1 title.
-"""
 
 
 # 2. Scene Planner Prompts
@@ -52,19 +44,24 @@ Scene Plan:
 {scene_plan}"""
 
 
+
+
+
 # 3. Code Generator Prompts
 CODE_GENERATOR_SYSTEM_PROMPT = """You are an expert in the Manim python library for creating mathematical animations.
 You write code that is correct, and also makes a very clear and compelling animation
 If provided with a specification, then you follow it very closely and try to include all details.
 You must ensure that all of the details below are included in the same Scene in the script. If there seem to be multiple well defined parts, then fade out all the prior elements on the screen before introducting new ones.
 In addition you must be careful to ensure that all the text / items on the screen actually fit on the screen.  Do not try to stuff everything in one place.
-Be careful to ensure that text and objects are not overlapping with each other
+Be careful to ensure that text and objects are not overlapping with each other. Make sure to remove old item from screen if you are moving new item into that location
 All the main logic should be in the construct function, do not add other functions.
 Make sure python code clearly put into \`\`\`python tags"""
 
 CODE_GENERATOR_USER_PROMPT = """Generate the manim code for this scene plan:
 
 {code_spec}"""
+
+
 
 
 # 4. Add these new prompts after the existing ones
@@ -150,7 +147,7 @@ You need to create a big scene that is the combination of all the smaller scenes
 It is crucial and fundamental that you output the full code of the whole script. You must include every line and keep the logic the same
 """
 
-COMBINATION_STEP_USER_PROMPT = """These are the scenes and voiceovers that you need to combine into a large scene:
+COMBINATION_STEP_USER_PROMPT="""These are the scenes and voiceovers that you need to combine into a large scene:
 Voiceovers:
 {numbered_voiceovers}
 
@@ -162,3 +159,39 @@ Scenes:
 VOICEOVER_USER_PROMPT = """Organise a final file that combines all of this code
 
 {voiceover_scene_plan_code_combo}"""
+
+
+
+
+##############################################################################
+# REACT GENERATIONS
+##############################################################################
+
+
+
+# 5. React Component Orchestrator Prompts
+REACT_COMPONENT_PLANNER_SYSTEM_PROMPT = """
+You are an expert React page planner
+Generate 4-6 high level ideas for react components.
+Some should be ideas for text explaining a topic
+Some should be ideas for visualisations to explain a topic
+The ideas should be very high level, not much detail at all"""
+
+REACT_COMPONENT_PLANNER_USER_PROMPT = """Generate component ideas for this topic:
+
+{user_prompt}"""
+
+REACT_CODE_GENERATOR_SYSTEM_PROMPT = """
+
+You are a React expert. Implement components in pure react, with no other dependencies. 
+Sometimes the components should be interactive, so you should be able to interact with it and see how it changes
+Other times the components just render text. If component renders text, then it should only be text, try not to display maths or other things as well.
+The style is to use arial font in different shades of blue. Also make sure text sections have a title which is different sized
+Make sure your code is javascript clearly put into \`\`\`jsx tags. Also don't add export default at the bottom of the file, only include the function / component definition
+Only add respond with a single code block, that defines this component in pure react, there should be no other imports
+"""
+
+
+REACT_CODE_GENERATOR_USER_PROMPT = """Generate the React code for this component plan:
+
+{component_plan}"""
