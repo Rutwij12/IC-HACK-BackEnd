@@ -1,115 +1,94 @@
-function GeometricTransformationDemo() {
-  const [angle, setAngle] = React.useState(0);
-  const [scale, setScale] = React.useState(1);
-  const [showEigenvectors, setShowEigenvectors] = React.useState(true);
-
-  const canvasRef = React.useRef(null);
-
-  React.useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw coordinate axes
-    ctx.strokeStyle = '#FFA500';
-    ctx.beginPath();
-    ctx.moveTo(0, centerY);
-    ctx.lineTo(canvas.width, centerY);
-    ctx.moveTo(centerX, 0);
-    ctx.lineTo(centerX, canvas.height);
-    ctx.stroke();
-
-    // Draw transformed unit vectors
-    const transformedX = [
-      Math.cos(angle * Math.PI / 180) * scale * 50,
-      Math.sin(angle * Math.PI / 180) * scale * 50
-    ];
-    const transformedY = [
-      -Math.sin(angle * Math.PI / 180) * scale * 50,
-      Math.cos(angle * Math.PI / 180) * scale * 50
-    ];
-
-    // Draw transformed vectors
-    ctx.strokeStyle = '#FF8C00';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(centerX + transformedX[0], centerY + transformedX[1]);
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(centerX + transformedY[0], centerY + transformedY[1]);
-    ctx.stroke();
-
-    // Draw eigenvectors if enabled
-    if (showEigenvectors) {
-      ctx.strokeStyle = '#FFA07A';
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
-      ctx.moveTo(centerX - 50, centerY - 50);
-      ctx.lineTo(centerX + 50, centerY + 50);
-      ctx.moveTo(centerX - 50, centerY + 50);
-      ctx.lineTo(centerX + 50, centerY - 50);
-      ctx.stroke();
-      ctx.setLineDash([]);
+function RealWorldExampleCards() {
+  const examples = [
+    {
+      field: "Architecture",
+      description: "Calculating roof angles and support beam placement. Architects use trigonometry to determine optimal roof pitches for drainage and load distribution.",
+      icon: "🏛️"
+    },
+    {
+      field: "Civil Engineering", 
+      description: "Bridge design and construction. Engineers use trigonometric functions to calculate cable tensions and arch supports in bridge structures.",
+      icon: "🌉"
+    },
+    {
+      field: "Aviation",
+      description: "Flight navigation and control. Pilots use trigonometry to calculate flight paths, angles of ascent/descent, and wind compensation.",
+      icon: "✈️"
+    },
+    {
+      field: "Marine Navigation",
+      description: "Ship routing and positioning. Navigators use trigonometric calculations to determine bearings, distances and positions at sea.",
+      icon: "🚢"
+    },
+    {
+      field: "Game Development",
+      description: "Character movement and collision detection. Game developers use trig to calculate realistic object motion and interactions.",
+      icon: "🎮"
+    },
+    {
+      field: "Music",
+      description: "Sound wave analysis and synthesis. Audio engineers use trigonometric functions to process and create sound waves.",
+      icon: "🎵"
     }
-  }, [angle, scale, showEigenvectors]);
+  ];
 
   return (
-    <div style={{ fontFamily: 'Arial', color: '#FF8C00' }}>
-      <h2 style={{ fontSize: '24px', color: '#FFA500' }}>
-        Geometric Transformation Demo
+    <div style={{
+      fontFamily: 'Arial',
+      padding: '20px',
+      maxWidth: '1200px',
+      margin: '0 auto'
+    }}>
+      <h2 style={{
+        color: '#D35400',
+        fontSize: '28px',
+        marginBottom: '30px',
+        textAlign: 'center'
+      }}>
+        Real-World Applications of Trigonometry
       </h2>
       
-      <div style={{ marginBottom: '20px' }}>
-        <canvas
-          ref={canvasRef}
-          width={400}
-          height={400}
-          style={{ border: '1px solid #FFA500' }}
-        />
-      </div>
-
-      <div style={{ marginBottom: '10px' }}>
-        <label style={{ marginRight: '10px' }}>
-          Rotation Angle:
-          <input
-            type="range"
-            min="0"
-            max="360"
-            value={angle}
-            onChange={(e) => setAngle(Number(e.target.value))}
-          />
-          {angle}°
-        </label>
-      </div>
-
-      <div style={{ marginBottom: '10px' }}>
-        <label style={{ marginRight: '10px' }}>
-          Scale:
-          <input
-            type="range"
-            min="0.1"
-            max="3"
-            step="0.1"
-            value={scale}
-            onChange={(e) => setScale(Number(e.target.value))}
-          />
-          {scale.toFixed(1)}x
-        </label>
-      </div>
-
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={showEigenvectors}
-            onChange={(e) => setShowEigenvectors(e.target.checked)}
-          />
-          Show Eigenvectors
-        </label>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: '20px',
+        justifyContent: 'center'
+      }}>
+        {examples.map((example, index) => (
+          <div key={index} style={{
+            backgroundColor: '#FFF3E0',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            transition: 'transform 0.2s',
+            cursor: 'pointer',
+            ':hover': {
+              transform: 'translateY(-5px)'
+            }
+          }}>
+            <div style={{
+              fontSize: '40px',
+              marginBottom: '10px',
+              textAlign: 'center'
+            }}>
+              {example.icon}
+            </div>
+            <h3 style={{
+              color: '#E67E22',
+              fontSize: '20px',
+              marginBottom: '10px'
+            }}>
+              {example.field}
+            </h3>
+            <p style={{
+              color: '#D35400',
+              fontSize: '16px',
+              lineHeight: '1.5'
+            }}>
+              {example.description}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

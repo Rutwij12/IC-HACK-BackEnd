@@ -1,132 +1,63 @@
-function InteractiveMatrix() {
-  const [angle, setAngle] = React.useState(0);
-  const [scale, setScale] = React.useState(1);
-  
-  // Calculate matrix transformation based on angle and scale
-  const transformMatrix = {
-    a: Math.cos(angle) * scale,
-    b: -Math.sin(angle) * scale, 
-    c: Math.sin(angle) * scale,
-    d: Math.cos(angle) * scale
+function AngleFundamentals() {
+  const titleStyle = {
+    fontFamily: 'Arial',
+    fontSize: '28px',
+    color: '#FF8C00',
+    marginBottom: '20px'
   };
 
-  // Original vector coordinates
-  const vector = {x: 50, y: 0};
-  
-  // Apply transformation
-  const transformedVector = {
-    x: transformMatrix.a * vector.x + transformMatrix.b * vector.y,
-    y: transformMatrix.c * vector.x + transformMatrix.d * vector.y
+  const paragraphStyle = {
+    fontFamily: 'Arial',
+    fontSize: '16px',
+    color: '#FFA500',
+    lineHeight: '1.6',
+    marginBottom: '15px'
   };
 
-  const styles = {
-    container: {
-      fontFamily: 'Arial',
-      padding: '20px',
-      color: '#FF8C00'
-    },
-    title: {
-      fontSize: '24px',
-      color: '#FF4500',
-      marginBottom: '20px'
-    },
-    canvas: {
-      border: '1px solid #FFA500',
-      backgroundColor: '#FFF8DC',
-      margin: '20px 0'
-    },
-    controls: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-      marginBottom: '20px'
-    },
-    label: {
-      color: '#FF7F50'
-    }
+  const subtitleStyle = {
+    fontFamily: 'Arial',
+    fontSize: '20px',
+    color: '#FF7F50',
+    marginTop: '20px',
+    marginBottom: '10px'
   };
-
-  const drawVector = (ctx, x, y, color) => {
-    ctx.beginPath();
-    ctx.moveTo(150, 150);
-    ctx.lineTo(150 + x, 150 - y);
-    ctx.strokeStyle = color;
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(150 + x, 150 - y, 3, 0, 2 * Math.PI);
-    ctx.fillStyle = color;
-    ctx.fill();
-  };
-
-  React.useEffect(() => {
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Clear canvas
-    ctx.clearRect(0, 0, 300, 300);
-    
-    // Draw grid
-    ctx.strokeStyle = '#FFE4B5';
-    for(let i = 0; i <= 300; i += 30) {
-      ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i, 300);
-      ctx.moveTo(0, i);
-      ctx.lineTo(300, i);
-      ctx.stroke();
-    }
-    
-    // Draw original vector
-    drawVector(ctx, vector.x, vector.y, '#FF8C00');
-    
-    // Draw transformed vector
-    drawVector(ctx, transformedVector.x, transformedVector.y, '#FF4500');
-    
-  }, [angle, scale, transformedVector]);
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Matrix Transformation Visualization</h2>
+    <div style={{padding: '20px'}}>
+      <h1 style={titleStyle}>Understanding Angle Measurements</h1>
       
-      <div style={styles.controls}>
-        <div>
-          <label style={styles.label}>Rotation Angle: </label>
-          <input 
-            type="range" 
-            min="0" 
-            max={2 * Math.PI} 
-            step="0.1"
-            value={angle}
-            onChange={(e) => setAngle(Number(e.target.value))}
-          />
-          {Math.round(angle * 180 / Math.PI)}°
-        </div>
-        
-        <div>
-          <label style={styles.label}>Scale: </label>
-          <input 
-            type="range"
-            min="0.1"
-            max="2"
-            step="0.1"
-            value={scale}
-            onChange={(e) => setScale(Number(e.target.value))}
-          />
-          {scale.toFixed(1)}x
-        </div>
+      <div style={paragraphStyle}>
+        Angles can be measured in two primary ways: degrees and radians. Each has its own uses and advantages in mathematics and real-world applications.
       </div>
 
-      <canvas 
-        id="matrixCanvas"
-        width={300}
-        height={300}
-        style={styles.canvas}
-      />
-      
-      <p style={{color: '#FF8C00'}}>
-        Orange vector: Original vector<br/>
-        Red vector: Transformed vector
-      </p>
+      <h2 style={subtitleStyle}>Degrees (°)</h2>
+      <div style={paragraphStyle}>
+        Degrees are the most common way to measure angles in everyday life. There are 360 degrees in a full circle.
+        - A quarter turn = 90°
+        - A half turn = 180°
+        - A full turn = 360°
+      </div>
+
+      <h2 style={subtitleStyle}>Radians (rad)</h2>
+      <div style={paragraphStyle}>
+        Radians are the standard unit in advanced mathematics and physics. A radian is the angle made when you wrap the radius length around the circle's arc.
+        - π radians = 180°
+        - 2π radians = 360°
+        - π/2 radians = 90°
+      </div>
+
+      <h2 style={subtitleStyle}>Common Conversions</h2>
+      <div style={paragraphStyle}>
+        To convert from degrees to radians: multiply by π/180
+        To convert from radians to degrees: multiply by 180/π
+      </div>
+
+      <div style={paragraphStyle}>
+        For example:
+        - 45° = π/4 radians
+        - 90° = π/2 radians
+        - 30° = π/6 radians
+      </div>
     </div>
   );
 }

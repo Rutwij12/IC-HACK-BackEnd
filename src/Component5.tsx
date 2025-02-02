@@ -1,101 +1,82 @@
-function VectorPlayground() {
-  const [vector, setVector] = useState({ x: 100, y: 100 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [isEigenvector, setIsEigenvector] = useState(false);
-  
-  // Matrix transformation (example 2x2 matrix)
-  const matrix = [
-    [2, 1],
-    [1, 2]
-  ];
-
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    
-    // Clear canvas
-    ctx.clearRect(0, 0, 400, 400);
-    
-    // Draw coordinate system
-    ctx.strokeStyle = '#ccc';
-    ctx.beginPath();
-    ctx.moveTo(200, 0);
-    ctx.lineTo(200, 400);
-    ctx.moveTo(0, 200);
-    ctx.lineTo(400, 200);
-    ctx.stroke();
-
-    // Draw original vector
-    ctx.strokeStyle = '#ff8c00';
-    ctx.beginPath();
-    ctx.moveTo(200, 200);
-    ctx.lineTo(vector.x, vector.y);
-    ctx.stroke();
-
-    // Calculate transformed vector
-    const vectorCoords = [vector.x - 200, vector.y - 200];
-    const transformedVector = [
-      matrix[0][0] * vectorCoords[0] + matrix[0][1] * vectorCoords[1],
-      matrix[1][0] * vectorCoords[0] + matrix[1][1] * vectorCoords[1]
-    ];
-
-    // Draw transformed vector
-    ctx.strokeStyle = '#ffa500';
-    ctx.beginPath();
-    ctx.moveTo(200, 200);
-    ctx.lineTo(transformedVector[0] + 200, transformedVector[1] + 200);
-    ctx.stroke();
-
-    // Check if it's an eigenvector (approximately)
-    const originalLength = Math.sqrt(vectorCoords[0]**2 + vectorCoords[1]**2);
-    const transformedLength = Math.sqrt(transformedVector[0]**2 + transformedVector[1]**2);
-    const dotProduct = vectorCoords[0] * transformedVector[0] + vectorCoords[1] * transformedVector[1];
-    const angle = Math.acos(dotProduct / (originalLength * transformedLength));
-    
-    setIsEigenvector(angle < 0.1); // Allow small deviation
-  }, [vector]);
-
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      setVector({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
+function TrigRatiosExplainer() {
+  const styles = {
+    container: {
+      fontFamily: 'Arial, sans-serif',
+      maxWidth: '800px',
+      margin: '20px auto',
+      padding: '20px',
+      color: '#D35400'
+    },
+    title: {
+      fontSize: '32px',
+      color: '#E67E22',
+      marginBottom: '24px'
+    },
+    section: {
+      marginBottom: '20px'
+    },
+    sectionTitle: {
+      fontSize: '24px',
+      color: '#F39C12',
+      marginBottom: '12px'
+    },
+    text: {
+      fontSize: '16px',
+      lineHeight: '1.6',
+      color: '#E67E22'
+    },
+    mnemonic: {
+      fontStyle: 'italic',
+      color: '#F39C12',
+      marginTop: '8px'
     }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  }
 
   return (
-    <div style={{ fontFamily: 'Arial' }}>
-      <h2 style={{ color: '#ff8c00', fontSize: '24px' }}>Vector Playground</h2>
-      <p style={{ color: '#ff8c00' }}>
-        Drag to create a vector. Orange shows original, darker orange shows transformed vector.
-      </p>
-      <canvas
-        ref={canvasRef}
-        width={400}
-        height={400}
-        style={{ border: '1px solid #ffd700', cursor: 'pointer' }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      />
-      <p style={{ color: '#ff8c00', marginTop: '10px' }}>
-        {isEigenvector 
-          ? "This appears to be an eigenvector!" 
-          : "This is not an eigenvector."}
-      </p>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Understanding Trigonometric Ratios</h1>
+      
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Sine (sin)</h2>
+        <p style={styles.text}>
+          Sine is the ratio of the opposite side to the hypotenuse in a right triangle.
+        </p>
+        <p style={styles.mnemonic}>
+          Remember: "SOH" - Sine equals Opposite over Hypotenuse
+        </p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Cosine (cos)</h2>
+        <p style={styles.text}>
+          Cosine is the ratio of the adjacent side to the hypotenuse in a right triangle.
+        </p>
+        <p style={styles.mnemonic}>
+          Remember: "CAH" - Cosine equals Adjacent over Hypotenuse
+        </p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Tangent (tan)</h2>
+        <p style={styles.text}>
+          Tangent is the ratio of the opposite side to the adjacent side in a right triangle.
+        </p>
+        <p style={styles.mnemonic}>
+          Remember: "TOA" - Tangent equals Opposite over Adjacent
+        </p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>SOHCAHTOA</h2>
+        <p style={styles.text}>
+          Put it all together and you get SOHCAHTOA - the classic mnemonic device for remembering all three ratios:
+        </p>
+        <p style={styles.mnemonic}>
+          SOH - Sine = Opposite / Hypotenuse
+          CAH - Cosine = Adjacent / Hypotenuse
+          TOA - Tangent = Opposite / Adjacent
+        </p>
+      </div>
     </div>
-  );
+  )
 }

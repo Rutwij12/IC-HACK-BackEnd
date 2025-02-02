@@ -57,5 +57,5 @@ def start_vid_pipeline(prompt: str):
 
     return {
         "status": "DONE",
-        "data": data,
+        "data": {**video_data, **data},
     }
