@@ -1,4 +1,4 @@
-cd server
+cd src
 
 echo "starting server"
 poetry run fastapi dev main.py | tee -a server.log &

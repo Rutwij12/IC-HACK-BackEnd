@@ -313,5 +313,5 @@ class VideoOrchestrator:
 
         return {
             "video_path": "media/videos/combined_scenes/720p30/CombinedScene.mp4",
-            "thumbnail_path": thumbnail_path,
+            "image_path": thumbnail_path,
         }
