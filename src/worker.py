@@ -4,10 +4,15 @@ from celery import Celery
 from video_storage.storage import run_video_pipeline
 import asyncio
 import time
+from common.pinecone_store import PineconeStore
 
 
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), "..", "src")))
+
+
+INDEX_NAME = "test-video-index"
+pinecone = PineconeStore(INDEX_NAME)
 
 
 app = Celery(
@@ -27,8 +32,6 @@ def start_vid_pipeline(prompt: str):
     video_data = asyncio.run(VideoOrchestrator(
         prompt).generate_and_render_video())
 
-    print(video_data)
-
     if not video_data or "video_path" not in video_data or "image_path" not in video_data:
         return {
             "status": "FAILED",
@@ -38,6 +41,7 @@ def start_vid_pipeline(prompt: str):
     video_data["id"] = video_id
     time.sleep(5)
     data = run_video_pipeline(video_data)
+    pinecone.add_embedding(video_data["video_title"], video_id)
     return {
         "status": "DONE",
         "data": data,

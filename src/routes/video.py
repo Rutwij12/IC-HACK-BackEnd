@@ -9,7 +9,6 @@ s3 = boto3.client('s3')
 
 @router.get("/videos")
 def get_video(video_id: str):
-    print(video_id)
     response = table.get_item(Key={"id": video_id})
     if "Item" not in response:
         return {"message": "Video not found"}
