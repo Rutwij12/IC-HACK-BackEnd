@@ -23,6 +23,9 @@ dependencies = [
     "manim-voiceover[azure] (>=0.3.7,<0.4.0)",
     "setuptools (>=75.8.0,<76.0.0)",
     "pinecone (>=5.4.2,<6.0.0)",
+    "ffmpeg (>=1.4,<2.0)",
+    "sox (>=1.5.0,<2.0.0)",
+    "pydub (>=0.25.1,<0.26.0)",
 ]
 
 
