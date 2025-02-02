@@ -25,7 +25,6 @@ Clearly think about how items should be displayed on the screen, and where they 
 If there are examples, make sure that the numbers used and mathematics are actually rigorous and correct and demonstrate the concepts correctly.
 Make sure the numbers / vectors / matrices to be used have been described.
 The coder should not have much work to do. Clearly describe how items should fade in and out, and what elements are displayed at what points.
-When an item moves to the same location as another item that was previously there, make sure to mention to remove the old item from that location.
 Items that are on the screen should be clearly displyed and non overlapping. If there are different parts to the scene.
 Make sure all the elements of the scene are faded out before the new elements are introduced in the centre of the screen."""
 
