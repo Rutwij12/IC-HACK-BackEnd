@@ -3,12 +3,12 @@ from typing import Annotated, TypedDict, List
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
-from .llm_provider import LLMWrapper
+from llm_provider import LLMWrapper
 import os
 import re
 import asyncio
 import aiofiles
-from .prompts import CODE_GENERATOR_SYSTEM_PROMPT, CODE_GENERATOR_USER_PROMPT
+from prompts import CODE_GENERATOR_SYSTEM_PROMPT, CODE_GENERATOR_USER_PROMPT
 
 # Structured output for code evaluation
 
@@ -155,11 +155,13 @@ class CodeGenerator:
                     for i, line in enumerate(error_lines):
                         if "Error" in line:
                             error_message = "\n".join(error_lines[i:])
-                            print(f"\nDry run failed with error:\n{error_message}")
+                            print(f"\nDry run failed with error:\n{
+                                  error_message}")
                             break
                     return error_message
                 error_message = extract_error(stderr.decode())
-                print(f"error message extracted from file {filename}: {error_message}")
+                print(f"error message extracted from file {
+                      filename}: {error_message}")
                 evaluation = CodeEvaluation(
                     passes_criteria=False,
                     feedback=f"Code Execution: {error_message}"
@@ -176,7 +178,8 @@ class CodeGenerator:
                 # os.remove(filename)
 
         if not evaluation.passes_criteria and evaluation.feedback:
-            messages.append(("user", f"Please revise the code based on this feedback: {evaluation.feedback}"))
+            messages.append(("user", f"Please revise the code based on this feedback: {
+                            evaluation.feedback}"))
 
         return {
             "messages": messages,
@@ -207,7 +210,8 @@ class CodeGenerator:
         workflow = StateGraph(State)
         workflow.add_node("generate", self._generate_code)
         workflow.add_node("evaluate", self._evaluate_code)
-        workflow.add_node("invalid", self._set_invalid_code)  # Add new invalid node
+        # Add new invalid node
+        workflow.add_node("invalid", self._set_invalid_code)
 
         workflow.add_edge(START, "generate")
         workflow.add_edge("generate", "evaluate")

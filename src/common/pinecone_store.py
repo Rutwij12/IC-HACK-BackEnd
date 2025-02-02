@@ -108,7 +108,8 @@ class PineconeStore():
                     related_videos.append({
                         "title": match.metadata["title"],
                         "score": match.score,
-                        "metadata": match.metadata
+                        "metadata": match.metadata,
+                        "id": match.metadata["age"]
                     })
 
             return related_videos
