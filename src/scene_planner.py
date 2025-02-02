@@ -86,7 +86,7 @@ class ScenePlanner:
             print("---MAX ITERATIONS REACHED---")
             return "end"
         else:
-            print("---CONTINUING TO NEXT ITERATION---")
+            print("---CONTINUING TO NEXT ITERATION OF SCENE PLAN---")
             return "generate"
 
     def _setup_workflow(self):

@@ -1,10 +1,14 @@
-def bfs(graph, start_node):
-    queue = [start_node]
-    visited = [start_node]
+from collections import deque
+
+def breadth_first_search(graph, start):
+    queue = deque([start])
+    visited = set([start])
 
     while queue:
-        current_node = queue.pop(0)
-        for neighbor in graph[current_node]:
+        node = queue.popleft()
+        print(node)
+
+        for neighbor in graph[node]:
             if neighbor not in visited:
-                visited.append(neighbor)
+                visited.add(neighbor)
                 queue.append(neighbor)

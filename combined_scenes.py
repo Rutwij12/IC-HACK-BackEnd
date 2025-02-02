@@ -1,527 +1,383 @@
 from manim import *
+import random
+import numpy as np
+from manim_voiceover import VoiceoverScene
+from manim_voiceover.services.azure import AzureService
 
-class CombinedScene(Scene):
+class CombinedScene(VoiceoverScene):
     def construct(self):
+        # Set up Azure TTS service
+        self.set_speech_service(AzureService(
+            voice='en-US-JennyNeural',
+            style='friendly'
+        ))
+
 
         # Scene 1
-        
-        # 1. Coordinate System Introduction
-        axes = Axes(
-            x_range=[-5, 5, 1],
-            y_range=[-5, 5, 1],
-            axis_config={
-                "color": WHITE,
-                "stroke_width": 2,
-                "include_ticks": True,
-                "include_tip": True,
-            },
-        )
-        
-        # Add labels for axes
-        x_label = axes.get_x_axis_label("x")
-        y_label = axes.get_y_axis_label("y")
-        
-        # Create grid
-        grid = NumberPlane(
-            x_range=[-5, 5, 1],
-            y_range=[-5, 5, 1],
-            background_line_style={
-                "stroke_color": GRAY,
-                "stroke_width": 1,
-                "stroke_opacity": 0.3
-            }
-        )
+        with self.voiceover(text="""In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.""") as tracker:
 
-        # Animate coordinate system
-        self.play(
-            FadeIn(grid),
-            Create(axes),
-            Write(x_label),
-            Write(y_label),
-            run_time=3
-        )
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
 
-        # 2. Vector Introduction
-        # Create main vector
-        vector = Arrow(
-            axes.c2p(0, 0),
-            axes.c2p(3, 2),
-            buff=0,
-            color="#FF4444",
-            stroke_width=3,
-        )
-
-        # Animate vector creation
-        self.play(
-            GrowArrow(vector),
-            run_time=2
-        )
-        self.wait()
-
-        # 3. Component Breakdown
-        # Create dashed lines for components
-        x_component = DashedLine(
-            axes.c2p(0, 0),
-            axes.c2p(3, 0),
-            color="#3498DB",
-            dash_length=0.2
-        )
-        
-        y_component = DashedLine(
-            axes.c2p(3, 0),
-            axes.c2p(3, 2),
-            color="#2ECC71",
-            dash_length=0.2
-        )
-
-        # Create right angle symbol
-        right_angle = RightAngle(
-            x_component,
-            y_component,
-            length=0.2,
-            color=WHITE
-        )
-
-        # Create component labels
-        x_component_label = MathTex("3").scale(0.8)
-        x_component_label.next_to(x_component, DOWN, buff=0.2)
-        
-        y_component_label = MathTex("2").scale(0.8)
-        y_component_label.next_to(y_component, RIGHT, buff=0.2)
-
-        # Create vector notation
-        vector_notation = MathTex(r"\vec{v} = (3,2)")
-        vector_notation.scale(0.8)
-        vector_notation.move_to(axes.c2p(3, 3))
-
-        # Animate components and labels
-        self.play(
-            Create(x_component),
-            Create(y_component),
-            run_time=2
-        )
-        
-        self.play(
-            Create(right_angle),
-            Write(x_component_label),
-            Write(y_component_label),
-            run_time=2
-        )
-
-        self.play(
-            Write(vector_notation),
-            run_time=1
-        )
-
-        # Final pause
-        self.wait(2)
-
-        # Transition
-        self.wait(0.5)  # Wait for a moment
-        self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-        self.wait(0.5)  # Brief pause before next scene
+            # Create the original matrix
+            matrix = Matrix([
+                [2, 1],
+                [1, 3]
+            ]).scale(1.5)
+            # Create the transformed matrix
+            matrix_after = Matrix([
+                [2, 1],
+                [0, 2.5]
+            ]).scale(1.5)
+            # Create the arrow
+            arrow = Arrow(
+                start=RIGHT * 0.5,
+                end=RIGHT * 2,
+                color=YELLOW
+            )
+            # Group the matrices and arrow
+            matrix_group = VGroup(
+                matrix,
+                arrow,
+                matrix_after
+            ).arrange(RIGHT, buff=0.5)
+            # Create all text elements
+            title = Text(
+                "We can modify matrix rows to solve equations",
+                font_size=36
+            ).to_edge(UP, buff=1.5)
+            row_op = MathTex(
+                "R_2 \\rightarrow R_2 - \\frac{1}{2}R_1",
+                color=LIGHT_GRAY,
+                font_size=36
+            ).next_to(matrix_group, DOWN, buff=1)
+            final_message = Text(
+                "These changes preserve solutions",
+                color=BLUE,
+                font_size=36
+            ).next_to(row_op, DOWN, buff=0.8)
+            # Animations
+            # First phase: Show original matrix
+            self.play(
+                FadeIn(matrix),
+                run_time=0.5
+            )
+            # Second phase: Show title
+            self.play(
+                FadeIn(title),
+                run_time=0.5
+            )
+            # Third phase: Show arrow and transformed matrix
+            self.play(
+                FadeIn(arrow),
+                FadeIn(matrix_after),
+                run_time=1
+            )
+            # Fourth phase: Show row operation text
+            self.play(
+                FadeIn(row_op),
+                run_time=0.5
+            )
+            # Final phase: Show final message
+            self.play(
+                FadeIn(final_message),
+                run_time=0.5
+            )
+            # Pause at the end to show the complete scene
+            self.wait(2)
 
         # Scene 2
-        
-        # Create coordinate system
-        axes = Axes(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
-            axis_config={
-                "include_tip": True,
-                "include_numbers": True,
-                "include_ticks": True,
-                "tick_size": 0.1,
-            },
-        )
-        
-        # Add labels for axes
-        x_label = axes.get_x_axis_label("x")
-        y_label = axes.get_y_axis_label("y")
-        coords = VGroup(axes, x_label, y_label)
+        with self.voiceover(text="""In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.""") as tracker:
 
-        # Fade in coordinate system
-        self.play(Create(coords), run_time=2)
-        
-        # Create i-hat vector
-        i_hat = Arrow(
-            axes.coords_to_point(0, 0),
-            axes.coords_to_point(1, 0),
-            color=RED,
-            buff=0
-        )
-        i_hat_label = MathTex(r"\hat{\imath}").next_to(i_hat.get_tip(), UP, buff=0.2).set_color(RED)
-        
-        # Draw i-hat vector and label
-        self.play(Create(i_hat), Write(i_hat_label))
-        self.play(Flash(i_hat.get_tip(), color=RED, flash_radius=0.3))
-        
-        # Create j-hat vector
-        j_hat = Arrow(
-            axes.coords_to_point(0, 0),
-            axes.coords_to_point(0, 1),
-            color=BLUE,
-            buff=0
-        )
-        j_hat_label = MathTex(r"\hat{\jmath}").next_to(j_hat.get_tip(), RIGHT, buff=0.2).set_color(BLUE)
-        
-        # Draw j-hat vector and label
-        self.play(Create(j_hat), Write(j_hat_label))
-        self.play(Flash(j_hat.get_tip(), color=BLUE, flash_radius=0.3))
-        
-        # Create matrix
-        matrix = MathTex(
-            r"\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}"
-        ).scale(0.8).move_to([4, 2, 0])
-        matrix_text = Text("Unit vectors as matrix columns", font_size=24).next_to(matrix, DOWN)
-        
-        # Create dashed lines connecting matrix to vectors
-        dash_to_i = DashedLine(
-            matrix.get_left() + LEFT * 0.3,
-            i_hat.get_tip(),
-            color=RED,
-            opacity=0.5
-        )
-        dash_to_j = DashedLine(
-            matrix.get_right() + RIGHT * 0.3,
-            j_hat.get_tip(),
-            color=BLUE,
-            opacity=0.5
-        )
-        
-        # Show matrix, text, and dashed lines
-        self.play(
-            Write(matrix),
-            Write(matrix_text),
-            Create(dash_to_i),
-            Create(dash_to_j)
-        )
-        
-        # Add bottom text
-        bottom_text = Text("Basis of 2D space", font_size=28).move_to([0, -2.5, 0])
-        
-        # Final highlight and text
-        self.play(
-            Write(bottom_text),
-            Flash(i_hat.get_tip(), color=RED, flash_radius=0.3),
-            Flash(j_hat.get_tip(), color=BLUE, flash_radius=0.3)
-        )
-        
-        # Pause at the end
-        self.wait()
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
 
-        # Transition
-        self.wait(0.5)  # Wait for a moment
-        self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-        self.wait(0.5)  # Brief pause before next scene
+            # Create the initial matrix with row labels
+            matrix = Matrix(
+                [[2, 1, 4],
+                 [5, 3, 7],
+                 [1, 0, 2]],
+                v_buff=0.8  # Increased vertical buffer for clearer visualization
+            )
+            # Create row labels
+            row_labels = VGroup()
+            for i in range(3):
+                label = MathTex(f"R_{{{i+1}}}")
+                label.next_to(matrix.get_rows()[i], LEFT, buff=0.5)
+                row_labels.add(label)
+            # Create the swap operation text
+            swap_text = MathTex(r"R_1 \leftrightarrow R_2")
+            swap_text.next_to(matrix, UP, buff=0.5)
+            # Initial display of matrix and labels
+            self.play(
+                Write(matrix),
+                Write(row_labels),
+                run_time=2
+            )
+            self.wait(1)
+            # Highlight rows to be swapped
+            row1 = matrix.get_rows()[0].copy()
+            row2 = matrix.get_rows()[1].copy()
+            row1_label = row_labels[0].copy()
+            row2_label = row_labels[1].copy()
+            self.play(
+                row1.animate.set_color(BLUE),
+                row2.animate.set_color(YELLOW),
+                Write(swap_text),
+                run_time=1
+            )
+            self.wait(1)
+            # Calculate positions for smooth swap animation
+            row1_target = row2.get_center()
+            row2_target = row1.get_center()
+            label1_target = row2_label.get_center()
+            label2_target = row1_label.get_center()
+            # Perform the swap animation
+            self.play(
+                row1.animate.move_to(row1_target),
+                row2.animate.move_to(row2_target),
+                row_labels[0].animate.move_to(label1_target),
+                row_labels[1].animate.move_to(label2_target),
+                rate_func=rate_functions.ease_in_out_sine,
+                run_time=3
+            )
+            # Create the final matrix
+            final_matrix = Matrix(
+                [[5, 3, 7],
+                 [2, 1, 4],
+                 [1, 0, 2]],
+                v_buff=0.8
+            )
+            final_matrix.move_to(matrix)
+            # Fade out colored rows and show final matrix
+            self.play(
+                FadeOut(row1),
+                FadeOut(row2),
+                FadeIn(final_matrix),
+                run_time=1
+            )
+            # Hold the final state
+            self.wait(2)
 
         # Scene 3
-        
-        # Create coordinate plane
-        plane = NumberPlane(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
-            x_length=6,
-            y_length=6,
-            background_line_style={
-                "stroke_color": GREY_C,
-                "stroke_width": 1,
-                "stroke_opacity": 0.5
-            }
-        )
-        
-        # Create original unit vectors
-        i_hat = Arrow(plane.c2p(0, 0), plane.c2p(1, 0), color=RED, buff=0)
-        j_hat = Arrow(plane.c2p(0, 0), plane.c2p(0, 1), color=BLUE, buff=0)
-        
-        # Create labels for original vectors
-        i_label = MathTex("\\hat{\\imath}", color=RED).next_to(i_hat.get_end(), DOWN)
-        j_label = MathTex("\\hat{\\jmath}", color=BLUE).next_to(j_hat.get_end(), LEFT)
-        
-        # Create matrix
-        matrix = MathTex(
-            "\\begin{bmatrix} 2 & 1 \\\\ 1 & 1 \\end{bmatrix}"
-        ).scale(0.8).to_corner(UR)
-        
-        # Create transformed vectors
-        i_hat_transformed = Arrow(
-            plane.c2p(0, 0), 
-            plane.c2p(2, 1), 
-            color=RED, 
-            buff=0
-        )
-        j_hat_transformed = Arrow(
-            plane.c2p(0, 0), 
-            plane.c2p(1, 1), 
-            color=BLUE, 
-            buff=0
-        )
-        
-        # Create labels for transformed vectors
-        i_transformed_label = MathTex("(2,1)", color=RED).next_to(i_hat_transformed.get_end(), RIGHT)
-        j_transformed_label = MathTex("(1,1)", color=BLUE).next_to(j_hat_transformed.get_end(), RIGHT)
-        
-        # Create ghost vectors (dashed versions of original vectors)
-        i_hat_ghost = DashedVMobject(i_hat.copy()).set_opacity(0.3)
-        j_hat_ghost = DashedVMobject(j_hat.copy()).set_opacity(0.3)
-        
-        # Animation sequence
-        
-        # 1. Fade in coordinate plane and original vectors
-        self.play(
-            Create(plane),
-            run_time=1
-        )
-        self.play(
-            Create(i_hat),
-            Create(j_hat),
-            Write(i_label),
-            Write(j_label),
-            run_time=2
-        )
-        
-        # 2. Fade in matrix
-        self.play(
-            Write(matrix),
-            run_time=1
-        )
-        
-        # 3. Transform vectors
-        self.play(
-            ReplacementTransform(i_hat.copy(), i_hat_transformed),
-            ReplacementTransform(j_hat.copy(), j_hat_transformed),
-            FadeIn(i_hat_ghost),
-            FadeIn(j_hat_ghost),
-            run_time=3
-        )
-        
-        # 4. Add final position labels
-        self.play(
-            Write(i_transformed_label),
-            Write(j_transformed_label),
-            run_time=1
-        )
-        
-        # Final highlight
-        self.play(
-            Flash(i_hat_transformed.get_end(), color=RED, line_length=0.2),
-            Flash(j_hat_transformed.get_end(), color=BLUE, line_length=0.2),
-            run_time=1
-        )
-        
-        # Hold final state
-        self.wait(2)
+        with self.voiceover(text="""We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.""") as tracker:
 
-        # Transition
-        self.wait(0.5)  # Wait for a moment
-        self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-        self.wait(0.5)  # Brief pause before next scene
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # Initial matrix
+            matrix = Matrix([
+                [2, 4, 1],
+                [3, 1, 5],
+                [0, 2, 3]
+            ])
+            matrix.scale(0.8)
+            # Position matrix in center
+            self.play(Write(matrix))
+            # Title text
+            title = Text("Scalar Multiplication: R₁ → 2R₁", font_size=36)
+            title.to_edge(UP, buff=0.5)
+            self.play(Write(title))
+            # Highlight first row - get the row elements
+            row_elements = VGroup(*[matrix.get_entries()[i] for i in range(3)])
+            row_highlight = SurroundingRectangle(row_elements, color=YELLOW)
+            self.play(Create(row_highlight))
+            # Show multiplication operation
+            mult_text = MathTex("\\times 2").next_to(row_highlight, RIGHT)
+            self.play(Write(mult_text))
+            # Show computations above first row
+            computations = VGroup(
+                MathTex("2\\times2=4"),
+                MathTex("2\\times4=8"),
+                MathTex("2\\times1=2")
+            ).arrange(RIGHT, buff=0.5)
+            computations.scale(0.7).next_to(matrix, UP, buff=0.5)
+            # Small arrows pointing down
+            arrows = VGroup(*[
+                Arrow(
+                    start=comp.get_bottom(),
+                    end=matrix.get_entries()[i].get_top(),
+                    buff=0.1,
+                    color=BLUE_C,
+                    max_tip_length_to_length_ratio=0.15
+                )
+                for i, comp in enumerate(computations)
+            ])
+            # Show computations and arrows
+            self.play(Write(computations), Create(arrows))
+            self.wait()
+            # New matrix
+            new_matrix = Matrix([
+                [4, 8, 2],
+                [3, 1, 5],
+                [0, 2, 3]
+            ])
+            new_matrix.scale(0.8).move_to(matrix)
+            # Transform to new matrix
+            self.play(
+                ReplacementTransform(matrix, new_matrix),
+                FadeOut(row_highlight),
+                FadeOut(computations),
+                FadeOut(arrows),
+                FadeOut(mult_text)
+            )
+            # Highlight new row in green
+            new_row_elements = VGroup(*[new_matrix.get_entries()[i] for i in range(3)])
+            new_row_highlight = SurroundingRectangle(new_row_elements, color=GREEN)
+            self.play(Create(new_row_highlight))
+            self.wait(0.5)
+            # Final explanation text
+            explanation = Text("Each element in R₁ is multiplied by 2", font_size=32)
+            explanation.next_to(new_matrix, DOWN, buff=0.5)
+            self.play(Write(explanation))
+            self.wait()
+            # Fade everything out
+            self.play(
+                FadeOut(new_matrix),
+                FadeOut(new_row_highlight),
+                FadeOut(title),
+                FadeOut(explanation)
+            )
 
         # Scene 4
-        
-        # 1. Initial Setup
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": "#D3D3D3",
-                "stroke_width": 1,
-                "stroke_opacity": 0.6
-            }
-        )
-        
-        # Axes labels
-        x_label = Text("x").move_to([3.5, 0.3, 0])
-        y_label = Text("y").move_to([0.3, 3.5, 0])
-        
-        # Numbers at 1 and -1
-        numbers = VGroup(
-            MathTex("1").move_to([1, 0.3, 0]),
-            MathTex("-1").move_to([-1, 0.3, 0]),
-            MathTex("1").move_to([0.3, 1, 0]),
-            MathTex("-1").move_to([0.3, -1, 0])
-        )
+        with self.voiceover(text="""When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.""") as tracker:
 
-        # Fade in grid and labels
-        self.play(
-            Create(grid),
-            Write(x_label),
-            Write(y_label),
-            Write(numbers),
-            run_time=2
-        )
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
 
-        # 2. Shape Introduction
-        original_square = Polygon(
-            [1, 1, 0], [1, -1, 0], [-1, -1, 0], [-1, 1, 0],
-            color="#89CFF0",
-            fill_opacity=0.5
-        )
-        
-        vertices = VGroup(*[
-            Dot(point, color=WHITE, radius=0.05)
-            for point in original_square.get_vertices()
-        ])
-
-        self.play(
-            Create(original_square),
-            Create(vertices),
-            run_time=1.5
-        )
-
-        # 3. Matrix Display
-        rotation_matrix = MathTex(
-            "R_{90°} = \\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}",
-            color=WHITE
-        ).scale(0.8).to_corner(UR, buff=0.5)
-
-        self.play(
-            Write(rotation_matrix),
-            run_time=1.5
-        )
-
-        # 4. Transformation Animation
-        transformed_square = original_square.copy()
-        transformed_vertices = vertices.copy()
-        
-        # Create dashed version of original square
-        dashed_square = original_square.copy()
-        dashed_square.set_style(
-            stroke_color="#89CFF0",
-            stroke_width=2,
-            stroke_dasharray=[0.2, 0.2]
-        )
-
-        # Create curved arrows for vertex paths
-        arrows = VGroup()
-        for i in range(4):
-            start = original_square.get_vertices()[i]
-            end = np.array([-start[1], start[0], 0])  # 90-degree rotation
-            arc = ArcBetweenPoints(
-                start, end,
-                angle=PI/2,
-                color=WHITE
+            # Initial Setup
+            title = Text("Row Addition", font_size=48).to_edge(UP, buff=0.5)
+            subtitle = Text("Adding a multiple of one row to another row", font_size=32)
+            subtitle.next_to(title, DOWN, buff=0.3)
+            self.play(Write(title))
+            self.play(Write(subtitle))
+            # Matrix Example
+            original_matrix = Matrix([
+                [2, 1],
+                [3, 4]
+            ], v_buff=1.0, h_buff=0.8)
+            original_matrix.move_to(ORIGIN)
+            matrix_label = Text("Original Matrix", font_size=36)
+            matrix_label.next_to(original_matrix, LEFT, buff=1)
+            self.play(
+                Write(original_matrix),
+                Write(matrix_label)
             )
-            arrows.add(arc)
+            self.wait()
+            # Operation Demonstration
+            operation = MathTex(r"R_2 + R_1 \rightarrow R_2", font_size=36)
+            operation.next_to(original_matrix, UP, buff=1)
+            # Highlight rows
+            row1_box = SurroundingRectangle(original_matrix.get_rows()[0], color=BLUE)
+            row2_box = SurroundingRectangle(original_matrix.get_rows()[1], color=YELLOW)
+            self.play(Write(operation))
+            self.play(Create(row1_box), Create(row2_box))
+            self.wait()
+            # Transform to final matrix
+            final_matrix = Matrix([
+                [2, 1],
+                [5, 5]
+            ], v_buff=1.0, h_buff=0.8)
+            final_matrix.move_to(original_matrix)
+            self.play(
+                Transform(original_matrix, final_matrix),
+                FadeOut(row1_box),
+                FadeOut(row2_box)
+            )
+            # Final Result
+            calculation = Text("New Row 2 = (3,4) + (2,1) = (5,5)", font_size=36)
+            calculation.next_to(final_matrix, DOWN, buff=1)
+            # Highlight new row
+            new_row_box = SurroundingRectangle(final_matrix.get_rows()[1], color=GREEN)
+            self.play(Write(calculation))
+            self.play(Create(new_row_box))
+            self.wait()
+            # Fade out everything
+            self.play(
+                *[FadeOut(mob) for mob in self.mobjects],
+                run_time=1
+            )
 
-        # Perform rotation
-        self.play(
-            Transform(original_square, dashed_square),
-            run_time=0.5
-        )
-        
-        self.play(
-            Create(arrows),
-            Rotate(transformed_square, angle=PI/2, about_point=ORIGIN),
-            Rotate(transformed_vertices, angle=PI/2, about_point=ORIGIN),
-            run_time=3
-        )
-        
-        # Change color of transformed square
-        transformed_square.set_style(
-            stroke_color="#0066CC",
-            fill_color="#0066CC",
-            fill_opacity=0.5
-        )
+        # Scene 5
+        with self.voiceover(text="""Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.""") as tracker:
 
-        # 5. Final State
-        self.wait(1)
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # Initial Setup
+            title = Text("Row Operations Example").set_color(BLACK).to_edge(UP, buff=0.5)
+            # Create initial matrix
+            initial_matrix = Matrix(
+                [[4, 6],
+                 [2, 5]],
+                element_to_mobject_config={"color": BLACK}
+            ).scale(0.8)
+            initial_matrix.move_to(UP)
+            # Animation Phase 1: Show initial setup
+            self.play(Write(title))
+            self.play(Write(initial_matrix))
+            self.wait(1)
+            # Highlight pivot element
+            pivot = initial_matrix.get_entries()[0]  # First element (4)
+            self.play(pivot.animate.set_color(RED))
+            # Show operation text
+            operation = MathTex(r"R_2 \rightarrow R_2 - (\frac{1}{2})R_1", color=BLACK)
+            operation.next_to(initial_matrix, UP, buff=0.5)
+            self.play(Write(operation))
+            # Create intermediate steps
+            mult_row = MathTex(r"\frac{1}{2}", r"[4 \quad 6]", r"= [2 \quad 3]", color=BLUE)
+            mult_row.next_to(initial_matrix, DOWN, buff=0.5)
+            # Show multiplication step
+            self.play(Write(mult_row))
+            self.wait(1)
+            # Create final matrix
+            final_matrix = Matrix(
+                [[4, 6],
+                 [0, 2]],
+                element_to_mobject_config={"color": BLACK}
+            ).scale(0.8)
+            final_matrix.move_to(initial_matrix.get_center())
+            # Transform to final matrix
+            self.play(
+                ReplacementTransform(initial_matrix, final_matrix),
+                FadeOut(mult_row)
+            )
+            # Highlight the zero
+            zero_element = final_matrix.get_entries()[2]  # Element at position (2,1)
+            self.play(zero_element.animate.set_color(RED))
+            # Add "Row Echelon Form" text
+            row_echelon_text = Text("Row Echelon Form:", color=BLACK).scale(0.8)
+            row_echelon_text.next_to(final_matrix, LEFT, buff=0.5)
+            # Create box around final matrix
+            box = SurroundingRectangle(final_matrix, color=BLUE)
+            # Show final elements
+            self.play(
+                Write(row_echelon_text),
+                Create(box)
+            )
+            # Highlight stair-step pattern
+            stair_elements = [final_matrix.get_entries()[0], final_matrix.get_entries()[3]]  # [4, 2]
+            self.play(*[elem.animate.set_color(GREEN) for elem in stair_elements])
+            # Final pause
+            self.wait(1)
+            # Fade out operation text but keep the main result
+            self.play(
+                FadeOut(operation),
+                FadeOut(title)
+            )
+            self.wait(1)
 
         # Transition
         self.wait(0.5)  # Wait for a moment
         self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
         self.wait(0.5)  # Brief pause before next scene
-
-        # Scene 5
-        
-        # Part 1: Initial Grid Setup
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": "#888888",
-                "stroke_width": 1,
-                "stroke_opacity": 0.5
-            }
-        )
-        
-        # Make axes slightly brighter
-        grid.axes.set_color(WHITE)
-        
-        # Origin point and label
-        origin_dot = Dot(point=ORIGIN, color=RED, radius=0.1)
-        origin_label = MathTex("(0,0)", color=WHITE).next_to(origin_dot, UR, buff=0.1)
-        
-        # Fade in grid and origin elements
-        self.play(
-            Create(grid),
-            GrowFromCenter(origin_dot),
-            Write(origin_label)
-        )
-        self.wait(0.5)
-
-        # Part 2: Parallel Lines and Transformation
-        line1 = Line(start=np.array([-3, 1, 0]), end=np.array([3, 1, 0]), 
-                    color=BLUE, stroke_opacity=0.8)
-        line2 = Line(start=np.array([-3, 2, 0]), end=np.array([3, 2, 0]), 
-                    color=BLUE, stroke_opacity=0.8)
-        
-        # Draw parallel lines
-        self.play(
-            Create(line1),
-            Create(line2)
-        )
-        self.wait(0.5)
-
-        # Define and apply transformation
-        matrix = [[2, 0.5], [0.5, 1.5]]
-        transform = grid.animate.apply_matrix(matrix)
-        lines_transform = VGroup(line1, line2).animate.apply_matrix(matrix)
-        
-        self.play(
-            transform,
-            lines_transform,
-            run_time=3
-        )
-        self.wait(0.5)
-
-        # Part 3: Highlighting Properties
-        # Pulse origin
-        self.play(
-            origin_dot.animate.scale(1.5),
-            rate_func=there_and_back,
-            run_time=1
-        )
-
-        # Add text labels
-        origin_text = Text("Origin remains fixed", 
-                         color=WHITE, font_size=36).to_edge(UR, buff=0.5)
-        parallel_text = Text("Grid lines remain parallel", 
-                           color=WHITE, font_size=36).next_to(origin_text, DOWN, buff=0.3)
-
-        self.play(Write(origin_text))
-
-        # Highlight parallel grid lines
-        highlights = []
-        for i in [-2, 0, 2]:
-            # Horizontal lines
-            h_line = Line([-4, i, 0], [4, i, 0], color=YELLOW, stroke_opacity=0.3)
-            # Vertical lines
-            v_line = Line([i, -4, 0], [i, 4, 0], color=YELLOW, stroke_opacity=0.3)
-            h_line.apply_matrix(matrix)
-            v_line.apply_matrix(matrix)
-            highlights.extend([h_line, v_line])
-
-        parallel_highlights = VGroup(*highlights)
-        
-        self.play(
-            Create(parallel_highlights),
-            Write(parallel_text),
-            run_time=1
-        )
-        self.play(
-            FadeOut(parallel_highlights),
-            run_time=0.5
-        )
-
-        self.wait(1)

@@ -7,8 +7,7 @@ async def main():
     load_dotenv(override=True)
     
     video_prompt = """
-    Create a video explaining how matrices transform vectors in 2D space.
-    Focus on linear transformations and how they can be visualized geometrically.
+    Create a video explaining elementary row operations
     """
     
     orchestrator = VideoOrchestrator(

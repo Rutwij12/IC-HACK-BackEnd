@@ -1,95 +1,81 @@
 from manim import *
 
-class LinearTransformationProperties(Scene):
+class RowOperationsExample(Scene):
     def construct(self):
-        # Part 1: Initial Grid Setup
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": "#888888",
-                "stroke_width": 1,
-                "stroke_opacity": 0.5
-            }
+        # Initial Setup
+        title = Text("Row Operations Example").set_color(BLACK).to_edge(UP, buff=0.5)
+        
+        # Create initial matrix
+        initial_matrix = Matrix(
+            [[4, 6],
+             [2, 5]],
+            element_to_mobject_config={"color": BLACK}
+        ).scale(0.8)
+        initial_matrix.move_to(UP)
+        
+        # Animation Phase 1: Show initial setup
+        self.play(Write(title))
+        self.play(Write(initial_matrix))
+        self.wait(1)
+        
+        # Highlight pivot element
+        pivot = initial_matrix.get_entries()[0]  # First element (4)
+        self.play(pivot.animate.set_color(RED))
+        
+        # Show operation text
+        operation = MathTex(r"R_2 \rightarrow R_2 - (\frac{1}{2})R_1", color=BLACK)
+        operation.next_to(initial_matrix, UP, buff=0.5)
+        self.play(Write(operation))
+        
+        # Create intermediate steps
+        mult_row = MathTex(r"\frac{1}{2}", r"[4 \quad 6]", r"= [2 \quad 3]", color=BLUE)
+        mult_row.next_to(initial_matrix, DOWN, buff=0.5)
+        
+        # Show multiplication step
+        self.play(Write(mult_row))
+        self.wait(1)
+        
+        # Create final matrix
+        final_matrix = Matrix(
+            [[4, 6],
+             [0, 2]],
+            element_to_mobject_config={"color": BLACK}
+        ).scale(0.8)
+        final_matrix.move_to(initial_matrix.get_center())
+        
+        # Transform to final matrix
+        self.play(
+            ReplacementTransform(initial_matrix, final_matrix),
+            FadeOut(mult_row)
         )
         
-        # Make axes slightly brighter
-        grid.axes.set_color(WHITE)
+        # Highlight the zero
+        zero_element = final_matrix.get_entries()[2]  # Element at position (2,1)
+        self.play(zero_element.animate.set_color(RED))
         
-        # Origin point and label
-        origin_dot = Dot(point=ORIGIN, color=RED, radius=0.1)
-        origin_label = MathTex("(0,0)", color=WHITE).next_to(origin_dot, UR, buff=0.1)
+        # Add "Row Echelon Form" text
+        row_echelon_text = Text("Row Echelon Form:", color=BLACK).scale(0.8)
+        row_echelon_text.next_to(final_matrix, LEFT, buff=0.5)
         
-        # Fade in grid and origin elements
-        self.play(
-            Create(grid),
-            GrowFromCenter(origin_dot),
-            Write(origin_label)
-        )
-        self.wait(0.5)
-
-        # Part 2: Parallel Lines and Transformation
-        line1 = Line(start=np.array([-3, 1, 0]), end=np.array([3, 1, 0]), 
-                    color=BLUE, stroke_opacity=0.8)
-        line2 = Line(start=np.array([-3, 2, 0]), end=np.array([3, 2, 0]), 
-                    color=BLUE, stroke_opacity=0.8)
+        # Create box around final matrix
+        box = SurroundingRectangle(final_matrix, color=BLUE)
         
-        # Draw parallel lines
+        # Show final elements
         self.play(
-            Create(line1),
-            Create(line2)
+            Write(row_echelon_text),
+            Create(box)
         )
-        self.wait(0.5)
-
-        # Define and apply transformation
-        matrix = [[2, 0.5], [0.5, 1.5]]
-        transform = grid.animate.apply_matrix(matrix)
-        lines_transform = VGroup(line1, line2).animate.apply_matrix(matrix)
         
-        self.play(
-            transform,
-            lines_transform,
-            run_time=3
-        )
-        self.wait(0.5)
-
-        # Part 3: Highlighting Properties
-        # Pulse origin
-        self.play(
-            origin_dot.animate.scale(1.5),
-            rate_func=there_and_back,
-            run_time=1
-        )
-
-        # Add text labels
-        origin_text = Text("Origin remains fixed", 
-                         color=WHITE, font_size=36).to_edge(UR, buff=0.5)
-        parallel_text = Text("Grid lines remain parallel", 
-                           color=WHITE, font_size=36).next_to(origin_text, DOWN, buff=0.3)
-
-        self.play(Write(origin_text))
-
-        # Highlight parallel grid lines
-        highlights = []
-        for i in [-2, 0, 2]:
-            # Horizontal lines
-            h_line = Line([-4, i, 0], [4, i, 0], color=YELLOW, stroke_opacity=0.3)
-            # Vertical lines
-            v_line = Line([i, -4, 0], [i, 4, 0], color=YELLOW, stroke_opacity=0.3)
-            h_line.apply_matrix(matrix)
-            v_line.apply_matrix(matrix)
-            highlights.extend([h_line, v_line])
-
-        parallel_highlights = VGroup(*highlights)
+        # Highlight stair-step pattern
+        stair_elements = [final_matrix.get_entries()[0], final_matrix.get_entries()[3]]  # [4, 2]
+        self.play(*[elem.animate.set_color(GREEN) for elem in stair_elements])
         
+        # Final pause
+        self.wait(1)
+        
+        # Fade out operation text but keep the main result
         self.play(
-            Create(parallel_highlights),
-            Write(parallel_text),
-            run_time=1
+            FadeOut(operation),
+            FadeOut(title)
         )
-        self.play(
-            FadeOut(parallel_highlights),
-            run_time=0.5
-        )
-
         self.wait(1)

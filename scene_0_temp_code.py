@@ -1,114 +1,82 @@
 from manim import *
 
-class IntroductionToVectors(Scene):
+class MatrixRowOperations(Scene):
     def construct(self):
-        # 1. Coordinate System Introduction
-        axes = Axes(
-            x_range=[-5, 5, 1],
-            y_range=[-5, 5, 1],
-            axis_config={
-                "color": WHITE,
-                "stroke_width": 2,
-                "include_ticks": True,
-                "include_tip": True,
-            },
+        # Create the original matrix
+        matrix = Matrix([
+            [2, 1],
+            [1, 3]
+        ]).scale(1.5)
+        
+        # Create the transformed matrix
+        matrix_after = Matrix([
+            [2, 1],
+            [0, 2.5]
+        ]).scale(1.5)
+        
+        # Create the arrow
+        arrow = Arrow(
+            start=RIGHT * 0.5,
+            end=RIGHT * 2,
+            color=YELLOW
         )
         
-        # Add labels for axes
-        x_label = axes.get_x_axis_label("x")
-        y_label = axes.get_y_axis_label("y")
+        # Group the matrices and arrow
+        matrix_group = VGroup(
+            matrix,
+            arrow,
+            matrix_after
+        ).arrange(RIGHT, buff=0.5)
         
-        # Create grid
-        grid = NumberPlane(
-            x_range=[-5, 5, 1],
-            y_range=[-5, 5, 1],
-            background_line_style={
-                "stroke_color": GRAY,
-                "stroke_width": 1,
-                "stroke_opacity": 0.3
-            }
-        )
-
-        # Animate coordinate system
+        # Create all text elements
+        title = Text(
+            "We can modify matrix rows to solve equations",
+            font_size=36
+        ).to_edge(UP, buff=1.5)
+        
+        row_op = MathTex(
+            "R_2 \\rightarrow R_2 - \\frac{1}{2}R_1",
+            color=LIGHT_GRAY,
+            font_size=36
+        ).next_to(matrix_group, DOWN, buff=1)
+        
+        final_message = Text(
+            "These changes preserve solutions",
+            color=BLUE,
+            font_size=36
+        ).next_to(row_op, DOWN, buff=0.8)
+        
+        # Animations
+        # First phase: Show original matrix
         self.play(
-            FadeIn(grid),
-            Create(axes),
-            Write(x_label),
-            Write(y_label),
-            run_time=3
-        )
-
-        # 2. Vector Introduction
-        # Create main vector
-        vector = Arrow(
-            axes.c2p(0, 0),
-            axes.c2p(3, 2),
-            buff=0,
-            color="#FF4444",
-            stroke_width=3,
-        )
-
-        # Animate vector creation
-        self.play(
-            GrowArrow(vector),
-            run_time=2
-        )
-        self.wait()
-
-        # 3. Component Breakdown
-        # Create dashed lines for components
-        x_component = DashedLine(
-            axes.c2p(0, 0),
-            axes.c2p(3, 0),
-            color="#3498DB",
-            dash_length=0.2
+            FadeIn(matrix),
+            run_time=0.5
         )
         
-        y_component = DashedLine(
-            axes.c2p(3, 0),
-            axes.c2p(3, 2),
-            color="#2ECC71",
-            dash_length=0.2
-        )
-
-        # Create right angle symbol
-        right_angle = RightAngle(
-            x_component,
-            y_component,
-            length=0.2,
-            color=WHITE
-        )
-
-        # Create component labels
-        x_component_label = MathTex("3").scale(0.8)
-        x_component_label.next_to(x_component, DOWN, buff=0.2)
-        
-        y_component_label = MathTex("2").scale(0.8)
-        y_component_label.next_to(y_component, RIGHT, buff=0.2)
-
-        # Create vector notation
-        vector_notation = MathTex(r"\vec{v} = (3,2)")
-        vector_notation.scale(0.8)
-        vector_notation.move_to(axes.c2p(3, 3))
-
-        # Animate components and labels
+        # Second phase: Show title
         self.play(
-            Create(x_component),
-            Create(y_component),
-            run_time=2
+            FadeIn(title),
+            run_time=0.5
         )
         
+        # Third phase: Show arrow and transformed matrix
         self.play(
-            Create(right_angle),
-            Write(x_component_label),
-            Write(y_component_label),
-            run_time=2
-        )
-
-        self.play(
-            Write(vector_notation),
+            FadeIn(arrow),
+            FadeIn(matrix_after),
             run_time=1
         )
-
-        # Final pause
+        
+        # Fourth phase: Show row operation text
+        self.play(
+            FadeIn(row_op),
+            run_time=0.5
+        )
+        
+        # Final phase: Show final message
+        self.play(
+            FadeIn(final_message),
+            run_time=0.5
+        )
+        
+        # Pause at the end to show the complete scene
         self.wait(2)

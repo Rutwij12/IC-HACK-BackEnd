@@ -1,98 +1,90 @@
 from manim import *
 
-class MatrixTransformUnitVectors(Scene):
+class ScalarRowMultiplication(Scene):
     def construct(self):
-        # Create coordinate plane
-        plane = NumberPlane(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
-            x_length=6,
-            y_length=6,
-            background_line_style={
-                "stroke_color": GREY_C,
-                "stroke_width": 1,
-                "stroke_opacity": 0.5
-            }
-        )
+        # Initial matrix
+        matrix = Matrix([
+            [2, 4, 1],
+            [3, 1, 5],
+            [0, 2, 3]
+        ])
+        matrix.scale(0.8)
         
-        # Create original unit vectors
-        i_hat = Arrow(plane.c2p(0, 0), plane.c2p(1, 0), color=RED, buff=0)
-        j_hat = Arrow(plane.c2p(0, 0), plane.c2p(0, 1), color=BLUE, buff=0)
+        # Position matrix in center
+        self.play(Write(matrix))
         
-        # Create labels for original vectors
-        i_label = MathTex("\\hat{\\imath}", color=RED).next_to(i_hat.get_end(), DOWN)
-        j_label = MathTex("\\hat{\\jmath}", color=BLUE).next_to(j_hat.get_end(), LEFT)
+        # Title text
+        title = Text("Scalar Multiplication: R₁ → 2R₁", font_size=36)
+        title.to_edge(UP, buff=0.5)
+        self.play(Write(title))
+
+        # Highlight first row - get the row elements
+        row_elements = VGroup(*[matrix.get_entries()[i] for i in range(3)])
+        row_highlight = SurroundingRectangle(row_elements, color=YELLOW)
+        self.play(Create(row_highlight))
         
-        # Create matrix
-        matrix = MathTex(
-            "\\begin{bmatrix} 2 & 1 \\\\ 1 & 1 \\end{bmatrix}"
-        ).scale(0.8).to_corner(UR)
+        # Show multiplication operation
+        mult_text = MathTex("\\times 2").next_to(row_highlight, RIGHT)
+        self.play(Write(mult_text))
         
-        # Create transformed vectors
-        i_hat_transformed = Arrow(
-            plane.c2p(0, 0), 
-            plane.c2p(2, 1), 
-            color=RED, 
-            buff=0
-        )
-        j_hat_transformed = Arrow(
-            plane.c2p(0, 0), 
-            plane.c2p(1, 1), 
-            color=BLUE, 
-            buff=0
-        )
+        # Show computations above first row
+        computations = VGroup(
+            MathTex("2\\times2=4"),
+            MathTex("2\\times4=8"),
+            MathTex("2\\times1=2")
+        ).arrange(RIGHT, buff=0.5)
+        computations.scale(0.7).next_to(matrix, UP, buff=0.5)
         
-        # Create labels for transformed vectors
-        i_transformed_label = MathTex("(2,1)", color=RED).next_to(i_hat_transformed.get_end(), RIGHT)
-        j_transformed_label = MathTex("(1,1)", color=BLUE).next_to(j_hat_transformed.get_end(), RIGHT)
+        # Small arrows pointing down
+        arrows = VGroup(*[
+            Arrow(
+                start=comp.get_bottom(),
+                end=matrix.get_entries()[i].get_top(),
+                buff=0.1,
+                color=BLUE_C,
+                max_tip_length_to_length_ratio=0.15
+            )
+            for i, comp in enumerate(computations)
+        ])
         
-        # Create ghost vectors (dashed versions of original vectors)
-        i_hat_ghost = DashedVMobject(i_hat.copy()).set_opacity(0.3)
-        j_hat_ghost = DashedVMobject(j_hat.copy()).set_opacity(0.3)
+        # Show computations and arrows
+        self.play(Write(computations), Create(arrows))
+        self.wait()
         
-        # Animation sequence
+        # New matrix
+        new_matrix = Matrix([
+            [4, 8, 2],
+            [3, 1, 5],
+            [0, 2, 3]
+        ])
+        new_matrix.scale(0.8).move_to(matrix)
         
-        # 1. Fade in coordinate plane and original vectors
+        # Transform to new matrix
         self.play(
-            Create(plane),
-            run_time=1
-        )
-        self.play(
-            Create(i_hat),
-            Create(j_hat),
-            Write(i_label),
-            Write(j_label),
-            run_time=2
+            ReplacementTransform(matrix, new_matrix),
+            FadeOut(row_highlight),
+            FadeOut(computations),
+            FadeOut(arrows),
+            FadeOut(mult_text)
         )
         
-        # 2. Fade in matrix
-        self.play(
-            Write(matrix),
-            run_time=1
-        )
+        # Highlight new row in green
+        new_row_elements = VGroup(*[new_matrix.get_entries()[i] for i in range(3)])
+        new_row_highlight = SurroundingRectangle(new_row_elements, color=GREEN)
+        self.play(Create(new_row_highlight))
+        self.wait(0.5)
         
-        # 3. Transform vectors
-        self.play(
-            ReplacementTransform(i_hat.copy(), i_hat_transformed),
-            ReplacementTransform(j_hat.copy(), j_hat_transformed),
-            FadeIn(i_hat_ghost),
-            FadeIn(j_hat_ghost),
-            run_time=3
-        )
+        # Final explanation text
+        explanation = Text("Each element in R₁ is multiplied by 2", font_size=32)
+        explanation.next_to(new_matrix, DOWN, buff=0.5)
+        self.play(Write(explanation))
         
-        # 4. Add final position labels
-        self.play(
-            Write(i_transformed_label),
-            Write(j_transformed_label),
-            run_time=1
-        )
+        self.wait()
         
-        # Final highlight
+        # Fade everything out
         self.play(
-            Flash(i_hat_transformed.get_end(), color=RED, line_length=0.2),
-            Flash(j_hat_transformed.get_end(), color=BLUE, line_length=0.2),
-            run_time=1
+            FadeOut(new_matrix),
+            FadeOut(new_row_highlight),
+            FadeOut(title),
+            FadeOut(explanation)
         )
-        
-        # Hold final state
-        self.wait(2)

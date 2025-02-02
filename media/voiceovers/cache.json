@@ -1,0 +1,3312 @@
+[
+  {
+    "input_text": "In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.",
+    "input_data": {
+      "input_text": "In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 212,
+        "text_offset": 0,
+        "word_length": 2,
+        "text": "In",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2750000,
+        "duration_milliseconds": 375,
+        "text_offset": 3,
+        "word_length": 6,
+        "text": "linear",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 6625000,
+        "duration_milliseconds": 475,
+        "text_offset": 10,
+        "word_length": 7,
+        "text": "algebra",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 12375000,
+        "duration_milliseconds": 87,
+        "text_offset": 17,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 13250000,
+        "duration_milliseconds": 112,
+        "text_offset": 19,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 14500000,
+        "duration_milliseconds": 137,
+        "text_offset": 22,
+        "word_length": 3,
+        "text": "can",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 16000000,
+        "duration_milliseconds": 475,
+        "text_offset": 26,
+        "word_length": 7,
+        "text": "perform",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 20875000,
+        "duration_milliseconds": 175,
+        "text_offset": 34,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 22750000,
+        "duration_milliseconds": 625,
+        "text_offset": 38,
+        "word_length": 10,
+        "text": "operations",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 29125000,
+        "duration_milliseconds": 150,
+        "text_offset": 49,
+        "word_length": 2,
+        "text": "on",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 30750000,
+        "duration_milliseconds": 862,
+        "text_offset": 52,
+        "word_length": 8,
+        "text": "matrices",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 39500000,
+        "duration_milliseconds": 112,
+        "text_offset": 60,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 48125000,
+        "duration_milliseconds": 175,
+        "text_offset": 62,
+        "word_length": 4,
+        "text": "When",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 50000000,
+        "duration_milliseconds": 100,
+        "text_offset": 67,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 51125000,
+        "duration_milliseconds": 500,
+        "text_offset": 70,
+        "word_length": 8,
+        "text": "subtract",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 56250000,
+        "duration_milliseconds": 262,
+        "text_offset": 79,
+        "word_length": 4,
+        "text": "half",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 59000000,
+        "duration_milliseconds": 137,
+        "text_offset": 84,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 60500000,
+        "duration_milliseconds": 175,
+        "text_offset": 87,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 62375000,
+        "duration_milliseconds": 162,
+        "text_offset": 91,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 64125000,
+        "duration_milliseconds": 200,
+        "text_offset": 93,
+        "word_length": 4,
+        "text": "from",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 66250000,
+        "duration_milliseconds": 162,
+        "text_offset": 98,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 68000000,
+        "duration_milliseconds": 325,
+        "text_offset": 102,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 72250000,
+        "duration_milliseconds": 125,
+        "text_offset": 103,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 73500000,
+        "duration_milliseconds": 112,
+        "text_offset": 105,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 74750000,
+        "duration_milliseconds": 300,
+        "text_offset": 108,
+        "word_length": 6,
+        "text": "create",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 77875000,
+        "duration_milliseconds": 100,
+        "text_offset": 115,
+        "word_length": 2,
+        "text": "an",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 79000000,
+        "duration_milliseconds": 550,
+        "text_offset": 118,
+        "word_length": 10,
+        "text": "equivalent",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 84625000,
+        "duration_milliseconds": 512,
+        "text_offset": 129,
+        "word_length": 6,
+        "text": "system",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 90750000,
+        "duration_milliseconds": 150,
+        "text_offset": 136,
+        "word_length": 4,
+        "text": "that",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 92375000,
+        "duration_milliseconds": 512,
+        "text_offset": 141,
+        "word_length": 9,
+        "text": "preserves",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 97625000,
+        "duration_milliseconds": 187,
+        "text_offset": 151,
+        "word_length": 3,
+        "text": "all",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99625000,
+        "duration_milliseconds": 812,
+        "text_offset": 155,
+        "word_length": 9,
+        "text": "solutions",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 107875000,
+        "duration_milliseconds": 100,
+        "text_offset": 164,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "in-linear-algebra-we-can-perform-row-operations-on-ef65ac02.mp3",
+    "final_audio": "in-linear-algebra-we-can-perform-row-operations-on-ef65ac02.mp3"
+  },
+  {
+    "input_text": "In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.",
+    "input_data": {
+      "input_text": "In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 187,
+        "text_offset": 0,
+        "word_length": 2,
+        "text": "In",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2500000,
+        "duration_milliseconds": 575,
+        "text_offset": 3,
+        "word_length": 10,
+        "text": "elementary",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 8375000,
+        "duration_milliseconds": 200,
+        "text_offset": 14,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 10500000,
+        "duration_milliseconds": 800,
+        "text_offset": 18,
+        "word_length": 10,
+        "text": "operations",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 19500000,
+        "duration_milliseconds": 62,
+        "text_offset": 28,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 20125000,
+        "duration_milliseconds": 112,
+        "text_offset": 30,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 21375000,
+        "duration_milliseconds": 175,
+        "text_offset": 33,
+        "word_length": 3,
+        "text": "can",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 23250000,
+        "duration_milliseconds": 312,
+        "text_offset": 37,
+        "word_length": 4,
+        "text": "swap",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 27500000,
+        "duration_milliseconds": 200,
+        "text_offset": 42,
+        "word_length": 3,
+        "text": "any",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 29625000,
+        "duration_milliseconds": 237,
+        "text_offset": 46,
+        "word_length": 3,
+        "text": "two",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 32125000,
+        "duration_milliseconds": 575,
+        "text_offset": 50,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 38000000,
+        "duration_milliseconds": 112,
+        "text_offset": 54,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 46625000,
+        "duration_milliseconds": 287,
+        "text_offset": 56,
+        "word_length": 5,
+        "text": "Watch",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 49625000,
+        "duration_milliseconds": 87,
+        "text_offset": 62,
+        "word_length": 2,
+        "text": "as",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 50625000,
+        "duration_milliseconds": 100,
+        "text_offset": 65,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 51750000,
+        "duration_milliseconds": 337,
+        "text_offset": 68,
+        "word_length": 4,
+        "text": "swap",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55250000,
+        "duration_milliseconds": 250,
+        "text_offset": 73,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 57875000,
+        "duration_milliseconds": 200,
+        "text_offset": 78,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 60000000,
+        "duration_milliseconds": 87,
+        "text_offset": 80,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 61000000,
+        "duration_milliseconds": 162,
+        "text_offset": 84,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 62750000,
+        "duration_milliseconds": 62,
+        "text_offset": 86,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 63500000,
+        "duration_milliseconds": 187,
+        "text_offset": 89,
+        "word_length": 4,
+        "text": "this",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 65500000,
+        "duration_milliseconds": 662,
+        "text_offset": 94,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 73125000,
+        "duration_milliseconds": 62,
+        "text_offset": 100,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 73750000,
+        "duration_milliseconds": 250,
+        "text_offset": 102,
+        "word_length": 6,
+        "text": "moving",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 76375000,
+        "duration_milliseconds": 100,
+        "text_offset": 109,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 77500000,
+        "duration_milliseconds": 275,
+        "text_offset": 113,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 80375000,
+        "duration_milliseconds": 162,
+        "text_offset": 118,
+        "word_length": 4,
+        "text": "into",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 82125000,
+        "duration_milliseconds": 137,
+        "text_offset": 123,
+        "word_length": 5,
+        "text": "their",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 83625000,
+        "duration_milliseconds": 150,
+        "text_offset": 129,
+        "word_length": 3,
+        "text": "new",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 85250000,
+        "duration_milliseconds": 712,
+        "text_offset": 133,
+        "word_length": 9,
+        "text": "positions",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 93500000,
+        "duration_milliseconds": 125,
+        "text_offset": 143,
+        "word_length": 5,
+        "text": "while",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 94875000,
+        "duration_milliseconds": 487,
+        "text_offset": 149,
+        "word_length": 11,
+        "text": "maintaining",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99875000,
+        "duration_milliseconds": 100,
+        "text_offset": 161,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 101000000,
+        "duration_milliseconds": 287,
+        "text_offset": 165,
+        "word_length": 4,
+        "text": "rest",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 104000000,
+        "duration_milliseconds": 50,
+        "text_offset": 170,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 104625000,
+        "duration_milliseconds": 75,
+        "text_offset": 173,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 105500000,
+        "duration_milliseconds": 475,
+        "text_offset": 177,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 110375000,
+        "duration_milliseconds": 712,
+        "text_offset": 184,
+        "word_length": 9,
+        "text": "unchanged",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 117625000,
+        "duration_milliseconds": 112,
+        "text_offset": 193,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "in-elementary-row-operations-we-can-swap-any-two-5d837142.mp3",
+    "final_audio": "in-elementary-row-operations-we-can-swap-any-two-5d837142.mp3"
+  },
+  {
+    "input_text": "We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.",
+    "input_data": {
+      "input_text": "We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 150,
+        "text_offset": 0,
+        "word_length": 2,
+        "text": "We",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2125000,
+        "duration_milliseconds": 500,
+        "text_offset": 3,
+        "word_length": 8,
+        "text": "multiply",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 7250000,
+        "duration_milliseconds": 200,
+        "text_offset": 12,
+        "word_length": 4,
+        "text": "each",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 9375000,
+        "duration_milliseconds": 387,
+        "text_offset": 17,
+        "word_length": 7,
+        "text": "element",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 13375000,
+        "duration_milliseconds": 100,
+        "text_offset": 25,
+        "word_length": 2,
+        "text": "in",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 14500000,
+        "duration_milliseconds": 75,
+        "text_offset": 28,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 15375000,
+        "duration_milliseconds": 350,
+        "text_offset": 32,
+        "word_length": 5,
+        "text": "first",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 19000000,
+        "duration_milliseconds": 150,
+        "text_offset": 38,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 20625000,
+        "duration_milliseconds": 175,
+        "text_offset": 42,
+        "word_length": 2,
+        "text": "by",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 22500000,
+        "duration_milliseconds": 350,
+        "text_offset": 45,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 27000000,
+        "duration_milliseconds": 112,
+        "text_offset": 46,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 28125000,
+        "duration_milliseconds": 625,
+        "text_offset": 48,
+        "word_length": 12,
+        "text": "transforming",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 34500000,
+        "duration_milliseconds": 62,
+        "text_offset": 61,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 35250000,
+        "duration_milliseconds": 737,
+        "text_offset": 65,
+        "word_length": 6,
+        "text": "values",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 42750000,
+        "duration_milliseconds": 112,
+        "text_offset": 71,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 51375000,
+        "duration_milliseconds": 275,
+        "text_offset": 73,
+        "word_length": 5,
+        "text": "Watch",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 54250000,
+        "duration_milliseconds": 125,
+        "text_offset": 79,
+        "word_length": 2,
+        "text": "as",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55625000,
+        "duration_milliseconds": 150,
+        "text_offset": 82,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 57250000,
+        "duration_milliseconds": 437,
+        "text_offset": 84,
+        "word_length": 7,
+        "text": "becomes",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 61750000,
+        "duration_milliseconds": 412,
+        "text_offset": 92,
+        "word_length": 1,
+        "text": "4",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 66875000,
+        "duration_milliseconds": 87,
+        "text_offset": 93,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 67750000,
+        "duration_milliseconds": 150,
+        "text_offset": 95,
+        "word_length": 1,
+        "text": "4",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 69375000,
+        "duration_milliseconds": 462,
+        "text_offset": 97,
+        "word_length": 7,
+        "text": "becomes",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 74125000,
+        "duration_milliseconds": 362,
+        "text_offset": 105,
+        "word_length": 1,
+        "text": "8",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 78750000,
+        "duration_milliseconds": 87,
+        "text_offset": 106,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 79625000,
+        "duration_milliseconds": 112,
+        "text_offset": 108,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 80875000,
+        "duration_milliseconds": 162,
+        "text_offset": 112,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 82625000,
+        "duration_milliseconds": 400,
+        "text_offset": 114,
+        "word_length": 7,
+        "text": "becomes",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 86750000,
+        "duration_milliseconds": 300,
+        "text_offset": 122,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 90750000,
+        "duration_milliseconds": 100,
+        "text_offset": 123,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 91750000,
+        "duration_milliseconds": 112,
+        "text_offset": 125,
+        "word_length": 5,
+        "text": "while",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 93000000,
+        "duration_milliseconds": 87,
+        "text_offset": 131,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 94000000,
+        "duration_milliseconds": 250,
+        "text_offset": 135,
+        "word_length": 5,
+        "text": "other",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 96625000,
+        "duration_milliseconds": 237,
+        "text_offset": 141,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99125000,
+        "duration_milliseconds": 200,
+        "text_offset": 146,
+        "word_length": 4,
+        "text": "stay",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 101250000,
+        "duration_milliseconds": 750,
+        "text_offset": 151,
+        "word_length": 9,
+        "text": "unchanged",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 108875000,
+        "duration_milliseconds": 112,
+        "text_offset": 160,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "we-multiply-each-element-in-the-first-row-by-2-f34aebc3.mp3",
+    "final_audio": "we-multiply-each-element-in-the-first-row-by-2-f34aebc3.mp3"
+  },
+  {
+    "input_text": "When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.",
+    "input_data": {
+      "input_text": "When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 175,
+        "text_offset": 0,
+        "word_length": 4,
+        "text": "When",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2375000,
+        "duration_milliseconds": 112,
+        "text_offset": 5,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 3625000,
+        "duration_milliseconds": 175,
+        "text_offset": 8,
+        "word_length": 3,
+        "text": "add",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 5500000,
+        "duration_milliseconds": 262,
+        "text_offset": 12,
+        "word_length": 3,
+        "text": "one",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 8250000,
+        "duration_milliseconds": 187,
+        "text_offset": 16,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 10250000,
+        "duration_milliseconds": 112,
+        "text_offset": 20,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 11500000,
+        "duration_milliseconds": 387,
+        "text_offset": 23,
+        "word_length": 7,
+        "text": "another",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 15500000,
+        "duration_milliseconds": 87,
+        "text_offset": 31,
+        "word_length": 2,
+        "text": "in",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 16500000,
+        "duration_milliseconds": 50,
+        "text_offset": 34,
+        "word_length": 1,
+        "text": "a",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 17125000,
+        "duration_milliseconds": 700,
+        "text_offset": 36,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 25125000,
+        "duration_milliseconds": 87,
+        "text_offset": 42,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 26000000,
+        "duration_milliseconds": 162,
+        "text_offset": 44,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 27750000,
+        "duration_milliseconds": 175,
+        "text_offset": 47,
+        "word_length": 3,
+        "text": "add",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 29625000,
+        "duration_milliseconds": 75,
+        "text_offset": 51,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 30500000,
+        "duration_milliseconds": 400,
+        "text_offset": 55,
+        "word_length": 7,
+        "text": "numbers",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 34625000,
+        "duration_milliseconds": 125,
+        "text_offset": 63,
+        "word_length": 2,
+        "text": "in",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 36000000,
+        "duration_milliseconds": 175,
+        "text_offset": 66,
+        "word_length": 4,
+        "text": "each",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 37875000,
+        "duration_milliseconds": 637,
+        "text_offset": 71,
+        "word_length": 8,
+        "text": "position",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 44375000,
+        "duration_milliseconds": 112,
+        "text_offset": 79,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 53000000,
+        "duration_milliseconds": 275,
+        "text_offset": 81,
+        "word_length": 5,
+        "text": "Watch",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55875000,
+        "duration_milliseconds": 87,
+        "text_offset": 87,
+        "word_length": 2,
+        "text": "as",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 56875000,
+        "duration_milliseconds": 125,
+        "text_offset": 90,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 58250000,
+        "duration_milliseconds": 162,
+        "text_offset": 93,
+        "word_length": 3,
+        "text": "add",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 60000000,
+        "duration_milliseconds": 150,
+        "text_offset": 97,
+        "word_length": 3,
+        "text": "Row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 61625000,
+        "duration_milliseconds": 150,
+        "text_offset": 101,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 63250000,
+        "duration_milliseconds": 75,
+        "text_offset": 103,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 64125000,
+        "duration_milliseconds": 175,
+        "text_offset": 106,
+        "word_length": 3,
+        "text": "Row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 66000000,
+        "duration_milliseconds": 300,
+        "text_offset": 110,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 70000000,
+        "duration_milliseconds": 125,
+        "text_offset": 111,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 71250000,
+        "duration_milliseconds": 487,
+        "text_offset": 113,
+        "word_length": 9,
+        "text": "combining",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 76250000,
+        "duration_milliseconds": 200,
+        "text_offset": 123,
+        "word_length": 1,
+        "text": "3",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 78375000,
+        "duration_milliseconds": 300,
+        "text_offset": 125,
+        "word_length": 4,
+        "text": "plus",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 81500000,
+        "duration_milliseconds": 325,
+        "text_offset": 130,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 85750000,
+        "duration_milliseconds": 150,
+        "text_offset": 132,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 87375000,
+        "duration_milliseconds": 250,
+        "text_offset": 136,
+        "word_length": 1,
+        "text": "4",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 90000000,
+        "duration_milliseconds": 287,
+        "text_offset": 138,
+        "word_length": 4,
+        "text": "plus",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 93000000,
+        "duration_milliseconds": 300,
+        "text_offset": 143,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 97125000,
+        "duration_milliseconds": 87,
+        "text_offset": 145,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 98125000,
+        "duration_milliseconds": 150,
+        "text_offset": 148,
+        "word_length": 3,
+        "text": "get",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99750000,
+        "duration_milliseconds": 100,
+        "text_offset": 152,
+        "word_length": 3,
+        "text": "our",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 100875000,
+        "duration_milliseconds": 187,
+        "text_offset": 156,
+        "word_length": 3,
+        "text": "new",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 102875000,
+        "duration_milliseconds": 175,
+        "text_offset": 160,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 104750000,
+        "duration_milliseconds": 75,
+        "text_offset": 164,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 105625000,
+        "duration_milliseconds": 275,
+        "text_offset": 167,
+        "word_length": 1,
+        "text": "5",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 108500000,
+        "duration_milliseconds": 100,
+        "text_offset": 169,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 109625000,
+        "duration_milliseconds": 550,
+        "text_offset": 173,
+        "word_length": 1,
+        "text": "5",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 115250000,
+        "duration_milliseconds": 112,
+        "text_offset": 174,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "when-we-add-one-row-to-another-in-a-matrix-we-add-14a492ce.mp3",
+    "final_audio": "when-we-add-one-row-to-another-in-a-matrix-we-add-14a492ce.mp3"
+  },
+  {
+    "input_text": "Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.",
+    "input_data": {
+      "input_text": "Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 300,
+        "text_offset": 0,
+        "word_length": 4,
+        "text": "Lets",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 3625000,
+        "duration_milliseconds": 437,
+        "text_offset": 5,
+        "word_length": 8,
+        "text": "simplify",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 8125000,
+        "duration_milliseconds": 225,
+        "text_offset": 14,
+        "word_length": 4,
+        "text": "this",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 10500000,
+        "duration_milliseconds": 537,
+        "text_offset": 19,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 16000000,
+        "duration_milliseconds": 137,
+        "text_offset": 26,
+        "word_length": 2,
+        "text": "by",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 17500000,
+        "duration_milliseconds": 562,
+        "text_offset": 29,
+        "word_length": 10,
+        "text": "performing",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 23250000,
+        "duration_milliseconds": 175,
+        "text_offset": 40,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 25125000,
+        "duration_milliseconds": 887,
+        "text_offset": 44,
+        "word_length": 10,
+        "text": "operations",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 34125000,
+        "duration_milliseconds": 100,
+        "text_offset": 54,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 42625000,
+        "duration_milliseconds": 137,
+        "text_offset": 56,
+        "word_length": 2,
+        "text": "We",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 44125000,
+        "duration_milliseconds": 450,
+        "text_offset": 59,
+        "word_length": 8,
+        "text": "multiply",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 48750000,
+        "duration_milliseconds": 125,
+        "text_offset": 68,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 50125000,
+        "duration_milliseconds": 325,
+        "text_offset": 72,
+        "word_length": 5,
+        "text": "first",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 53500000,
+        "duration_milliseconds": 137,
+        "text_offset": 78,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55000000,
+        "duration_milliseconds": 162,
+        "text_offset": 82,
+        "word_length": 2,
+        "text": "by",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 56750000,
+        "duration_milliseconds": 225,
+        "text_offset": 85,
+        "word_length": 3,
+        "text": "one",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 59125000,
+        "duration_milliseconds": 362,
+        "text_offset": 89,
+        "word_length": 4,
+        "text": "half",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 63875000,
+        "duration_milliseconds": 100,
+        "text_offset": 94,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 65000000,
+        "duration_milliseconds": 487,
+        "text_offset": 98,
+        "word_length": 8,
+        "text": "subtract",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 70000000,
+        "duration_milliseconds": 75,
+        "text_offset": 107,
+        "word_length": 2,
+        "text": "it",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 70875000,
+        "duration_milliseconds": 150,
+        "text_offset": 110,
+        "word_length": 4,
+        "text": "from",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 72500000,
+        "duration_milliseconds": 87,
+        "text_offset": 115,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 73500000,
+        "duration_milliseconds": 387,
+        "text_offset": 119,
+        "word_length": 6,
+        "text": "second",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 77500000,
+        "duration_milliseconds": 187,
+        "text_offset": 126,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 79500000,
+        "duration_milliseconds": 125,
+        "text_offset": 130,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 80875000,
+        "duration_milliseconds": 362,
+        "text_offset": 133,
+        "word_length": 6,
+        "text": "obtain",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 84625000,
+        "duration_milliseconds": 337,
+        "text_offset": 140,
+        "word_length": 5,
+        "text": "zeros",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 88125000,
+        "duration_milliseconds": 287,
+        "text_offset": 146,
+        "word_length": 5,
+        "text": "below",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 91125000,
+        "duration_milliseconds": 125,
+        "text_offset": 152,
+        "word_length": 3,
+        "text": "our",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 92500000,
+        "duration_milliseconds": 437,
+        "text_offset": 156,
+        "word_length": 5,
+        "text": "pivot",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 97875000,
+        "duration_milliseconds": 162,
+        "text_offset": 161,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 99500000,
+        "duration_milliseconds": 275,
+        "text_offset": 163,
+        "word_length": 6,
+        "text": "giving",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 102375000,
+        "duration_milliseconds": 125,
+        "text_offset": 170,
+        "word_length": 2,
+        "text": "us",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 103750000,
+        "duration_milliseconds": 137,
+        "text_offset": 173,
+        "word_length": 3,
+        "text": "our",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 105250000,
+        "duration_milliseconds": 162,
+        "text_offset": 177,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 107000000,
+        "duration_milliseconds": 462,
+        "text_offset": 181,
+        "word_length": 7,
+        "text": "echelon",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 111750000,
+        "duration_milliseconds": 412,
+        "text_offset": 189,
+        "word_length": 4,
+        "text": "form",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 116000000,
+        "duration_milliseconds": 112,
+        "text_offset": 193,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "lets-simplify-this-matrix-by-performing-row-a2a540a3.mp3",
+    "final_audio": "lets-simplify-this-matrix-by-performing-row-a2a540a3.mp3"
+  },
+  {
+    "input_text": "In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.",
+    "input_data": {
+      "input_text": "In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In linear algebra, we can perform row operations on matrices. When we subtract half of row 1 from row 2, we create an equivalent system that preserves all solutions.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 212,
+        "text_offset": 0,
+        "word_length": 2,
+        "text": "In",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2750000,
+        "duration_milliseconds": 375,
+        "text_offset": 3,
+        "word_length": 6,
+        "text": "linear",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 6625000,
+        "duration_milliseconds": 475,
+        "text_offset": 10,
+        "word_length": 7,
+        "text": "algebra",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 12375000,
+        "duration_milliseconds": 87,
+        "text_offset": 17,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 13250000,
+        "duration_milliseconds": 112,
+        "text_offset": 19,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 14500000,
+        "duration_milliseconds": 137,
+        "text_offset": 22,
+        "word_length": 3,
+        "text": "can",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 16000000,
+        "duration_milliseconds": 475,
+        "text_offset": 26,
+        "word_length": 7,
+        "text": "perform",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 20875000,
+        "duration_milliseconds": 175,
+        "text_offset": 34,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 22750000,
+        "duration_milliseconds": 625,
+        "text_offset": 38,
+        "word_length": 10,
+        "text": "operations",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 29125000,
+        "duration_milliseconds": 150,
+        "text_offset": 49,
+        "word_length": 2,
+        "text": "on",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 30750000,
+        "duration_milliseconds": 862,
+        "text_offset": 52,
+        "word_length": 8,
+        "text": "matrices",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 39500000,
+        "duration_milliseconds": 112,
+        "text_offset": 60,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 48125000,
+        "duration_milliseconds": 175,
+        "text_offset": 62,
+        "word_length": 4,
+        "text": "When",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 50000000,
+        "duration_milliseconds": 100,
+        "text_offset": 67,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 51125000,
+        "duration_milliseconds": 500,
+        "text_offset": 70,
+        "word_length": 8,
+        "text": "subtract",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 56250000,
+        "duration_milliseconds": 262,
+        "text_offset": 79,
+        "word_length": 4,
+        "text": "half",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 59000000,
+        "duration_milliseconds": 137,
+        "text_offset": 84,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 60500000,
+        "duration_milliseconds": 175,
+        "text_offset": 87,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 62375000,
+        "duration_milliseconds": 162,
+        "text_offset": 91,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 64125000,
+        "duration_milliseconds": 200,
+        "text_offset": 93,
+        "word_length": 4,
+        "text": "from",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 66250000,
+        "duration_milliseconds": 162,
+        "text_offset": 98,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 68000000,
+        "duration_milliseconds": 325,
+        "text_offset": 102,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 72250000,
+        "duration_milliseconds": 125,
+        "text_offset": 103,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 73500000,
+        "duration_milliseconds": 112,
+        "text_offset": 105,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 74750000,
+        "duration_milliseconds": 300,
+        "text_offset": 108,
+        "word_length": 6,
+        "text": "create",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 77875000,
+        "duration_milliseconds": 100,
+        "text_offset": 115,
+        "word_length": 2,
+        "text": "an",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 79000000,
+        "duration_milliseconds": 550,
+        "text_offset": 118,
+        "word_length": 10,
+        "text": "equivalent",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 84625000,
+        "duration_milliseconds": 512,
+        "text_offset": 129,
+        "word_length": 6,
+        "text": "system",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 90750000,
+        "duration_milliseconds": 150,
+        "text_offset": 136,
+        "word_length": 4,
+        "text": "that",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 92375000,
+        "duration_milliseconds": 512,
+        "text_offset": 141,
+        "word_length": 9,
+        "text": "preserves",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 97625000,
+        "duration_milliseconds": 187,
+        "text_offset": 151,
+        "word_length": 3,
+        "text": "all",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99625000,
+        "duration_milliseconds": 812,
+        "text_offset": 155,
+        "word_length": 9,
+        "text": "solutions",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 107875000,
+        "duration_milliseconds": 100,
+        "text_offset": 164,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "in-linear-algebra-we-can-perform-row-operations-on-ef65ac02.mp3",
+    "final_audio": "in-linear-algebra-we-can-perform-row-operations-on-ef65ac02.mp3"
+  },
+  {
+    "input_text": "In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.",
+    "input_data": {
+      "input_text": "In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">In elementary row operations, we can swap any two rows. Watch as we swap rows 1 and 2 of this matrix, moving the rows into their new positions while maintaining the rest of the matrix unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 187,
+        "text_offset": 0,
+        "word_length": 2,
+        "text": "In",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2500000,
+        "duration_milliseconds": 575,
+        "text_offset": 3,
+        "word_length": 10,
+        "text": "elementary",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 8375000,
+        "duration_milliseconds": 200,
+        "text_offset": 14,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 10500000,
+        "duration_milliseconds": 800,
+        "text_offset": 18,
+        "word_length": 10,
+        "text": "operations",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 19500000,
+        "duration_milliseconds": 62,
+        "text_offset": 28,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 20125000,
+        "duration_milliseconds": 112,
+        "text_offset": 30,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 21375000,
+        "duration_milliseconds": 175,
+        "text_offset": 33,
+        "word_length": 3,
+        "text": "can",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 23250000,
+        "duration_milliseconds": 312,
+        "text_offset": 37,
+        "word_length": 4,
+        "text": "swap",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 27500000,
+        "duration_milliseconds": 200,
+        "text_offset": 42,
+        "word_length": 3,
+        "text": "any",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 29625000,
+        "duration_milliseconds": 237,
+        "text_offset": 46,
+        "word_length": 3,
+        "text": "two",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 32125000,
+        "duration_milliseconds": 575,
+        "text_offset": 50,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 38000000,
+        "duration_milliseconds": 112,
+        "text_offset": 54,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 46625000,
+        "duration_milliseconds": 287,
+        "text_offset": 56,
+        "word_length": 5,
+        "text": "Watch",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 49625000,
+        "duration_milliseconds": 87,
+        "text_offset": 62,
+        "word_length": 2,
+        "text": "as",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 50625000,
+        "duration_milliseconds": 100,
+        "text_offset": 65,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 51750000,
+        "duration_milliseconds": 337,
+        "text_offset": 68,
+        "word_length": 4,
+        "text": "swap",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55250000,
+        "duration_milliseconds": 250,
+        "text_offset": 73,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 57875000,
+        "duration_milliseconds": 200,
+        "text_offset": 78,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 60000000,
+        "duration_milliseconds": 87,
+        "text_offset": 80,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 61000000,
+        "duration_milliseconds": 162,
+        "text_offset": 84,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 62750000,
+        "duration_milliseconds": 62,
+        "text_offset": 86,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 63500000,
+        "duration_milliseconds": 187,
+        "text_offset": 89,
+        "word_length": 4,
+        "text": "this",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 65500000,
+        "duration_milliseconds": 662,
+        "text_offset": 94,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 73125000,
+        "duration_milliseconds": 62,
+        "text_offset": 100,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 73750000,
+        "duration_milliseconds": 250,
+        "text_offset": 102,
+        "word_length": 6,
+        "text": "moving",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 76375000,
+        "duration_milliseconds": 100,
+        "text_offset": 109,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 77500000,
+        "duration_milliseconds": 275,
+        "text_offset": 113,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 80375000,
+        "duration_milliseconds": 162,
+        "text_offset": 118,
+        "word_length": 4,
+        "text": "into",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 82125000,
+        "duration_milliseconds": 137,
+        "text_offset": 123,
+        "word_length": 5,
+        "text": "their",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 83625000,
+        "duration_milliseconds": 150,
+        "text_offset": 129,
+        "word_length": 3,
+        "text": "new",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 85250000,
+        "duration_milliseconds": 712,
+        "text_offset": 133,
+        "word_length": 9,
+        "text": "positions",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 93500000,
+        "duration_milliseconds": 125,
+        "text_offset": 143,
+        "word_length": 5,
+        "text": "while",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 94875000,
+        "duration_milliseconds": 487,
+        "text_offset": 149,
+        "word_length": 11,
+        "text": "maintaining",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99875000,
+        "duration_milliseconds": 100,
+        "text_offset": 161,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 101000000,
+        "duration_milliseconds": 287,
+        "text_offset": 165,
+        "word_length": 4,
+        "text": "rest",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 104000000,
+        "duration_milliseconds": 50,
+        "text_offset": 170,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 104625000,
+        "duration_milliseconds": 75,
+        "text_offset": 173,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 105500000,
+        "duration_milliseconds": 475,
+        "text_offset": 177,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 110375000,
+        "duration_milliseconds": 712,
+        "text_offset": 184,
+        "word_length": 9,
+        "text": "unchanged",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 117625000,
+        "duration_milliseconds": 112,
+        "text_offset": 193,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "in-elementary-row-operations-we-can-swap-any-two-5d837142.mp3",
+    "final_audio": "in-elementary-row-operations-we-can-swap-any-two-5d837142.mp3"
+  },
+  {
+    "input_text": "We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.",
+    "input_data": {
+      "input_text": "We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">We multiply each element in the first row by 2, transforming the values. Watch as 2 becomes 4, 4 becomes 8, and 1 becomes 2, while the other rows stay unchanged.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 150,
+        "text_offset": 0,
+        "word_length": 2,
+        "text": "We",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2125000,
+        "duration_milliseconds": 500,
+        "text_offset": 3,
+        "word_length": 8,
+        "text": "multiply",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 7250000,
+        "duration_milliseconds": 200,
+        "text_offset": 12,
+        "word_length": 4,
+        "text": "each",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 9375000,
+        "duration_milliseconds": 387,
+        "text_offset": 17,
+        "word_length": 7,
+        "text": "element",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 13375000,
+        "duration_milliseconds": 100,
+        "text_offset": 25,
+        "word_length": 2,
+        "text": "in",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 14500000,
+        "duration_milliseconds": 75,
+        "text_offset": 28,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 15375000,
+        "duration_milliseconds": 350,
+        "text_offset": 32,
+        "word_length": 5,
+        "text": "first",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 19000000,
+        "duration_milliseconds": 150,
+        "text_offset": 38,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 20625000,
+        "duration_milliseconds": 175,
+        "text_offset": 42,
+        "word_length": 2,
+        "text": "by",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 22500000,
+        "duration_milliseconds": 350,
+        "text_offset": 45,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 27000000,
+        "duration_milliseconds": 112,
+        "text_offset": 46,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 28125000,
+        "duration_milliseconds": 625,
+        "text_offset": 48,
+        "word_length": 12,
+        "text": "transforming",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 34500000,
+        "duration_milliseconds": 62,
+        "text_offset": 61,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 35250000,
+        "duration_milliseconds": 737,
+        "text_offset": 65,
+        "word_length": 6,
+        "text": "values",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 42750000,
+        "duration_milliseconds": 112,
+        "text_offset": 71,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 51375000,
+        "duration_milliseconds": 275,
+        "text_offset": 73,
+        "word_length": 5,
+        "text": "Watch",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 54250000,
+        "duration_milliseconds": 125,
+        "text_offset": 79,
+        "word_length": 2,
+        "text": "as",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55625000,
+        "duration_milliseconds": 150,
+        "text_offset": 82,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 57250000,
+        "duration_milliseconds": 437,
+        "text_offset": 84,
+        "word_length": 7,
+        "text": "becomes",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 61750000,
+        "duration_milliseconds": 412,
+        "text_offset": 92,
+        "word_length": 1,
+        "text": "4",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 66875000,
+        "duration_milliseconds": 87,
+        "text_offset": 93,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 67750000,
+        "duration_milliseconds": 150,
+        "text_offset": 95,
+        "word_length": 1,
+        "text": "4",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 69375000,
+        "duration_milliseconds": 462,
+        "text_offset": 97,
+        "word_length": 7,
+        "text": "becomes",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 74125000,
+        "duration_milliseconds": 362,
+        "text_offset": 105,
+        "word_length": 1,
+        "text": "8",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 78750000,
+        "duration_milliseconds": 87,
+        "text_offset": 106,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 79625000,
+        "duration_milliseconds": 112,
+        "text_offset": 108,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 80875000,
+        "duration_milliseconds": 162,
+        "text_offset": 112,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 82625000,
+        "duration_milliseconds": 400,
+        "text_offset": 114,
+        "word_length": 7,
+        "text": "becomes",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 86750000,
+        "duration_milliseconds": 300,
+        "text_offset": 122,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 90750000,
+        "duration_milliseconds": 100,
+        "text_offset": 123,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 91750000,
+        "duration_milliseconds": 112,
+        "text_offset": 125,
+        "word_length": 5,
+        "text": "while",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 93000000,
+        "duration_milliseconds": 87,
+        "text_offset": 131,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 94000000,
+        "duration_milliseconds": 250,
+        "text_offset": 135,
+        "word_length": 5,
+        "text": "other",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 96625000,
+        "duration_milliseconds": 237,
+        "text_offset": 141,
+        "word_length": 4,
+        "text": "rows",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99125000,
+        "duration_milliseconds": 200,
+        "text_offset": 146,
+        "word_length": 4,
+        "text": "stay",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 101250000,
+        "duration_milliseconds": 750,
+        "text_offset": 151,
+        "word_length": 9,
+        "text": "unchanged",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 108875000,
+        "duration_milliseconds": 112,
+        "text_offset": 160,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "we-multiply-each-element-in-the-first-row-by-2-f34aebc3.mp3",
+    "final_audio": "we-multiply-each-element-in-the-first-row-by-2-f34aebc3.mp3"
+  },
+  {
+    "input_text": "When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.",
+    "input_data": {
+      "input_text": "When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">When we add one row to another in a matrix, we add the numbers in each position. Watch as we add Row 1 to Row 2, combining 3 plus 2 and 4 plus 1 to get our new row of 5 and 5.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 175,
+        "text_offset": 0,
+        "word_length": 4,
+        "text": "When",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 2375000,
+        "duration_milliseconds": 112,
+        "text_offset": 5,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 3625000,
+        "duration_milliseconds": 175,
+        "text_offset": 8,
+        "word_length": 3,
+        "text": "add",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 5500000,
+        "duration_milliseconds": 262,
+        "text_offset": 12,
+        "word_length": 3,
+        "text": "one",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 8250000,
+        "duration_milliseconds": 187,
+        "text_offset": 16,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 10250000,
+        "duration_milliseconds": 112,
+        "text_offset": 20,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 11500000,
+        "duration_milliseconds": 387,
+        "text_offset": 23,
+        "word_length": 7,
+        "text": "another",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 15500000,
+        "duration_milliseconds": 87,
+        "text_offset": 31,
+        "word_length": 2,
+        "text": "in",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 16500000,
+        "duration_milliseconds": 50,
+        "text_offset": 34,
+        "word_length": 1,
+        "text": "a",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 17125000,
+        "duration_milliseconds": 700,
+        "text_offset": 36,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 25125000,
+        "duration_milliseconds": 87,
+        "text_offset": 42,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 26000000,
+        "duration_milliseconds": 162,
+        "text_offset": 44,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 27750000,
+        "duration_milliseconds": 175,
+        "text_offset": 47,
+        "word_length": 3,
+        "text": "add",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 29625000,
+        "duration_milliseconds": 75,
+        "text_offset": 51,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 30500000,
+        "duration_milliseconds": 400,
+        "text_offset": 55,
+        "word_length": 7,
+        "text": "numbers",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 34625000,
+        "duration_milliseconds": 125,
+        "text_offset": 63,
+        "word_length": 2,
+        "text": "in",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 36000000,
+        "duration_milliseconds": 175,
+        "text_offset": 66,
+        "word_length": 4,
+        "text": "each",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 37875000,
+        "duration_milliseconds": 637,
+        "text_offset": 71,
+        "word_length": 8,
+        "text": "position",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 44375000,
+        "duration_milliseconds": 112,
+        "text_offset": 79,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 53000000,
+        "duration_milliseconds": 275,
+        "text_offset": 81,
+        "word_length": 5,
+        "text": "Watch",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55875000,
+        "duration_milliseconds": 87,
+        "text_offset": 87,
+        "word_length": 2,
+        "text": "as",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 56875000,
+        "duration_milliseconds": 125,
+        "text_offset": 90,
+        "word_length": 2,
+        "text": "we",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 58250000,
+        "duration_milliseconds": 162,
+        "text_offset": 93,
+        "word_length": 3,
+        "text": "add",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 60000000,
+        "duration_milliseconds": 150,
+        "text_offset": 97,
+        "word_length": 3,
+        "text": "Row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 61625000,
+        "duration_milliseconds": 150,
+        "text_offset": 101,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 63250000,
+        "duration_milliseconds": 75,
+        "text_offset": 103,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 64125000,
+        "duration_milliseconds": 175,
+        "text_offset": 106,
+        "word_length": 3,
+        "text": "Row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 66000000,
+        "duration_milliseconds": 300,
+        "text_offset": 110,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 70000000,
+        "duration_milliseconds": 125,
+        "text_offset": 111,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 71250000,
+        "duration_milliseconds": 487,
+        "text_offset": 113,
+        "word_length": 9,
+        "text": "combining",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 76250000,
+        "duration_milliseconds": 200,
+        "text_offset": 123,
+        "word_length": 1,
+        "text": "3",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 78375000,
+        "duration_milliseconds": 300,
+        "text_offset": 125,
+        "word_length": 4,
+        "text": "plus",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 81500000,
+        "duration_milliseconds": 325,
+        "text_offset": 130,
+        "word_length": 1,
+        "text": "2",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 85750000,
+        "duration_milliseconds": 150,
+        "text_offset": 132,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 87375000,
+        "duration_milliseconds": 250,
+        "text_offset": 136,
+        "word_length": 1,
+        "text": "4",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 90000000,
+        "duration_milliseconds": 287,
+        "text_offset": 138,
+        "word_length": 4,
+        "text": "plus",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 93000000,
+        "duration_milliseconds": 300,
+        "text_offset": 143,
+        "word_length": 1,
+        "text": "1",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 97125000,
+        "duration_milliseconds": 87,
+        "text_offset": 145,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 98125000,
+        "duration_milliseconds": 150,
+        "text_offset": 148,
+        "word_length": 3,
+        "text": "get",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 99750000,
+        "duration_milliseconds": 100,
+        "text_offset": 152,
+        "word_length": 3,
+        "text": "our",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 100875000,
+        "duration_milliseconds": 187,
+        "text_offset": 156,
+        "word_length": 3,
+        "text": "new",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 102875000,
+        "duration_milliseconds": 175,
+        "text_offset": 160,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 104750000,
+        "duration_milliseconds": 75,
+        "text_offset": 164,
+        "word_length": 2,
+        "text": "of",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 105625000,
+        "duration_milliseconds": 275,
+        "text_offset": 167,
+        "word_length": 1,
+        "text": "5",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 108500000,
+        "duration_milliseconds": 100,
+        "text_offset": 169,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 109625000,
+        "duration_milliseconds": 550,
+        "text_offset": 173,
+        "word_length": 1,
+        "text": "5",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 115250000,
+        "duration_milliseconds": 112,
+        "text_offset": 174,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "when-we-add-one-row-to-another-in-a-matrix-we-add-14a492ce.mp3",
+    "final_audio": "when-we-add-one-row-to-another-in-a-matrix-we-add-14a492ce.mp3"
+  },
+  {
+    "input_text": "Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.",
+    "input_data": {
+      "input_text": "Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.",
+      "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+      "service": "azure",
+      "config": {
+        "voice": "en-US-JennyNeural",
+        "style": "friendly",
+        "output_format": "Audio48Khz192KBitRateMonoMp3",
+        "prosody": null
+      }
+    },
+    "ssml": "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\"\n    xmlns:mstts=\"https://www.w3.org/2001/mstts\" xml:lang=\"en-US\">\n    <voice name=\"en-US-JennyNeural\">\n        <mstts:express-as style=\"friendly\">Lets simplify this matrix by performing row operations. We multiply the first row by one half and subtract it from the second row to obtain zeros below our pivot, giving us our row echelon form.</mstts:express-as>\n    </voice>\n</speak>\n        ",
+    "word_boundaries": [
+      {
+        "audio_offset": 500000,
+        "duration_milliseconds": 300,
+        "text_offset": 0,
+        "word_length": 4,
+        "text": "Lets",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 3625000,
+        "duration_milliseconds": 437,
+        "text_offset": 5,
+        "word_length": 8,
+        "text": "simplify",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 8125000,
+        "duration_milliseconds": 225,
+        "text_offset": 14,
+        "word_length": 4,
+        "text": "this",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 10500000,
+        "duration_milliseconds": 537,
+        "text_offset": 19,
+        "word_length": 6,
+        "text": "matrix",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 16000000,
+        "duration_milliseconds": 137,
+        "text_offset": 26,
+        "word_length": 2,
+        "text": "by",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 17500000,
+        "duration_milliseconds": 562,
+        "text_offset": 29,
+        "word_length": 10,
+        "text": "performing",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 23250000,
+        "duration_milliseconds": 175,
+        "text_offset": 40,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 25125000,
+        "duration_milliseconds": 887,
+        "text_offset": 44,
+        "word_length": 10,
+        "text": "operations",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 34125000,
+        "duration_milliseconds": 100,
+        "text_offset": 54,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 42625000,
+        "duration_milliseconds": 137,
+        "text_offset": 56,
+        "word_length": 2,
+        "text": "We",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 44125000,
+        "duration_milliseconds": 450,
+        "text_offset": 59,
+        "word_length": 8,
+        "text": "multiply",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 48750000,
+        "duration_milliseconds": 125,
+        "text_offset": 68,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 50125000,
+        "duration_milliseconds": 325,
+        "text_offset": 72,
+        "word_length": 5,
+        "text": "first",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 53500000,
+        "duration_milliseconds": 137,
+        "text_offset": 78,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 55000000,
+        "duration_milliseconds": 162,
+        "text_offset": 82,
+        "word_length": 2,
+        "text": "by",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 56750000,
+        "duration_milliseconds": 225,
+        "text_offset": 85,
+        "word_length": 3,
+        "text": "one",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 59125000,
+        "duration_milliseconds": 362,
+        "text_offset": 89,
+        "word_length": 4,
+        "text": "half",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 63875000,
+        "duration_milliseconds": 100,
+        "text_offset": 94,
+        "word_length": 3,
+        "text": "and",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 65000000,
+        "duration_milliseconds": 487,
+        "text_offset": 98,
+        "word_length": 8,
+        "text": "subtract",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 70000000,
+        "duration_milliseconds": 75,
+        "text_offset": 107,
+        "word_length": 2,
+        "text": "it",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 70875000,
+        "duration_milliseconds": 150,
+        "text_offset": 110,
+        "word_length": 4,
+        "text": "from",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 72500000,
+        "duration_milliseconds": 87,
+        "text_offset": 115,
+        "word_length": 3,
+        "text": "the",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 73500000,
+        "duration_milliseconds": 387,
+        "text_offset": 119,
+        "word_length": 6,
+        "text": "second",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 77500000,
+        "duration_milliseconds": 187,
+        "text_offset": 126,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 79500000,
+        "duration_milliseconds": 125,
+        "text_offset": 130,
+        "word_length": 2,
+        "text": "to",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 80875000,
+        "duration_milliseconds": 362,
+        "text_offset": 133,
+        "word_length": 6,
+        "text": "obtain",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 84625000,
+        "duration_milliseconds": 337,
+        "text_offset": 140,
+        "word_length": 5,
+        "text": "zeros",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 88125000,
+        "duration_milliseconds": 287,
+        "text_offset": 146,
+        "word_length": 5,
+        "text": "below",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 91125000,
+        "duration_milliseconds": 125,
+        "text_offset": 152,
+        "word_length": 3,
+        "text": "our",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 92500000,
+        "duration_milliseconds": 437,
+        "text_offset": 156,
+        "word_length": 5,
+        "text": "pivot",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 97875000,
+        "duration_milliseconds": 162,
+        "text_offset": 161,
+        "word_length": 1,
+        "text": ",",
+        "boundary_type": "Punctuation"
+      },
+      {
+        "audio_offset": 99500000,
+        "duration_milliseconds": 275,
+        "text_offset": 163,
+        "word_length": 6,
+        "text": "giving",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 102375000,
+        "duration_milliseconds": 125,
+        "text_offset": 170,
+        "word_length": 2,
+        "text": "us",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 103750000,
+        "duration_milliseconds": 137,
+        "text_offset": 173,
+        "word_length": 3,
+        "text": "our",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 105250000,
+        "duration_milliseconds": 162,
+        "text_offset": 177,
+        "word_length": 3,
+        "text": "row",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 107000000,
+        "duration_milliseconds": 462,
+        "text_offset": 181,
+        "word_length": 7,
+        "text": "echelon",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 111750000,
+        "duration_milliseconds": 412,
+        "text_offset": 189,
+        "word_length": 4,
+        "text": "form",
+        "boundary_type": "Word"
+      },
+      {
+        "audio_offset": 116000000,
+        "duration_milliseconds": 112,
+        "text_offset": 193,
+        "word_length": 1,
+        "text": ".",
+        "boundary_type": "Punctuation"
+      }
+    ],
+    "original_audio": "lets-simplify-this-matrix-by-performing-row-a2a540a3.mp3",
+    "final_audio": "lets-simplify-this-matrix-by-performing-row-a2a540a3.mp3"
+  }
+]

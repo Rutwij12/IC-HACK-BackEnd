@@ -1,0 +1,60 @@
+1
+00:00:00,000 --> 00:00:04,247
+In linear algebra, we can perform row operations on matrices.
+
+2
+00:00:04,347 --> 00:00:07,240
+When we subtract half of row 1 from row 2,
+
+3
+00:00:07,340 --> 00:00:11,516
+we create an equivalent system that preserves all solutions.
+
+4
+00:00:11,600 --> 00:00:15,700
+In elementary row operations, we can swap any two rows. Watch as
+
+5
+00:00:15,800 --> 00:00:19,112
+we swap rows 1 and 2 of this matrix, moving the rows
+
+6
+00:00:19,212 --> 00:00:24,100
+into their new positions while maintaining the rest of the matrix unchanged.
+
+7
+00:00:24,600 --> 00:00:28,928
+We multiply each element in the first row by 2, transforming
+
+8
+00:00:29,028 --> 00:00:32,619
+the values. Watch as 2 becomes 4, 4 becomes 8, and
+
+9
+00:00:32,719 --> 00:00:36,236
+1 becomes 2, while the other rows stay unchanged.
+
+10
+00:00:42,100 --> 00:00:46,652
+When we add one row to another in a matrix, we add the numbers in
+
+11
+00:00:46,752 --> 00:00:51,305
+each position. Watch as we add Row 1 to Row 2, combining 3 plus 2
+
+12
+00:00:51,405 --> 00:00:54,384
+and 4 plus 1 to get our new row of 5 and 5.
+
+13
+00:00:58,100 --> 00:01:02,995
+Lets simplify this matrix by performing row operations. We multiply the first
+
+14
+00:01:03,095 --> 00:01:06,498
+row by one half and subtract it from the second row to
+
+15
+00:01:06,598 --> 00:01:10,456
+obtain zeros below our pivot, giving us our row echelon form.
+
