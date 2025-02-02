@@ -1,85 +1,69 @@
 from manim import *
-import numpy as np
 
-class RiemannSumsScene(Scene):
+class WhatIsASet(Scene):
     def construct(self):
-        # Create the coordinate system
-        axes = Axes(
-            x_range=[0, 2.5, 0.5],
-            y_range=[0, 5, 1],
-            x_length=6,
-            y_length=4,
-            axis_config={"include_tip": False, "color": GREY},
-        ).add_coordinates()
+        # 1. Initial State
+        title = Tex("What is a Set?").scale(1.5).to_edge(UP, buff=0.5)
+        empty_braces = Tex("\\{ \\}").scale(2)
         
-        # Create the function curve
-        curve = axes.plot(lambda x: x**2, x_range=[0, 2], color=BLUE)
+        # Create numbers that will go inside braces
+        numbers = [Tex(str(n)).scale(1.5).set_color(YELLOW) for n in [2, 5, 1, 4]]
+        # Position numbers horizontally with spacing
+        number_group = VGroup(*numbers).arrange(RIGHT, buff=0.7)
         
-        # Create function label
-        func_label = MathTex("f(x) = x^2").scale(0.8)
-        func_label.to_corner(UR).shift(LEFT * 0.5)
+        # Create the braces that will surround the numbers
+        left_brace = Tex("\\{").scale(2)
+        right_brace = Tex("\\}").scale(2)
         
-        # Initial state (0-3s)
+        # Position braces around where numbers will be
+        brace_group = VGroup(left_brace, right_brace)
+        left_brace.next_to(number_group, LEFT, buff=0.2)
+        right_brace.next_to(number_group, RIGHT, buff=0.2)
+        
+        # Animate initial state
+        self.play(Write(title))
+        self.play(Write(brace_group))
+        
+        # 2. Adding Elements
+        for number in numbers:
+            self.play(
+                FadeIn(number, scale=1.2),
+                rate_func=smooth,
+                run_time=0.5
+            )
+        
+        # Create full set group for transformations
+        set_group = VGroup(left_brace, *numbers, right_brace)
+        
+        # 3. Demonstrating Unordered Property
+        # First rearrangement (sorted order)
+        sorted_numbers = [Tex(str(n)).scale(1.5).set_color(YELLOW) for n in [1, 2, 4, 5]]
+        sorted_group = VGroup(*sorted_numbers).arrange(RIGHT, buff=0.7)
+        sorted_group.move_to(number_group)
+        
+        # Random order numbers
+        random_numbers = [Tex(str(n)).scale(1.5).set_color(YELLOW) for n in [4, 1, 5, 2]]
+        random_group = VGroup(*random_numbers).arrange(RIGHT, buff=0.7)
+        random_group.move_to(number_group)
+        
+        # Add explanatory text
+        unordered_text = Tex("Sets are unordered collections", color=LIGHT_BLUE)
+        unordered_text.to_edge(DOWN, buff=1.5)
+        
+        # Animate rearrangements
         self.play(
-            FadeIn(axes),
-            run_time=1
-        )
-        self.play(
-            Create(curve),
-            FadeIn(func_label),
+            Transform(VGroup(*numbers), sorted_group),
             run_time=2
         )
-        
-        # Function to create rectangles
-        def create_riemann_rectangles(n_rectangles):
-            dx = 2 / n_rectangles
-            rectangles = VGroup()
-            for i in range(n_rectangles):
-                x = i * dx
-                height = x**2
-                rect = Rectangle(
-                    width=dx,
-                    height=height,
-                    fill_opacity=0.6,
-                    fill_color=ORANGE,
-                    stroke_width=0.5
-                )
-                rect.next_to(axes.c2p(x, 0), UP, buff=0)
-                rect.stretch_to_fit_height(height * axes.y_axis.scaling.scale_factor)
-                rectangles.add(rect)
-            return rectangles
-        
-        # First approximation (3-6s)
-        rects_4 = create_riemann_rectangles(4)
         self.play(
-            FadeIn(rects_4),
-            run_time=3
-        )
-        
-        # Refinement (6-11s)
-        rects_8 = create_riemann_rectangles(8)
-        rects_16 = create_riemann_rectangles(16)
-        
-        self.play(
-            ReplacementTransform(rects_4, rects_8),
-            run_time=2.5
-        )
-        
-        self.play(
-            ReplacementTransform(rects_8, rects_16),
-            run_time=2.5
-        )
-        
-        # Final text (11-15s)
-        final_text = Text(
-            "As rectangles get thinner, approximation improves",
-            font_size=24
-        ).to_edge(DOWN)
-        
-        self.play(
-            FadeIn(final_text),
+            Transform(VGroup(*numbers), random_group),
             run_time=2
         )
+        self.play(Write(unordered_text))
         
-        # Hold for remaining time
-        self.wait(2)
+        # 4. Final State
+        unique_text = Tex("Elements can only appear once", color=LIGHT_BLUE)
+        unique_text.next_to(unordered_text, DOWN, buff=0.5)
+        
+        self.play(Write(unique_text))
+        self.wait()

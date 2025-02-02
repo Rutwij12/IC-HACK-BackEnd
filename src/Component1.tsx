@@ -1,58 +1,57 @@
-function QuickIntroText() {
-  return (
-    <div style={{
-      fontFamily: 'Arial',
-      color: '#FF8533',
-      padding: '20px',
+function SetDefinitionText() {
+  const styles = {
+    container: {
+      fontFamily: 'Arial, sans-serif',
       maxWidth: '800px',
-      margin: '0 auto'
-    }}>
-      <h2 style={{
-        fontSize: '28px',
-        color: '#FF6600',
-        marginBottom: '20px'
-      }}>
-        What is Integration?
-      </h2>
+      margin: '20px auto',
+      padding: '20px',
+      color: '#cc7000'
+    },
+    title: {
+      fontSize: '28px',
+      color: '#ff8c00',
+      marginBottom: '20px'
+    },
+    subtitle: {
+      fontSize: '22px',
+      color: '#ffa500',
+      marginTop: '20px',
+      marginBottom: '12px'
+    },
+    text: {
+      fontSize: '16px',
+      lineHeight: '1.6',
+      marginBottom: '16px'
+    }
+  }
 
-      <div style={{
-        fontSize: '18px',
-        lineHeight: '1.6',
-        color: '#FF944D'
-      }}>
-        <p>
-          Integration is a fundamental concept in calculus that helps us find the total amount
-          of a quantity over an interval. Think of it as adding up infinitely many infinitely
-          small pieces to find a total.
-        </p>
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>Understanding Mathematical Sets</h1>
 
-        <h3 style={{
-          fontSize: '22px',
-          color: '#FF751A',
-          marginTop: '20px',
-          marginBottom: '15px'
-        }}>
-          Real World Applications
-        </h3>
+      <h2 style={styles.subtitle}>What is a Set?</h2>
+      <p style={styles.text}>
+        A set is a collection of distinct objects, considered as an object in its own right. The objects in a set are called its elements or members. Sets are usually denoted by capital letters.
+      </p>
 
-        <p>
-          We use integration in countless real-world scenarios:
-        </p>
+      <h2 style={styles.subtitle}>Basic Properties of Sets</h2>
+      <p style={styles.text}>
+        Sets have several fundamental properties:
+        • Sets are unordered - the order of elements doesn't matter
+        • Sets contain unique elements - no duplicates are allowed
+        • Sets can be finite or infinite in size
+        • Sets can contain any type of objects
+      </p>
 
-        <ul style={{color: '#FF944D', marginLeft: '20px'}}>
-          <li>Calculating the total distance traveled from speed</li>
-          <li>Finding the volume of irregular shapes</li>
-          <li>Computing the total energy consumption over time</li>
-          <li>Determining the center of mass of objects</li>
-          <li>Analyzing probability distributions in statistics</li>
-        </ul>
+      <h2 style={styles.subtitle}>Set Notation</h2>
+      <p style={styles.text}>
+        Sets are typically written using curly braces. The elements inside can be listed explicitly or described using a rule or condition. A set can also be empty, containing no elements at all.
+      </p>
 
-        <p style={{marginTop: '15px'}}>
-          Whether you're an engineer designing buildings, a physicist studying motion,
-          or an economist analyzing market trends, integration provides the tools to
-          understand how quantities accumulate and change over time or space.
-        </p>
-      </div>
+      <h2 style={styles.subtitle}>Working with Sets</h2>
+      <p style={styles.text}>
+        Sets can be manipulated through various operations like union (combining sets), intersection (finding common elements), and complement (elements not in a set). These operations allow us to solve complex problems and represent relationships between different groups of objects.
+      </p>
     </div>
-  );
+  )
 }

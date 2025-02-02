@@ -1,72 +1,94 @@
-function IntegrationTypesGrid() {
-  const integrationTypes = [
-    {
-      title: "API Integration",
-      description: "Direct communication between systems using REST or GraphQL APIs"
+function SetMembershipVisualizer() {
+  const [elements, setElements] = React.useState([
+    { id: 1, value: 'A', inSet: true },
+    { id: 2, value: 'B', inSet: false },
+    { id: 3, value: 'C', inSet: true },
+    { id: 4, value: 'D', inSet: false }
+  ]);
+
+  const toggleMembership = (id) => {
+    setElements(elements.map(element => 
+      element.id === id ? { ...element, inSet: !element.inSet } : element
+    ));
+  };
+
+  const styles = {
+    container: {
+      fontFamily: 'Arial',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
     },
-    {
-      title: "Webhook Integration", 
-      description: "Event-driven integration using HTTP callbacks"
+    title: {
+      fontSize: '24px',
+      color: '#ff8c00',
+      marginBottom: '20px'
     },
-    {
-      title: "File-based Integration",
-      description: "Exchange of data through file transfers (CSV, XML, JSON)"
+    setContainer: {
+      border: '3px solid #ffa500',
+      borderRadius: '50%',
+      width: '300px',
+      height: '300px',
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
-    {
-      title: "Database Integration",
-      description: "Direct database connections and synchronization"
+    element: {
+      cursor: 'pointer',
+      padding: '10px',
+      margin: '5px',
+      borderRadius: '50%',
+      width: '30px',
+      height: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      transition: 'all 0.5s ease',
+      backgroundColor: '#fff',
+      border: '2px solid #ff8c00',
+      color: '#ff8c00',
+      fontWeight: 'bold'
     },
-    {
-      title: "Message Queue",
-      description: "Asynchronous communication using message brokers"
-    },
-    {
-      title: "SDK Integration",
-      description: "Using software development kits for native integration"
+    legend: {
+      marginTop: '20px',
+      color: '#ff8c00',
+      fontSize: '16px'
     }
-  ];
+  };
 
   return (
-    <div style={{
-      fontFamily: 'Arial',
-      padding: '20px'
-    }}>
-      <h1 style={{
-        color: '#FF8C00',
-        fontSize: '2em',
-        marginBottom: '30px'
-      }}>
-        Integration Types
-      </h1>
+    <div style={styles.container}>
+      <h2 style={styles.title}>Set Membership Visualizer</h2>
       
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '20px'
-      }}>
-        {integrationTypes.map((type, index) => (
-          <div key={index} style={{
-            padding: '20px',
-            border: '2px solid #FFA500',
-            borderRadius: '8px',
-            backgroundColor: '#FFF8DC'
-          }}>
-            <h3 style={{
-              color: '#FF4500',
-              marginBottom: '10px',
-              fontSize: '1.2em'
-            }}>
-              {type.title}
-            </h3>
-            <p style={{
-              color: '#FF8C00',
-              fontSize: '0.9em',
-              lineHeight: '1.4'
-            }}>
-              {type.description}
-            </p>
-          </div>
-        ))}
+      <div style={styles.setContainer}>
+        {elements.map((element, index) => {
+          const angle = (index * 360) / elements.length;
+          const radius = element.inSet ? 70 : 130;
+          const left = 150 + radius * Math.cos((angle * Math.PI) / 180);
+          const top = 150 + radius * Math.sin((angle * Math.PI) / 180);
+          
+          return (
+            <div
+              key={element.id}
+              style={{
+                ...styles.element,
+                left: `${left}px`,
+                top: `${top}px`,
+                backgroundColor: element.inSet ? '#fff3e0' : '#fff'
+              }}
+              onClick={() => toggleMembership(element.id)}
+            >
+              {element.value}
+            </div>
+          );
+        })}
+      </div>
+      
+      <div style={styles.legend}>
+        Click elements to toggle set membership
       </div>
     </div>
   );

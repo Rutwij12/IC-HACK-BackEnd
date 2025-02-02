@@ -1,69 +1,59 @@
 from manim import *
 
-class AntiderivativeIntroduction(Scene):
+class SetMembershipDemonstration(Scene):
     def construct(self):
-        # Title
-        title = Text("Power Rule for Antiderivatives").scale(0.8)
-        title.to_edge(UP, buff=0.5)
+        # Create the circle (set A)
+        circle = Circle(radius=2, color="#2C3E50", stroke_width=2)
+        circle.set_fill(color="#2C3E50", opacity=0.1)
+
+        # Create the set label
+        set_label = MathTex("A = \\{1, 2, 3, 4\\}").scale(1.2)
+        set_label.move_to(circle.get_top() + DOWN * 0.5)
+
+        # Create elements inside the circle
+        element_2 = MathTex("2").move_to(circle.get_center() + LEFT)
+        element_4 = MathTex("4").move_to(circle.get_center() + RIGHT)
+
+        # Create elements outside the circle
+        element_5 = MathTex("5").move_to(circle.get_center() + LEFT * 2 + DOWN)
+        element_7 = MathTex("7").move_to(circle.get_center() + RIGHT * 2 + DOWN)
+
+        # Create membership statements
+        membership_2 = MathTex("2 \\in A").move_to(LEFT * 2.5 + UP * 2)
+        membership_4 = MathTex("4 \\in A").move_to(RIGHT * 2.5 + UP * 2)
+        membership_5 = MathTex("5 \\notin A").move_to(LEFT * 2.5 + DOWN * 2)
+        membership_7 = MathTex("7 \\notin A").move_to(RIGHT * 2.5 + DOWN * 2)
+
+        # Color the membership symbols
+        for tex in [membership_2, membership_4]:
+            tex[0][1].set_color("#27AE60")  # Color ∈ green
         
-        # Original function setup
-        original_label = Text("Original Function:", color=WHITE).scale(0.6)
-        original_function = MathTex("f(x) = x^2", color=BLUE)
-        original_group = VGroup(original_label, original_function).arrange(DOWN, buff=0.3)
-        original_group.move_to(LEFT * 3)
-        
-        # Arrows and transformation labels
-        arrow1 = Arrow(LEFT * 1.5, RIGHT * 0.5, color=GRAY)
-        arrow1.next_to(original_function, RIGHT, buff=0.5)
-        step1_label = Text("+1 to exponent", color=WHITE).scale(0.5)
-        step1_label.next_to(arrow1, UP, buff=0.2)
-        
-        # First transformation
-        intermediate = MathTex("x^3", color=BLUE)
-        intermediate.next_to(arrow1, RIGHT, buff=0.5)
-        
-        # Second arrow and label
-        arrow2 = Arrow(LEFT * 0.5, RIGHT * 1.5, color=GRAY)
-        arrow2.next_to(intermediate, RIGHT, buff=0.5)
-        step2_label = Text("÷ by new exponent (3)", color=WHITE).scale(0.5)
-        step2_label.next_to(arrow2, UP, buff=0.2)
-        
-        # Final antiderivative
-        antider_label = Text("Antiderivative:", color=WHITE).scale(0.6)
-        final_function = MathTex("F(x) = \\frac{x^3}{3}", color=GREEN)
-        final_group = VGroup(antider_label, final_function).arrange(DOWN, buff=0.3)
-        final_group.move_to(RIGHT * 3)
-        
-        # Animations
-        self.play(FadeIn(title), run_time=0.5)
+        for tex in [membership_5, membership_7]:
+            tex[0][1].set_color("#E74C3C")  # Color ∉ red
+
+        # Initial animations
         self.play(
-            FadeIn(original_label),
-            FadeIn(original_function),
-            run_time=1
+            Create(circle),
+            FadeIn(set_label)
         )
+
+        # Animate the inside elements and their membership statements
+        self.wait(0.5)
+        self.play(FadeIn(element_2))
+        self.play(FadeIn(membership_2))
         
-        self.play(
-            Create(arrow1),
-            FadeIn(step1_label),
-            run_time=1
-        )
+        self.wait(0.5)
+        self.play(FadeIn(element_4))
+        self.play(FadeIn(membership_4))
+
+        # Animate the outside elements and their membership statements
+        self.wait(0.5)
+        self.play(FadeIn(element_5))
+        self.play(FadeIn(membership_5))
         
-        self.play(
-            TransformFromCopy(original_function, intermediate),
-            run_time=1.5
-        )
-        
-        self.play(
-            Create(arrow2),
-            FadeIn(step2_label),
-            run_time=1
-        )
-        
-        self.play(
-            TransformFromCopy(intermediate, final_function),
-            FadeIn(antider_label),
-            run_time=1.5
-        )
-        
-        # Hold the final scene
-        self.wait(2)
+        self.wait(0.5)
+        self.play(FadeIn(element_7))
+        self.play(FadeIn(membership_7))
+
+        # Final pause
+        self.wait(1)

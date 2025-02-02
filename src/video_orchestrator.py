@@ -301,7 +301,7 @@ class VideoOrchestrator:
                             stdout.decode()}\nStderr: {stderr.decode()}")
 
         filename = os.path.join(os.path.dirname(
-            __file__), "scene_1_temp_code.py")
+            __file__), "scene_0_temp_code.py")
         async with aiofiles.open(filename) as f:
             code_content = await f.read()
 
@@ -334,6 +334,7 @@ class VideoOrchestrator:
         for root, _, files in os.walk("media/images"):
             for file in files:
                 if file.endswith(".png"):
+                    print(thumbnail_path)
                     thumbnail_path = os.path.join(root, file)
                     break
 

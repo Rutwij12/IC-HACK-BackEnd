@@ -4,327 +4,336 @@ import numpy as np
 from manim_voiceover import VoiceoverScene
 from manim_voiceover.services.azure import AzureService
 
-class CombinedScene(VoiceoverScene):
+class CombinedScene(VoiceoverScene, MovingCameraScene):
     def construct(self):
         # Set up Azure TTS service
         self.set_speech_service(AzureService(
             voice='en-US-JennyNeural',
             style='friendly'
         ))
-
+        self.play(self.camera.frame.animate.scale(1.2))
 
         # Scene 1
-        with self.voiceover(text="""Let's look at the parabola function x squared. As we plot the curve from zero to one and shade underneath, we can find that the exact area equals one-third using integration.""") as tracker:
+        with self.voiceover(text="""Let's see how everyday objects like an apple, a ball, and a star can become a mathematical set. Watch as these items transform into numbers, and then get wrapped in special brackets that make them a proper set.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Create the coordinate system
-            grid = NumberPlane(
-                x_range=[-0.5, 1.5, 0.5],
-                y_range=[0, 1.5, 0.5],
-                x_length=8,
-                y_length=6,
-                background_line_style={
-                    "stroke_color": "#ecf0f1",
-                    "stroke_width": 1,
-                    "stroke_opacity": 0.8
-                }
-            ).shift(LEFT)
-            axes = Axes(
-                x_range=[-0.5, 1.5, 0.5],
-                y_range=[0, 1.5, 0.5],
-                x_length=8,
-                y_length=6,
-                axis_config={
-                    "stroke_color": "#2c3e50",
-                    "stroke_width": 2,
-                }
-            ).shift(LEFT)
-            # Create axis labels
-            x_label = MathTex("x").next_to(axes.x_axis, RIGHT)
-            y_label = MathTex("y").next_to(axes.y_axis, UP)
-            # Create the curve
-            curve = axes.plot(
-                lambda x: x**2,
-                x_range=[0, 1],
-                color="#3498db",
-                stroke_width=3
+            # Part 1: Physical Items
+            # Create circular objects with labels
+            apple = Circle(radius=0.4, color=RED, fill_opacity=0.8)
+            ball = Circle(radius=0.4, color=BLUE, fill_opacity=0.8)
+            star = Circle(radius=0.4, color=YELLOW, fill_opacity=0.8)
+            # Add labels below the objects
+            apple_text = Text("Apple", font_size=24).next_to(apple, DOWN, buff=0.2)
+            ball_text = Text("Ball", font_size=24).next_to(ball, DOWN, buff=0.2)
+            star_text = Text("Star", font_size=24).next_to(star, DOWN, buff=0.2)
+            # Position objects in a horizontal line
+            objects_group = VGroup(apple, ball, star).arrange(RIGHT, buff=1)
+            objects_group.shift(UP * 0.5)
+            # Position labels
+            apple_text.next_to(apple, DOWN, buff=0.2)
+            ball_text.next_to(ball, DOWN, buff=0.2)
+            star_text.next_to(star, DOWN, buff=0.2)
+            # Create a group of all physical objects and their labels
+            physical_items = VGroup(
+                apple, ball, star,
+                apple_text, ball_text, star_text
             )
-            # Create area
-            area = axes.get_area(
-                curve,
-                x_range=(0, 1),
-                color="#3498db",
-                opacity=0.4
-            )
-            # Create vertical lines
-            v_line_0 = DashedLine(
-                axes.c2p(0, 0),
-                axes.c2p(0, 0.5),
-                dash_length=0.1,
-                color="#95a5a6"
-            )
-            v_line_1 = DashedLine(
-                axes.c2p(1, 0),
-                axes.c2p(1, 1),
-                dash_length=0.1,
-                color="#95a5a6"
-            )
-            # Create text
-            function_label = MathTex("f(x) = x^2").scale(1.2)
-            function_label.move_to(axes.c2p(1.5, 1.3))
-            area_text = MathTex(r"\text{Area} = \int_0^1 x^2 dx = \frac{1}{3}").scale(1.2)
-            area_text.move_to(axes.c2p(1.5, 0.8))
-            # Animation sequence
+            # Animate the appearance of physical items
             self.play(
-                FadeIn(grid),
-                Create(axes),
-                FadeIn(x_label),
-                FadeIn(y_label),
-                run_time=3
+                FadeIn(physical_items),
+                run_time=1.5
             )
+            self.wait(1)
+            # Part 2: Transition to Mathematical Set
+            # Create numbers in the same positions as objects
+            numbers = VGroup(
+                *[MathTex(str(i)) for i in range(1, 4)]
+            ).arrange(RIGHT, buff=1)
+            numbers.move_to(objects_group.get_center())
+            # Transition from objects to numbers
             self.play(
-                Create(curve),
-                run_time=3
+                FadeOut(physical_items),
+                FadeIn(numbers),
+                run_time=1.5
             )
+            self.wait(1)
+            # Part 3: Adding Set Notation
+            # Create the full set notation
+            final_set = MathTex(r"\{1, 2, 3\}")
+            final_set.scale(1.5)
+            # Position the final set in the center
+            final_set.move_to(ORIGIN)
+            # Animate the transition to set notation
             self.play(
-                Write(function_label),
-                run_time=2
-            )
-            self.play(
-                Create(v_line_0),
-                Create(v_line_1),
-                run_time=1
-            )
-            self.play(
-                FadeIn(area),
-                run_time=2
-            )
-            self.play(
-                Write(area_text),
-                run_time=2
+                TransformMatchingShapes(numbers, final_set),
+                run_time=1.5
             )
             self.wait(2)
 
         # Scene 2
-        with self.voiceover(text="""We start with a parabola and break it into rectangles. As we increase the number of rectangles from 4 to 8 to 16, watch how our approximation of the area under the curve becomes more accurate.""") as tracker:
+        with self.voiceover(text="""In a set, each number can appear only once. As we combine these identical twos, we see that sets automatically eliminate any duplicates, leaving us with the unique elements one, two, and three.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Create the coordinate system
-            axes = Axes(
-                x_range=[0, 2.5, 0.5],
-                y_range=[0, 5, 1],
-                x_length=6,
-                y_length=4,
-                axis_config={"include_tip": False, "color": GREY},
-            ).add_coordinates()
-            # Create the function curve
-            curve = axes.plot(lambda x: x**2, x_range=[0, 2], color=BLUE)
-            # Create function label
-            func_label = MathTex("f(x) = x^2").scale(0.8)
-            func_label.to_corner(UR).shift(LEFT * 0.5)
-            # Initial state (0-3s)
+            # Initial set elements
+            one = Text("1", color=BLUE).scale(1.5)
+            two1 = Text("2", color=RED).scale(1.5)
+            two2 = Text("2", color=RED).scale(1.5)
+            three = Text("3", color=GREEN).scale(1.5)
+            # Create braces
+            left_brace = Text("{").scale(1.5)
+            right_brace = Text("}").scale(1.5)
+            # Initial positioning
+            elements = VGroup(left_brace, one, two1, two2, three, right_brace)
+            elements.arrange(RIGHT, buff=0.5)
+            elements.move_to(UP)
+            # Fade in initial set
+            self.play(FadeIn(elements))
+            self.wait(1)
+            # Store the original position of the first '2' for later
+            two1_original_pos = two1.get_center()
+            # Animate the merging of the two 2s
             self.play(
-                FadeIn(axes),
-                run_time=1
-            )
-            self.play(
-                Create(curve),
-                FadeIn(func_label),
+                two2.animate.move_to(two1.get_center()),
+                rate_func=smooth,
                 run_time=2
             )
-            # Function to create rectangles
-            def create_riemann_rectangles(n_rectangles):
-                dx = 2 / n_rectangles
-                rectangles = VGroup()
-                for i in range(n_rectangles):
-                    x = i * dx
-                    height = x**2
-                    rect = Rectangle(
-                        width=dx,
-                        height=height,
-                        fill_opacity=0.6,
-                        fill_color=ORANGE,
-                        stroke_width=0.5
-                    )
-                    rect.next_to(axes.c2p(x, 0), UP, buff=0)
-                    rect.stretch_to_fit_height(height * axes.y_axis.scaling.scale_factor)
-                    rectangles.add(rect)
-                return rectangles
-            # First approximation (3-6s)
-            rects_4 = create_riemann_rectangles(4)
+            # Flash effect and pulse animation
             self.play(
-                FadeIn(rects_4),
-                run_time=3
+                Flash(two1.get_center(), color=RED, flash_radius=0.5),
+                two1.animate.scale(1.2),
+                run_time=0.5
             )
-            # Refinement (6-11s)
-            rects_8 = create_riemann_rectangles(8)
-            rects_16 = create_riemann_rectangles(16)
+            self.play(two1.animate.scale(1/1.2), run_time=0.5)
+            # Remove the second 2
+            self.remove(two2)
+            # Rearrange remaining elements
+            final_set = VGroup(left_brace, one, two1, three, right_brace)
+            final_set.arrange(RIGHT, buff=0.5)
+            final_set.move_to(UP)
+            # Animate the rearrangement
             self.play(
-                ReplacementTransform(rects_4, rects_8),
-                run_time=2.5
+                *[elem.animate.move_to(final_set[i].get_center()) 
+                  for i, elem in enumerate([left_brace, one, two1, three, right_brace])],
+                run_time=1.5
             )
-            self.play(
-                ReplacementTransform(rects_8, rects_16),
-                run_time=2.5
-            )
-            # Final text (11-15s)
-            final_text = Text(
-                "As rectangles get thinner, approximation improves",
-                font_size=24
-            ).to_edge(DOWN)
-            self.play(
-                FadeIn(final_text),
-                run_time=2
-            )
-            # Hold for remaining time
-            self.wait(2)
+            # Add explanatory text
+            explanation = Text("Sets contain unique elements", 
+                             font="Arial").scale(0.8)
+            explanation.move_to(DOWN)
+            # Fade in the explanation
+            self.play(FadeIn(explanation))
+            # Final hold
+            self.wait(3)
 
         # Scene 3
-        with self.voiceover(text="""Let's find an antiderivative using the power rule. Starting with x squared, we first add 1 to the exponent, giving us x cubed. Then, we divide by the new exponent - 3 - to get our antiderivative: x cubed over 3.""") as tracker:
+        with self.voiceover(text="""A set is a collection of distinct elements. We can show this with the set A containing two, four, six, and eight. Empty sets contain no elements, while sets can be either finite with specific elements, or infinite continuing forever.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Title
-            title = Text("Power Rule for Antiderivatives").scale(0.8)
-            title.to_edge(UP, buff=0.5)
-            # Original function setup
-            original_label = Text("Original Function:", color=WHITE).scale(0.6)
-            original_function = MathTex("f(x) = x^2", color=BLUE)
-            original_group = VGroup(original_label, original_function).arrange(DOWN, buff=0.3)
-            original_group.move_to(LEFT * 3)
-            # Arrows and transformation labels
-            arrow1 = Arrow(LEFT * 1.5, RIGHT * 0.5, color=GRAY)
-            arrow1.next_to(original_function, RIGHT, buff=0.5)
-            step1_label = Text("+1 to exponent", color=WHITE).scale(0.5)
-            step1_label.next_to(arrow1, UP, buff=0.2)
-            # First transformation
-            intermediate = MathTex("x^3", color=BLUE)
-            intermediate.next_to(arrow1, RIGHT, buff=0.5)
-            # Second arrow and label
-            arrow2 = Arrow(LEFT * 0.5, RIGHT * 1.5, color=GRAY)
-            arrow2.next_to(intermediate, RIGHT, buff=0.5)
-            step2_label = Text("÷ by new exponent (3)", color=WHITE).scale(0.5)
-            step2_label.next_to(arrow2, UP, buff=0.2)
-            # Final antiderivative
-            antider_label = Text("Antiderivative:", color=WHITE).scale(0.6)
-            final_function = MathTex("F(x) = \\frac{x^3}{3}", color=GREEN)
-            final_group = VGroup(antider_label, final_function).arrange(DOWN, buff=0.3)
-            final_group.move_to(RIGHT * 3)
-            # Animations
-            self.play(FadeIn(title), run_time=0.5)
-            self.play(
-                FadeIn(original_label),
-                FadeIn(original_function),
-                run_time=1
-            )
-            self.play(
-                Create(arrow1),
-                FadeIn(step1_label),
-                run_time=1
-            )
-            self.play(
-                TransformFromCopy(original_function, intermediate),
-                run_time=1.5
-            )
-            self.play(
-                Create(arrow2),
-                FadeIn(step2_label),
-                run_time=1
-            )
-            self.play(
-                TransformFromCopy(intermediate, final_function),
-                FadeIn(antider_label),
-                run_time=1.5
-            )
-            # Hold the final scene
-            self.wait(2)
-
-        # Scene 4
-        with self.voiceover(text="""Let's understand how the Fundamental Theorem of Calculus works with a simple example. Using x-squared as our function, we'll find the area between x equals 1 and 2 by using its antiderivative. Watch as we evaluate step by step to arrive at our final answer of seven-thirds.""") as tracker:
-
-            # Transition
-            self.wait(0.5)  # Wait for a moment
-            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
-            self.wait(0.5)  # Brief pause before next scene
-
-            # Part 1: Title and General Formula
-            title = Text("Fundamental Theorem of Calculus", font_size=40)
-            title.to_edge(UP, buff=0.5)
-            general_formula = MathTex(
-                r"\int_a^b f(x)dx = F(b) - F(a)",
-                font_size=36
-            )
-            general_formula.next_to(title, DOWN, buff=0.3)
-            subtitle = Text("where F(x) is the antiderivative of f(x)", font_size=28)
-            subtitle.next_to(general_formula, DOWN, buff=0.2)
+            # Part 1: Elements and Sets
+            title = Text("Sets", font_size=48).shift(UP*2)
+            # Create oval and numbers
+            oval = Ellipse(width=3, height=2, color=WHITE)
+            numbers = VGroup(*[MathTex(str(n), font_size=36) for n in [2, 4, 6, 8]])
+            numbers.arrange(RIGHT, buff=0.6).move_to(oval.get_center())
+            # Set notation
+            set_notation = MathTex("A = \\{2, 4, 6, 8\\}", font_size=32).shift(DOWN*1.5)
+            membership = MathTex("2 \\in A", font_size=32).shift(DOWN*2)
             # Animate Part 1
-            self.play(Write(title), run_time=1)
+            self.play(Write(title))
+            self.play(Create(oval), Write(numbers))
+            self.play(Write(set_notation))
+            self.play(Write(membership))
+            self.play(numbers[0].animate.scale(1.2), run_time=0.3)
+            self.play(numbers[0].animate.scale(1/1.2), run_time=0.3)
+            # Fade out Part 1
             self.play(
-                Write(general_formula),
-                Write(subtitle),
-                run_time=1.5
+                *[FadeOut(obj) for obj in [title, oval, numbers, set_notation, membership]]
             )
-            # Group and move initial elements up
-            initial_group = VGroup(title, general_formula, subtitle)
-            self.play(
-                initial_group.animate.scale(0.8).to_edge(UP, buff=0.2),
-                run_time=1
-            )
-            # Part 2: Specific Example
-            integral = MathTex(
-                r"\int_1^2 x^2 dx = \left[\frac{1}{3}x^3\right]_1^2",
-                font_size=36
-            )
-            integral.move_to(ORIGIN)
-            steps = VGroup(
-                MathTex(r"= \frac{1}{3}(2^3) - \frac{1}{3}(1^3)", font_size=36),
-                MathTex(r"= \frac{1}{3}(8) - \frac{1}{3}(1)", font_size=36),
-                MathTex(r"= \frac{8}{3} - \frac{1}{3}", font_size=36),
-                MathTex(r"= \frac{7}{3}", font_size=36)
-            )
-            # Position steps
-            for i, step in enumerate(steps):
-                if i == 0:
-                    step.next_to(integral, DOWN, buff=0.5)
-                else:
-                    step.next_to(steps[i-1], DOWN, buff=0.3)
+            # Part 2: Empty Set
+            empty_set_oval = Ellipse(width=2, height=1.5, color=WHITE).shift(LEFT)
+            empty_braces = MathTex("\\{ \\}", font_size=36).shift(LEFT)
+            equals = MathTex("=", font_size=36)
+            empty_symbol = MathTex("\\emptyset", font_size=36).shift(RIGHT)
+            empty_label = Text("Empty Set", font_size=32).shift(DOWN)
             # Animate Part 2
-            self.play(Write(integral), run_time=1)
-            for step in steps:
-                self.play(Write(step), run_time=0.75)
-            # Part 3: Highlight Final Answer
-            final_answer = steps[-1]
-            highlighted_answer = MathTex(r"= \frac{7}{3}", font_size=48, color=YELLOW)
-            highlighted_answer.move_to(final_answer)
-            brace = Brace(highlighted_answer, DOWN)
-            brace_text = Text(
-                "Area under curve from x=1 to x=2",
-                font_size=24
+            self.play(
+                Create(empty_set_oval),
+                Write(empty_braces),
+                Write(equals),
+                Write(empty_symbol),
+                Write(empty_label)
             )
-            brace_text.next_to(brace, DOWN, buff=0.2)
+            # Fade out Part 2
+            self.play(
+                *[FadeOut(obj) for obj in [empty_set_oval, empty_braces, equals, empty_symbol, empty_label]]
+            )
+            # Part 3: Finite vs Infinite Sets
+            finite_set = MathTex("\\{1, 2, 3, 4\\}", font_size=36).shift(LEFT*2)
+            infinite_set = MathTex("\\{1, 2, 3, ...\\}", font_size=36).shift(RIGHT*2)
+            finite_label = Text("Finite Set", font_size=32).shift(LEFT*2 + DOWN)
+            infinite_label = Text("Infinite Set", font_size=32).shift(RIGHT*2 + DOWN)
             # Animate Part 3
             self.play(
-                ReplacementTransform(final_answer, highlighted_answer),
-                run_time=0.75
+                Write(finite_set),
+                Write(infinite_set)
             )
             self.play(
-                Create(brace),
-                Write(brace_text),
-                run_time=1
+                Write(finite_label),
+                Write(infinite_label)
             )
-            # Pause at the end
+            # Hold final state
+            self.wait()
+
+        # Scene 4
+        with self.voiceover(text="""Let's explore subset relationships. When all elements of set A are also in set B, we call A a subset of B. Here we see that the three numbers in set A - 1, 2, and 3 - are all contained within set B.""") as tracker:
+
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # 1. Title
+            title = Text("Subset Relationships", font_size=40)
+            title.to_edge(UP, buff=0.5)
+            # 2. Create Circles for Venn Diagram
+            circle_b = Circle(radius=2, color=BLUE, fill_opacity=0.3)
+            circle_b.move_to(ORIGIN)
+            circle_a = Circle(radius=1, color=RED, fill_opacity=0.3)
+            circle_a.move_to(LEFT*0.5)
+            # 3. Create Labels
+            label_b = MathTex("B", font_size=36).move_to(RIGHT*1.5 + UP)
+            label_a = MathTex("A", font_size=36).move_to(LEFT*0.5)
+            # Create set notation
+            set_a = MathTex("A = \\{1, 2, 3\\}", font_size=36).move_to(LEFT*2 + DOWN*2)
+            set_b = MathTex("B = \\{1, 2, 3, 4, 5\\}", font_size=36).move_to(RIGHT*2 + DOWN*2)
+            # 4. Create subset notation
+            subset_notation = MathTex("A \\subseteq B", font_size=40).move_to(DOWN*3)
+            subset_text = Text("A is a subset of B", font_size=24).next_to(subset_notation, DOWN, buff=0.2)
+            # Animations
+            # 1. Title animation
+            self.play(FadeIn(title), run_time=0.5)
+            self.wait(0.5)
+            # 2. Venn diagram animation
+            self.play(
+                Create(circle_b),
+                run_time=0.5
+            )
+            self.play(
+                Create(circle_a),
+                run_time=0.5
+            )
+            self.wait(0.5)
+            # 3. Labels animation
+            self.play(
+                FadeIn(label_b),
+                FadeIn(label_a),
+                run_time=0.5
+            )
+            # Set notation animation
+            self.play(
+                FadeIn(set_a),
+                FadeIn(set_b),
+                run_time=0.5
+            )
+            self.wait(0.5)
+            # 4. Subset notation animation
+            self.play(
+                FadeIn(subset_notation),
+                FadeIn(subset_text),
+                run_time=0.5
+            )
+            # Final pause to show complete scene
+            self.wait(2)
+
+        # Scene 5
+        with self.voiceover(text="""Let's explore set operations using circles. Watch as Set A and Set B form overlapping regions. The union combines all elements, while the intersection shows what they share in common - revealing the numbers 3 and 4 in their overlapping purple section.""") as tracker:
+
+            # Transition
+            self.wait(0.5)  # Wait for a moment
+            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
+            self.wait(0.5)  # Brief pause before next scene
+
+            # Create circles
+            circle_a = Circle(radius=2, color=BLUE).shift(LEFT)
+            circle_b = Circle(radius=2, color=RED).shift(RIGHT)
+            # Set fill opacity
+            circle_a.set_fill(BLUE, opacity=0.3)
+            circle_b.set_fill(RED, opacity=0.3)
+            # Create labels
+            label_a = Text("A").next_to(circle_a, LEFT)
+            label_b = Text("B").next_to(circle_b, RIGHT)
+            # Create numbers for Set A
+            num_1 = Text("1").move_to(LEFT*2 + UP)
+            num_2 = Text("2").move_to(LEFT*2 + DOWN)
+            num_3 = Text("3").move_to(UP*0.5)
+            num_4 = Text("4").move_to(DOWN*0.5)
+            num_5 = Text("5").move_to(RIGHT*2 + UP)
+            num_6 = Text("6").move_to(RIGHT*2 + DOWN)
+            # Group numbers for each region
+            a_only_nums = VGroup(num_1, num_2)
+            b_only_nums = VGroup(num_5, num_6)
+            intersection_nums = VGroup(num_3, num_4)
+            all_nums = VGroup(num_1, num_2, num_3, num_4, num_5, num_6)
+            # Initial display (0-3 seconds)
+            self.play(
+                FadeIn(circle_a, circle_b),
+                FadeIn(label_a, label_b)
+            )
+            self.play(
+                FadeIn(a_only_nums),
+                FadeIn(b_only_nums),
+                FadeIn(intersection_nums)
+            )
+            # Union Operation (4-8 seconds)
+            union_text = MathTex(r"A \cup B = \{1, 2, 3, 4, 5, 6\}").to_edge(UP)
+            # Create union highlight
+            union_outline = VGroup(circle_a, circle_b).copy()
+            union_outline.set_fill(opacity=0)
+            union_outline.set_stroke(color=YELLOW, width=4)
+            self.play(Write(union_text))
+            self.play(Create(union_outline))
+            self.play(
+                all_nums.animate.set_color(YELLOW),
+                flash_time=0.5
+            )
+            self.play(
+                all_nums.animate.set_color(WHITE),
+                FadeOut(union_outline)
+            )
+            # Intersection Operation (9-15 seconds)
+            intersection_text = MathTex(r"A \cap B = \{3, 4\}").to_edge(UP)
+            # Fade out union elements and text
+            self.play(
+                FadeOut(union_text),
+                a_only_nums.animate.set_opacity(0.2),
+                b_only_nums.animate.set_opacity(0.2)
+            )
+            # Show intersection
+            self.play(Write(intersection_text))
+            intersection_highlight = Intersection(circle_a, circle_b)
+            intersection_highlight.set_fill(PURPLE, opacity=0.5)
+            intersection_highlight.set_stroke(color=YELLOW, width=4)
+            self.play(
+                FadeIn(intersection_highlight),
+                intersection_nums.animate.set_color(YELLOW)
+            )
+            # Final fade out
             self.wait(1)
+            self.play(
+                *[FadeOut(mob) for mob in self.mobjects]
+            )
 
         # Transition
         self.wait(0.5)  # Wait for a moment

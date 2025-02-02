@@ -1,105 +1,58 @@
 from manim import *
 
-class AreaUnderCurve(Scene):
+class CollectionsIntroduction(Scene):
     def construct(self):
-        # Create the coordinate system
-        grid = NumberPlane(
-            x_range=[-0.5, 1.5, 0.5],
-            y_range=[0, 1.5, 0.5],
-            x_length=8,
-            y_length=6,
-            background_line_style={
-                "stroke_color": "#ecf0f1",
-                "stroke_width": 1,
-                "stroke_opacity": 0.8
-            }
-        ).shift(LEFT)
-
-        axes = Axes(
-            x_range=[-0.5, 1.5, 0.5],
-            y_range=[0, 1.5, 0.5],
-            x_length=8,
-            y_length=6,
-            axis_config={
-                "stroke_color": "#2c3e50",
-                "stroke_width": 2,
-            }
-        ).shift(LEFT)
-
-        # Create axis labels
-        x_label = MathTex("x").next_to(axes.x_axis, RIGHT)
-        y_label = MathTex("y").next_to(axes.y_axis, UP)
-
-        # Create the curve
-        curve = axes.plot(
-            lambda x: x**2,
-            x_range=[0, 1],
-            color="#3498db",
-            stroke_width=3
-        )
-
-        # Create area
-        area = axes.get_area(
-            curve,
-            x_range=(0, 1),
-            color="#3498db",
-            opacity=0.4
-        )
-
-        # Create vertical lines
-        v_line_0 = DashedLine(
-            axes.c2p(0, 0),
-            axes.c2p(0, 0.5),
-            dash_length=0.1,
-            color="#95a5a6"
-        )
-        v_line_1 = DashedLine(
-            axes.c2p(1, 0),
-            axes.c2p(1, 1),
-            dash_length=0.1,
-            color="#95a5a6"
-        )
-
-        # Create text
-        function_label = MathTex("f(x) = x^2").scale(1.2)
-        function_label.move_to(axes.c2p(1.5, 1.3))
+        # Title
+        title = Text("Collections of Objects").move_to(UP * 2)
         
-        area_text = MathTex(r"\text{Area} = \int_0^1 x^2 dx = \frac{1}{3}").scale(1.2)
-        area_text.move_to(axes.c2p(1.5, 0.8))
-
-        # Animation sequence
-        self.play(
-            FadeIn(grid),
-            Create(axes),
-            FadeIn(x_label),
-            FadeIn(y_label),
-            run_time=3
-        )
-
-        self.play(
-            Create(curve),
-            run_time=3
-        )
-
-        self.play(
-            Write(function_label),
-            run_time=2
-        )
-
-        self.play(
-            Create(v_line_0),
-            Create(v_line_1),
-            run_time=1
-        )
-
-        self.play(
-            FadeIn(area),
-            run_time=2
-        )
-
-        self.play(
-            Write(area_text),
-            run_time=2
-        )
-
+        # Create shapes
+        # Circles group
+        circles = VGroup(*[Circle(radius=0.25) for _ in range(3)])
+        circles.arrange(RIGHT, buff=0.5)
+        circles.move_to(LEFT * 4)
+        circles.set_color(BLUE)
+        circles_outline = SurroundingRectangle(circles, corner_radius=0.2, buff=0.3)
+        circles_outline.set_stroke(color=BLUE_A, opacity=0.5)
+        
+        # Squares group
+        squares = VGroup(*[Square(side_length=0.5) for _ in range(3)])
+        squares.arrange(RIGHT, buff=0.5)
+        squares.move_to(ORIGIN)
+        squares.set_color(RED)
+        squares_outline = SurroundingRectangle(squares, corner_radius=0.2, buff=0.3)
+        squares_outline.set_stroke(color=RED_A, opacity=0.5)
+        
+        # Triangles group
+        triangles = VGroup(*[Triangle().scale(0.5) for _ in range(3)])
+        triangles.arrange(RIGHT, buff=0.5)
+        triangles.move_to(RIGHT * 4)
+        triangles.set_color(GREEN)
+        triangles_outline = SurroundingRectangle(triangles, corner_radius=0.2, buff=0.3)
+        triangles_outline.set_stroke(color=GREEN_A, opacity=0.5)
+        
+        # Bottom text
+        bottom_text = Text("Related items can be grouped together").move_to(DOWN * 2)
+        
+        # Animations
+        # Title phase (0-3 seconds)
+        self.play(FadeIn(title), run_time=0.5)
+        self.wait(2.5)
+        
+        # First group - Circles (3-6 seconds)
+        self.play(FadeIn(circles), run_time=0.5)
+        self.play(Create(circles_outline), run_time=0.5)
         self.wait(2)
+        
+        # Second group - Squares (6-9 seconds)
+        self.play(FadeIn(squares), run_time=0.5)
+        self.play(Create(squares_outline), run_time=0.5)
+        self.wait(2)
+        
+        # Third group - Triangles (9-12 seconds)
+        self.play(FadeIn(triangles), run_time=0.5)
+        self.play(Create(triangles_outline), run_time=0.5)
+        self.wait(2)
+        
+        # Final text (12-15 seconds)
+        self.play(FadeIn(bottom_text), run_time=0.5)
+        self.wait(2.5)
