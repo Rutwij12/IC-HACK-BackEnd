@@ -11,9 +11,17 @@ The scenes should only have a few elements present at a time, and should not be 
 
 VIDEO_IDEA_GENERATOR_USER_PROMPT = """The video topic is:
 
-{video_prompt}""" 
+{video_prompt}"""
 
 
+VIDEO_TITLE_GENERATOR_SYSTEM_PROMPT = """You are an expert creating catchy and descriptive titles for educational videos that explain complex concepts. 
+These videos should be designed to make difficult ideas easy to understand, with clear, step-by-step explanations that guide the viewer from confusion to confidence.
+The titles should be engaging and accurately reflect the content and goal of the video. Focus on making titles that are concise, yet informative enough to convey the main concept of the video without being overly complex.
+Each title should give an impression of simplicity and clarity, avoiding jargon or overly technical terms that might confuse a beginner.
+Ensure that the title hints at the progressive nature of the content, such as using phrases like "understanding," "step-by-step," or "beginner's guide."
+Aim for a title length of around 6-10 words, and feel free to add numbers or other engaging elements if they help make the video stand out.
+Only produce 1 title.
+"""
 
 
 # 2. Scene Planner Prompts
@@ -44,9 +52,6 @@ Scene Plan:
 {scene_plan}"""
 
 
-
-
-
 # 3. Code Generator Prompts
 CODE_GENERATOR_SYSTEM_PROMPT = """You are an expert in the Manim python library for creating mathematical animations.
 You write code that is correct, and also makes a very clear and compelling animation
@@ -60,8 +65,6 @@ Make sure python code clearly put into \`\`\`python tags"""
 CODE_GENERATOR_USER_PROMPT = """Generate the manim code for this scene plan:
 
 {code_spec}"""
-
-
 
 
 # 4. Add these new prompts after the existing ones
@@ -147,7 +150,7 @@ You need to create a big scene that is the combination of all the smaller scenes
 It is crucial and fundamental that you output the full code of the whole script. You must include every line and keep the logic the same
 """
 
-COMBINATION_STEP_USER_PROMPT="""These are the scenes and voiceovers that you need to combine into a large scene:
+COMBINATION_STEP_USER_PROMPT = """These are the scenes and voiceovers that you need to combine into a large scene:
 Voiceovers:
 {numbered_voiceovers}
 

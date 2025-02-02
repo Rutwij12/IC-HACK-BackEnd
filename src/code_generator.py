@@ -3,18 +3,23 @@ from typing import Annotated, TypedDict, List
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
-from .llm_provider import LLMWrapper
+from llm_provider import LLMWrapper
 import os
 import re
 import asyncio
 import aiofiles
-from .prompts import CODE_GENERATOR_SYSTEM_PROMPT, CODE_GENERATOR_USER_PROMPT
+from prompts import CODE_GENERATOR_SYSTEM_PROMPT, CODE_GENERATOR_USER_PROMPT
 
 # Structured output for code evaluation
+
+
 class CodeEvaluation(BaseModel):
     """Schema for code evaluation results"""
-    passes_criteria: bool = Field(description="Whether code meets all criteria")
-    feedback: str = Field(description="Feedback if code fails criteria, empty if passes")
+    passes_criteria: bool = Field(
+        description="Whether code meets all criteria")
+    feedback: str = Field(
+        description="Feedback if code fails criteria, empty if passes")
+
 
 class State(TypedDict):
     """Graph state containing messages and evaluation results"""
@@ -23,8 +28,9 @@ class State(TypedDict):
     iterations: int
     current_code: str
 
+
 class CodeGenerator:
-    def __init__(self, code_spec: str, temp_file_prefix="0", 
+    def __init__(self, code_spec: str, temp_file_prefix="0",
                  model: str = "claude-3-5-sonnet-20241022",
                  max_iterations: int = 5):
         """Initialize the CodeGenerator with LLM and workflow setup"""
@@ -39,14 +45,15 @@ class CodeGenerator:
         """Generate code based on prompt and any previous feedback"""
         messages = state["messages"]
         iterations = state["iterations"]
-        
+
         response = await self.llm.ainvoke(messages)
         # Trim any trailing whitespace from the response content
         try:
             cleaned_content = response.content.rstrip()
         except:
             print(f"Response content: {response.content}")
-            raise Exception("Failed to get content from response when doing rstrip")
+            raise Exception(
+                "Failed to get content from response when doing rstrip")
         messages.append(("assistant", cleaned_content))
         print(f"state of messages after call: {self.temp_file_prefix}")
         return {
@@ -57,7 +64,7 @@ class CodeGenerator:
     async def _evaluate_code(self, state: State):
         """Evaluate generated code using manim --dry_run"""
         messages = state["messages"]
-        
+
         # Concatenate all recent assistant messages until a non-assistant message
         last_message = ""
         for msg_type, content in reversed(messages):
@@ -65,7 +72,7 @@ class CodeGenerator:
                 last_message = content + last_message
             elif msg_type != "assistant":
                 break
-        
+
         if not last_message:
             return {
                 "messages": messages,
@@ -77,12 +84,14 @@ class CodeGenerator:
 
         # Initialize code_blocks before try block
         code_blocks = []
-        
+
         try:
-            code_blocks = re.findall(r'```python\n(.*?)```', last_message, re.DOTALL)
+            code_blocks = re.findall(
+                r'```python\n(.*?)```', last_message, re.DOTALL)
             if not code_blocks:
                 # Fallback to looking for any code blocks if python-specific ones aren't found
-                code_blocks = re.findall(r'```(.*?)```', last_message, re.DOTALL)
+                code_blocks = re.findall(
+                    r'```(.*?)```', last_message, re.DOTALL)
         except Exception as e:
             print(f"Error extracting code blocks: {e}")
             print(f"Last message: {last_message}")
@@ -95,7 +104,7 @@ class CodeGenerator:
                     feedback="No code blocks found in the response"
                 )
             }
-        
+
         code_to_execute = code_blocks[-1].strip()
         filename = self.temp_file_prefix + "_temp_code.py"
 
@@ -105,11 +114,11 @@ class CodeGenerator:
 
         # Create namespace for execution
         namespace = {}
-        
+
         try:
             async with aiofiles.open(filename) as f:
                 code_content = await f.read()
-            
+
             # Extract the class name from the code
             class_match = re.search(r'class\s+(\w+)\s*\(', code_content)
             if not class_match:
@@ -120,20 +129,20 @@ class CodeGenerator:
                         feedback="No class definition found in the code"
                     )
                 }
-            
+
             class_name = class_match.group(1)
-            
+
             # Run manim with --dry_run using extracted class name
             command = ["manim", "--dry_run", filename, class_name]
             print(f"Running command: {' '.join(command)}")
-            
+
             process = await asyncio.create_subprocess_exec(
                 *command,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
             stdout, stderr = await process.communicate()
-            
+
             if process.returncode == 0:
                 evaluation = CodeEvaluation(
                     passes_criteria=True,
@@ -146,29 +155,32 @@ class CodeGenerator:
                     for i, line in enumerate(error_lines):
                         if "Error" in line:
                             error_message = "\n".join(error_lines[i:])
-                            print(f"\nDry run failed with error:\n{error_message}")
+                            print(f"\nDry run failed with error:\n{
+                                  error_message}")
                             break
                     return error_message
                 error_message = extract_error(stderr.decode())
-                print(f"error messsage extracted from file {filename}: {error_message}")
+                print(f"error messsage extracted from file {
+                      filename}: {error_message}")
                 evaluation = CodeEvaluation(
                     passes_criteria=False,
                     feedback=f"Code Execution: {error_message}"
                 )
         except Exception as e:
             evaluation = CodeEvaluation(
-                passes_criteria=False, 
+                passes_criteria=False,
                 feedback=f"Code execution failed: {str(e)}"
             )
         finally:
             # Clean up temp file
             if os.path.exists(filename):
                 print("stage when you remove the file")
-                #os.remove(filename)
-        
+                # os.remove(filename)
+
         if not evaluation.passes_criteria and evaluation.feedback:
-            messages.append(("user", f"Please revise the code based on this feedback: {evaluation.feedback}"))
-        
+            messages.append(("user", f"Please revise the code based on this feedback: {
+                            evaluation.feedback}"))
+
         return {
             "messages": messages,
             "evaluation": evaluation,
@@ -208,10 +220,10 @@ class CodeGenerator:
     async def generate_code_with_feedback(self):
         """
         Generate code using the feedback loop graph.
-        
+
         Args:
             code_spec: The coding task/question
-        
+
         Returns:
             dict: Final state containing messages, evaluation results, and iterations
         """
@@ -222,5 +234,5 @@ class CodeGenerator:
             ],
             "iterations": 0
         }
-        
+
         return await self.app.ainvoke(initial_state)
