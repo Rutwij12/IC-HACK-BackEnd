@@ -16,3 +16,9 @@ app.include_router(vector_router, prefix="/vector")
 @app.get("/")
 def read_root():
     return PlainTextResponse("OK")
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

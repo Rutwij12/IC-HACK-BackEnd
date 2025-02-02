@@ -1,12 +1,12 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, List
 from pydantic import BaseModel, Field
-from .llm_provider import LLMWrapper
+from llm_provider import LLMWrapper
 import asyncio
 from langchain_anthropic import ChatAnthropic
 import os
 import aiofiles
-from .prompts import (
+from prompts import (
     REACT_COMPONENT_PLANNER_SYSTEM_PROMPT,
     REACT_COMPONENT_PLANNER_USER_PROMPT,
     REACT_CODE_GENERATOR_SYSTEM_PROMPT,
@@ -14,8 +14,10 @@ from .prompts import (
 )
 import re
 
+
 class ComponentIdeas(BaseModel):
     components: List[str]
+
 
 class ReactState(TypedDict):
     """Graph state for React component orchestration"""
@@ -24,11 +26,13 @@ class ReactState(TypedDict):
     component_codes: List[str]
     final_code: str
 
+
 class ReactOrchestrator:
     def __init__(self, component_prompt: str, model: str = "claude-3-5-sonnet-20241022"):
         self.component_prompt = component_prompt
         self.llm = ChatAnthropic(model=model, max_tokens_to_sample=2048)
-        self.idea_generator = ChatAnthropic(model=model).with_structured_output(ComponentIdeas)
+        self.idea_generator = ChatAnthropic(
+            model=model).with_structured_output(ComponentIdeas)
         self.workflow = self._setup_workflow()
         self.app = self.workflow.compile()
 
@@ -40,7 +44,7 @@ class ReactOrchestrator:
                 user_prompt=state['component_prompt']
             ))
         ]
-        
+
         component_ideas = self.idea_generator.invoke(messages)
         return {"component_ideas": component_ideas.components}
 
@@ -54,14 +58,16 @@ class ReactOrchestrator:
                 ))
             ]
             result = await self.llm.ainvoke(messages)
-            
+
             # Extract code blocks from the response
             code_blocks = []
             try:
-                code_blocks = re.findall(r'```jsx\n(.*?)```', result.content, re.DOTALL)
+                code_blocks = re.findall(
+                    r'```jsx\n(.*?)```', result.content, re.DOTALL)
                 if not code_blocks:
                     # Fallback to looking for any code blocks if tsx-specific ones aren't found
-                    code_blocks = re.findall(r'```(.*?)```', result.content, re.DOTALL)
+                    code_blocks = re.findall(
+                        r'```(.*?)```', result.content, re.DOTALL)
             except Exception as e:
                 print(f"Error extracting code blocks: {e}")
                 print(f"Response content: {result.content}")
@@ -72,18 +78,18 @@ class ReactOrchestrator:
                 return ""
 
             code_to_save = code_blocks[-1].strip()
-            
+
             # Save component to file
             component_path = f"Component{idx + 1}.tsx"
             async with aiofiles.open(component_path, "w") as f:
                 await f.write(code_to_save)
-                
+
             return code_to_save
 
-        tasks = [generate_single_component(idx, idea) 
-                for idx, idea in enumerate(state["component_ideas"])]
+        tasks = [generate_single_component(idx, idea)
+                 for idx, idea in enumerate(state["component_ideas"])]
         component_codes = await asyncio.gather(*tasks)
-        
+
         return {"component_codes": component_codes}
 
     async def _combine_components(self, state: ReactState):
@@ -96,7 +102,8 @@ class ReactOrchestrator:
             if match:
                 component_names.append(match.group(2))
             else:
-                print(f"Warning: Could not extract component name from code: {code[:100]}...")
+                print(f"Warning: Could not extract component name from code: {
+                      code[:100]}...")
                 continue
 
         # Create base App.tsx content
@@ -110,12 +117,14 @@ class ReactOrchestrator:
             "  return (",
             "    <div>",
         ]
-        
+
         # Stack all components vertically using their actual names
         for component_name in component_names:
             app_content.append(f"      <{component_name} />")
-            app_content.append("      <div style={{ marginBottom: '2rem' }} />")  # Add spacing
-        
+            app_content.append(
+                # Add spacing
+                "      <div style={{ marginBottom: '2rem' }} />")
+
         app_content.extend([
             "    </div>",
             "  );",
@@ -123,18 +132,18 @@ class ReactOrchestrator:
             "",
             "export default App;",
         ])
-        
+
         # Write App.tsx
         app_path = "App.tsx"
         async with aiofiles.open(app_path, "w") as f:
             await f.write("\n".join(app_content))
-        
+
         return {"final_code": "\n".join(app_content)}
 
     def _setup_workflow(self):
         """Create and setup the workflow graph"""
         workflow = StateGraph(ReactState)
-        
+
         workflow.add_node("generate_ideas", self._generate_component_ideas)
         workflow.add_node("generate_code", self._generate_component_code)
         workflow.add_node("combine_components", self._combine_components)
@@ -150,12 +159,12 @@ class ReactOrchestrator:
     async def orchestrate_components(self):
         """
         Orchestrate the entire React component creation process
-        
+
         Returns:
             dict: Final state containing all intermediate and final results
         """
         initial_state = {
             "component_prompt": self.component_prompt
         }
-        
-        return await self.app.ainvoke(initial_state) 
+
+        return await self.app.ainvoke(initial_state)

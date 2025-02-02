@@ -1,15 +1,15 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, List
 from pydantic import BaseModel, Field
-from .scene_planner import ScenePlanner
-from .code_generator import CodeGenerator
-from .llm_provider import LLMWrapper
+from scene_planner import ScenePlanner
+from code_generator import CodeGenerator
+from llm_provider import LLMWrapper
 import asyncio
 import subprocess
 import aiofiles
 import re
 import os
-from .prompts import (
+from prompts import (
     VIDEO_IDEA_GENERATOR_SYSTEM_PROMPT,
     VIDEO_IDEA_GENERATOR_USER_PROMPT,
     VOICEOVER_GENERATOR_SYSTEM_PROMPT,
@@ -95,16 +95,18 @@ class VideoOrchestrator:
             result = await generator.generate_code_with_feedback()
             if "current_code" not in result:
                 print(f"for some reason current code not in idx {idx}")
-            return result.get("current_code", "")  # Return empty string if no code
+            # Return empty string if no code
+            return result.get("current_code", "")
 
         # Create tasks for all scene codes
         tasks = [generate_single_scene(idx, plan)
                  for idx, plan in enumerate(state["scene_plans"])]
         # Run all tasks concurrently
         scene_codes = await asyncio.gather(*tasks)
-        
+
         # Filter out empty scenes
-        valid_scenes = [(idx, code) for idx, code in enumerate(scene_codes) if code]
+        valid_scenes = [(idx, code)
+                        for idx, code in enumerate(scene_codes) if code]
         scene_plans = [state["scene_plans"][idx] for idx, _ in valid_scenes]
         scene_codes = [code for _, code in valid_scenes]
 
@@ -159,7 +161,8 @@ class VideoOrchestrator:
             combined_code.append(f"\n        # Scene {i}")
 
             # Add voiceover wrapper
-            combined_code.append(f"        with self.voiceover(text=\"\"\"{voiceover.strip()}\"\"\") as tracker:")
+            combined_code.append(f"        with self.voiceover(text=\"\"\"{
+                                 voiceover.strip()}\"\"\") as tracker:")
 
             # Add transition between scenes
             if i != 0:
@@ -290,9 +293,10 @@ class VideoOrchestrator:
             stderr=asyncio.subprocess.PIPE
         )
         stdout, stderr = await video_process.communicate()
-        
+
         if video_process.returncode != 0:
-            raise Exception(f"Video rendering failed with error:\nStdout: {stdout.decode()}\nStderr: {stderr.decode()}")
+            raise Exception(f"Video rendering failed with error:\nStdout: {
+                            stdout.decode()}\nStderr: {stderr.decode()}")
 
         filename = os.path.join(os.path.dirname(
             __file__), "scenes", "scene_1_temp_code.py")
@@ -332,7 +336,7 @@ class VideoOrchestrator:
                     break
 
         return {
-            "video_path": video_path,
+            "video_path": "media/videos/combined_scenes/720p30/CombinedScene.mp4",
             "image_path": thumbnail_path,
             "video_title": self.video_title
         }

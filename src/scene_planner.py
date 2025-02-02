@@ -2,10 +2,10 @@ from langgraph.graph import StateGraph, START, END
 from typing import Annotated, TypedDict, List
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
-from .llm_provider import LLMWrapper
+from llm_provider import LLMWrapper
 from pydantic import BaseModel, Field
 import asyncio
-from .prompts import (
+from prompts import (
     SCENE_PLANNER_SYSTEM_PROMPT,
     SCENE_EVALUATOR_SYSTEM_PROMPT,
     SCENE_PLAN_USER_PROMPT,
@@ -54,7 +54,8 @@ class ScenePlanner:
         # If we have feedback from previous evaluation, add it
         if iterations > 0 and not state["evaluation"].passes_criteria and state["evaluation"].feedback:
             messages.append(("assistant", current_plan))
-            messages.append(("user", f"Please revise the scene plan based on this feedback: {state['evaluation'].feedback}"))
+            messages.append(("user", f"Please revise the scene plan based on this feedback: {
+                            state['evaluation'].feedback}"))
 
         response = await self.planner.ainvoke(messages)
         current_plan = response.content

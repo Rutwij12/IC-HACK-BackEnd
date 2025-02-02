@@ -14,112 +14,112 @@ class CombinedScene(VoiceoverScene):
 
 
         # Scene 1
-        with self.voiceover(text="""A perfect circle appears, elegantly filling the space before gracefully fading away - a simple demonstration of geometric beauty.""") as tracker:
+        with self.voiceover(text="""Welcome to our exploration of geometric transformations. Today, we'll witness the fascinating process of morphing a perfect circle into a square.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Set the background color
-            self.camera.background_color = BLACK
-            # Create the circle with specified properties
-            circle = Circle(
-                radius=2,
-                color=BLUE_D,
-                stroke_width=2,
-                fill_opacity=0.5
-            ).move_to(ORIGIN)
-            # Animation sequence
-            # 1. FadeIn (0.0s to 0.3s)
-            self.play(
-                FadeIn(circle, scale=1.2),
-                run_time=0.3
+            # Create the main title text
+            title = Text(
+                "Circle to Square Transformation",
+                font="Helvetica",
+                font_size=60  # Adjusted for good visibility (approximately 1/6th of screen height)
             )
-            # 2. Hold (0.3s to 0.7s)
-            self.wait(0.4)
-            # 3. FadeOut (0.7s to 1.0s)
+            # Center the title
+            title.move_to(ORIGIN)
+            # Initial state: text with opacity 0
+            title.set_opacity(0)
+            # 1. Fade in (0-2 seconds)
             self.play(
-                FadeOut(circle),
-                run_time=0.3
+                FadeIn(title, rate_func=smooth),
+                run_time=2
+            )
+            # 2. Static display (2-4 seconds)
+            self.wait(2)
+            # 3. Fade out (4-5 seconds)
+            self.play(
+                FadeOut(title, rate_func=smooth),
+                run_time=1
             )
 
         # Scene 2
-        with self.voiceover(text="""In this shape transformation, a circle with equal area morphs smoothly into a square, demonstrating how different shapes can occupy the same space while maintaining their area of approximately twelve and a half square units.""") as tracker:
+        with self.voiceover(text="""Watch as this circle smoothly transforms into a square, while keeping its perimeter constant throughout the entire transformation. Notice how each point of the circle gradually shifts to form the straight edges and sharp corners of the square.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Define colors
-            fill_color = "#89CFF0"  # light blue
-            stroke_color = "#0066CC"  # darker blue
-            # Create initial circle
-            circle = Circle(
-                radius=2,
-                fill_color=fill_color,
-                fill_opacity=1,
-                stroke_color=stroke_color,
-                stroke_width=2
+            # Create the initial circle with radius 2
+            circle = Circle(radius=2, stroke_width=2, stroke_color=WHITE)
+            # Calculate square side length to maintain same perimeter
+            # Circle perimeter = 4π, so square side length = 4π/4 = π
+            side_length = PI
+            # Create the target square centered at origin
+            square = Square(side_length=side_length, stroke_width=2, stroke_color=WHITE)
+            # Create smooth transition by increasing the number of anchor points
+            circle.set_n_points(100)
+            square.set_n_points(100)
+            # Initial circle creation animation
+            self.play(
+                Create(circle),
+                run_time=2
             )
-            # Calculate square side length to maintain approximate area
-            # Area of circle = πr² ≈ 12.57
-            # Side of square = √(πr²)
-            square_side = np.sqrt(PI * 4)  # ≈ 3.54
-            # Create target square with same area
-            square = Square(
-                side_length=square_side,
-                fill_color=fill_color,
-                fill_opacity=1,
-                stroke_color=stroke_color,
-                stroke_width=2
-            )
-            # Add labels to show the transformation
-            circle_text = Text("Area ≈ 12.57", font_size=36)
-            circle_text.to_edge(UP)
-            square_text = Text("Area ≈ 12.57", font_size=36)
-            square_text.to_edge(UP)
-            # Initial state
-            self.add(circle, circle_text)
+            # Brief pause after circle creation
+            self.wait()
             # Transform circle to square
             self.play(
-                Transform(circle, square),
-                Transform(circle_text, square_text),
-                rate_func=smooth,
-                run_time=1.5
+                Transform(
+                    circle,
+                    square,
+                    rate_func=smooth,
+                    run_time=8
+                )
             )
-            # Pause briefly at the end
+            # Brief pause on final square
+            self.wait()
+            # Fade out the final shape
+            self.play(
+                FadeOut(circle),
+                run_time=1
+            )
+            # Final brief pause
             self.wait(0.5)
 
         # Scene 3
-        with self.voiceover(text="""And here we have our perfect square, completing our circle's transformation journey.""") as tracker:
+        with self.voiceover(text="""Our square pattern completes its journey, gradually fading away while softly expanding - leaving us with a clean finish to our mathematical exploration.""") as tracker:
 
             # Transition
             self.wait(0.5)  # Wait for a moment
             self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen
             self.wait(0.5)  # Brief pause before next scene
 
-            # Calculate square side length based on circle with radius 2
-            # Area of circle = πr² = 4π
-            # side_length = √(4π)
-            side_length = np.sqrt(4 * PI)
-            # Create the square with specified properties
+            # Create the square with specified dimensions
             square = Square(
-                side_length=side_length,
-                stroke_width=2,
-                stroke_color="#2596BE",
-                fill_color="#2596BE",
-                fill_opacity=1
-            )
-            # Position square at center (ORIGIN)
-            square.move_to(ORIGIN)
-            # Add square to scene (it's already visible at start)
+                side_length=4,
+                stroke_color=WHITE,
+                fill_color=WHITE,
+                fill_opacity=0.1
+            ).move_to(ORIGIN)
+            # Add the square to the scene (assuming it's continuing from previous scene)
+            # In a real continuation, you might not need this line
             self.add(square)
-            # Wait for 0.5 seconds
+            # 1. Hold Time (1 second)
+            self.wait(1)
+            # 2. Fade Out Animation with scale
+            # Create animation that combines scaling and fading
+            fade_out_anim = AnimationGroup(
+                square.animate.scale(1.1),
+                square.animate.set_opacity(0),
+                rate_func=smooth,
+                run_time=2.5
+            )
+            # Play the combined animation
+            self.play(fade_out_anim)
+            # Small wait at the end to ensure clean finish
             self.wait(0.5)
-            # Fade out the square over 0.3 seconds
-            self.play(FadeOut(square), run_time=0.3)
 
         # Transition
         self.wait(0.5)  # Wait for a moment
