@@ -34,7 +34,7 @@ class CodeGenerator:
                  model: str = "claude-3-5-sonnet-20241022",
                  max_iterations: int = 5):
         """Initialize the CodeGenerator with LLM and workflow setup"""
-        self.llm = ChatAnthropic(model=model)
+        self.llm = ChatAnthropic(model=model, temperature=1)
         self.workflow = self._setup_workflow()
         self.app = self.workflow.compile()
         self.code_spec = code_spec

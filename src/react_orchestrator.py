@@ -102,8 +102,7 @@ class ReactOrchestrator:
             if match:
                 component_names.append(match.group(2))
             else:
-                print(f"Warning: Could not extract component name from code: {
-                      code[:100]}...")
+                print(f"Warning: Could not extract component name from code: {code[:100]}...")
                 continue
 
         # Create base App.tsx content
