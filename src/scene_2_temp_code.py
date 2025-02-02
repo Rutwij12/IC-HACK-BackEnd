@@ -3,66 +3,91 @@ from manim import *
 class EigenvectorVisualization(Scene):
     def construct(self):
         # Create coordinate system
-        axes = Axes(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
-            axis_config={"color": GREY_B},
-            tips=False
-        )
+        plane = NumberPlane(
+            x_range=[-5, 5, 1],
+            y_range=[-5, 5, 1],
+            background_line_style={
+                "stroke_color": GRAY_D,
+                "stroke_width": 1,
+                "stroke_opacity": 0.5
+            }
+        ).set_opacity(0.5)
 
-        # Create the original vector (blue)
-        original_vector = Arrow(
-            start=axes.coords_to_point(0, 0),
-            end=axes.coords_to_point(1, 1),
-            color=BLUE,
-            buff=0
-        )
+        # Initial vector
+        vector = Vector([1, 1], color=YELLOW)
+        vector_label = MathTex("\\vec{v}", color=WHITE).next_to(vector.get_end(), UP+RIGHT, buff=0.1)
 
-        # Create the transformed vector (red)
-        transformed_vector = Arrow(
-            start=axes.coords_to_point(0, 0),
-            end=axes.coords_to_point(2, 2),
-            color=RED,
-            buff=0
-        )
-
-        # Create labels
-        eigenvector_label = Text("Eigenvector", font_size=36)
-        eigenvector_label.next_to(original_vector.get_center(), LEFT, buff=0.5)
+        # Matrix and eigenvalue
+        matrix = MathTex(
+            "A = \\begin{bmatrix} 2 & 1 \\\\ 1 & 2 \\end{bmatrix}",
+            color=WHITE
+        ).to_corner(UR, buff=0.5)
         
-        lambda_label = MathTex(r"\lambda = 2", font_size=36)
-        lambda_label.to_corner(UR, buff=0.5)
+        eigenvalue = MathTex("\\lambda = 3", color=WHITE).next_to(matrix, DOWN)
+
+        # Transformed vector (scaled by λ=3)
+        transformed_vector = Vector([3, 3], color=YELLOW)
+        
+        # Dashed line for transformation path
+        dashed_line = DashedLine(
+            vector.get_end(),
+            transformed_vector.get_end(),
+            color=GRAY_C
+        )
+
+        # Text elements
+        transform_text = Text(
+            "When transformed by matrix A...",
+            color=WHITE,
+            font_size=36
+        ).to_edge(UP, buff=0.5)
+
+        eigenvector_text = Text(
+            "Eigenvector: Only scales, doesn't rotate",
+            color=WHITE,
+            font_size=36
+        ).to_edge(DOWN, buff=0.5)
 
         # Animation sequence
-        # 1. Fade in original vector and its label
         self.play(
-            Create(axes, run_time=0.5),
-            Create(original_vector),
-            Write(eigenvector_label),
-            run_time=2
-        )
-        self.wait(1)
-
-        # 2. Fade in transformed vector
-        self.play(
-            Create(transformed_vector),
-            run_time=2
-        )
-        self.wait(1)
-
-        # 3. Fade in lambda label
-        self.play(
-            Write(lambda_label),
+            Create(plane),
             run_time=1
         )
-        self.wait(2)
-
-        # 4. Hold and fade everything out
-        self.wait(1)
+        
         self.play(
-            *[FadeOut(mob) for mob in [
-                axes, original_vector, transformed_vector,
-                eigenvector_label, lambda_label
-            ]],
+            GrowArrow(vector),
+            Write(vector_label),
+            run_time=2
+        )
+
+        self.play(
+            Write(transform_text),
+            Write(matrix),
+            Write(eigenvalue),
+            run_time=2
+        )
+
+        # Transform sequence
+        self.play(
+            vector.animate.set_opacity(0.3),
+            GrowArrow(transformed_vector),
+            Create(dashed_line),
+            run_time=3
+        )
+
+        # Final text and glow effect
+        self.play(
+            Write(eigenvector_text),
             run_time=1
         )
+
+        # Glow effect
+        glow_group = VGroup(vector, transformed_vector)
+        self.play(
+            glow_group.animate.set_stroke(color=YELLOW, width=5),
+            rate_func=there_and_back,
+            run_time=2
+        )
+
+        # Pause for a moment at the end
+        self.wait(1)

@@ -5,6 +5,7 @@ from video_storage.storage import run_video_pipeline
 import asyncio
 import time
 from common.pinecone_store import PineconeStore
+from react_orchestrator import ReactOrchestrator
 
 
 sys.path.append(os.path.abspath(os.path.join(
@@ -38,10 +39,22 @@ def start_vid_pipeline(prompt: str):
             "message": "Failed to generate video",
         }
 
+    react_code = asyncio.run(ReactOrchestrator(
+        video_data["video_title"]).generate_and_return_components())
+
+    if not react_code and "react_code" not in react_code:
+        return {
+            "status": "FAILED",
+            "message": "Failed to generate react code",
+        }
+
+    video_data["react_code"] = react_code["react_code"]
+
     video_data["id"] = video_id
     time.sleep(5)
     data = run_video_pipeline(video_data)
     pinecone.add_embedding(video_data["video_title"], video_id)
+
     return {
         "status": "DONE",
         "data": data,

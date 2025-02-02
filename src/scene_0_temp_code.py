@@ -1,98 +1,82 @@
 from manim import *
 
-class BasicVectorTransformation(Scene):
+class VectorAndMatrix(Scene):
     def construct(self):
-        # Create coordinate system
-        axes = Axes(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
-            axis_config={
-                "stroke_width": 2,
-                "color": BLACK,
-                "include_tip": True,
-            },
-        )
-        
         # Create grid
         grid = NumberPlane(
-            x_range=[-3, 3],
-            y_range=[-3, 3],
+            x_range=[-4, 4, 1],
+            y_range=[-4, 4, 1],
             background_line_style={
                 "stroke_color": GRAY,
                 "stroke_width": 1,
-                "stroke_opacity": 0.5
+                "stroke_opacity": 0.3
             }
         )
-
-        # Initialize vectors
-        vector_v = Arrow(
-            start=axes.c2p(0, 0),
-            end=axes.c2p(2, 2),
-            buff=0,
-            color=BLUE
+        
+        # Create vector
+        vector = Arrow(
+            start=ORIGIN,
+            end=[2, 1, 0],
+            color=YELLOW,
+            buff=0
+        )
+        vector_label = MathTex("\\vec{v}", color=WHITE).next_to(
+            vector.get_end(), UP + RIGHT, buff=0.2
         )
         
-        vector_av = Arrow(
-            start=axes.c2p(0, 0),
-            end=axes.c2p(4, 4),
-            buff=0,
-            color=RED
-        )
-
-        # Create labels
-        v_label = MathTex(r"\vec{v} = [2,2]").next_to(
-            axes.c2p(2, 2),
-            direction=UR,
-            buff=0.2
-        )
-        
-        av_label = MathTex(r"A\vec{v} = [4,4]").next_to(
-            axes.c2p(4, 4),
-            direction=UR,
-            buff=0.2
-        )
-
-        # Create matrix and eigenvalue text
+        # Create matrix
         matrix = MathTex(
-            r"A = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}"
-        ).to_corner(UL, buff=1)
+            "\\begin{bmatrix} 2 & -1 \\\\ 1 & 1 \\end{bmatrix}",
+            color=WHITE
+        ).scale(1.2)
+        matrix_label = MathTex("A = ", color=WHITE).scale(1.2)
         
-        eigenvalue = MathTex(r"\lambda = 2").next_to(
-            matrix,
-            DOWN,
-            buff=0.3
-        )
-
-        # Animation sequence
-        # 1. Fade in grid and axes
+        # Position matrix on right side
+        matrix_group = VGroup(matrix_label, matrix).arrange(RIGHT)
+        matrix_group.move_to(RIGHT * 3)
+        
+        # Create "Transformation Matrix" text
+        transform_text = Text(
+            "Transformation Matrix",
+            color=WHITE,
+            font_size=24
+        ).next_to(matrix_group, DOWN, buff=0.5)
+        
+        # Part 1: Vector Introduction (0-4 seconds)
         self.play(
-            FadeIn(grid),
-            FadeIn(axes),
-            run_time=2
+            Create(grid),
+            run_time=1
         )
-
-        # 2. Draw original vector and its label
         self.play(
-            GrowArrow(vector_v),
-            Write(v_label),
-            run_time=2
+            Create(vector),
+            Write(vector_label),
+            run_time=1
         )
-
-        # 3. Show matrix and eigenvalue
+        self.wait(1)
+        
+        # Part 2: Matrix Introduction (4-8 seconds)
         self.play(
+            Write(matrix_label),
             Write(matrix),
-            Write(eigenvalue),
             run_time=2
         )
-
-        # 4. Transform vector
-        faded_v = vector_v.copy().set_opacity(0.3)
         self.play(
-            ReplacementTransform(vector_v, faded_v),
-            GrowArrow(vector_av),
-            Write(av_label),
-            run_time=3
+            Write(transform_text),
+            run_time=1
         )
-
-        # Final pause
+        self.wait(1)
+        
+        # Part 3: Final Touch (8-12 seconds)
+        # Create glow effect by scaling up and down quickly
+        self.play(
+            vector.animate.scale(1.2),
+            matrix_group.animate.scale(1.2),
+            run_time=0.5
+        )
+        self.play(
+            vector.animate.scale(1/1.2),
+            matrix_group.animate.scale(1/1.2),
+            run_time=0.5
+        )
+        
         self.wait(1)

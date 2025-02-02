@@ -1,5 +1,7 @@
 cd src
 
+TEST_ENV="TEST"
+
 echo "starting server"
 poetry run fastapi run main.py | tee -a server.log &
 

@@ -1,99 +1,80 @@
 from manim import *
+import numpy as np
 
-class EigenvalueVisualization(Scene):
+class MatrixTransformation(Scene):
     def construct(self):
-        # Create coordinate system
-        axes = Axes(
-            x_range=[-5, 5],
-            y_range=[-5, 5],
-            axis_config={"color": GRAY},
-            tips=False
-        ).set_opacity(0.3)
-        
-        # Add light gray grid
+        # Set up the coordinate grid
         grid = NumberPlane(
-            x_range=[-5, 5],
-            y_range=[-5, 5],
+            x_range=[-4, 4, 1],
+            y_range=[-4, 4, 1],
             background_line_style={
-                "stroke_color": GRAY,
-                "stroke_opacity": 0.3
+                "stroke_color": "#888888",
+                "stroke_width": 0.5,
+                "stroke_opacity": 0.5,
             }
         )
 
-        # Add coordinate system and grid
+        # Define vectors
+        v1 = Arrow(start=ORIGIN, end=RIGHT, color=RED, tip_length=0.2)
+        v2 = Arrow(start=ORIGIN, end=UP, color=BLUE, tip_length=0.2)
+        
+        # Create vector labels
+        v1_label = MathTex("v_1", color=RED).next_to(v1.get_end(), RIGHT*0.3 + UP*0.3)
+        v2_label = MathTex("v_2", color=BLUE).next_to(v2.get_end(), LEFT*0.3 + UP*0.3)
+
+        # Define transformation matrix
+        matrix = [[2, 1], [-1, 1]]
+        matrix_tex = MathTex(
+            "M = \\begin{bmatrix} 2 & 1 \\\\ -1 & 1 \\end{bmatrix}"
+        ).scale(0.8).to_corner(UR, buff=0.5)
+
+        # Step 1: Fade in grid and vectors
         self.play(
             Create(grid),
-            Create(axes),
-            run_time=1
+            GrowArrow(v1),
+            GrowArrow(v2),
+            Write(v1_label),
+            Write(v2_label),
+            run_time=3
         )
 
-        # Create original vector
-        vector_v = Vector([2, 1], color=BLUE)
-        vector_v_label = MathTex("v").set_color(BLUE)
-        vector_v_label.next_to(vector_v.get_end(), UP + RIGHT, buff=0.1)
+        # Step 2: Show matrix
+        self.play(Write(matrix_tex), run_time=1.5)
 
-        # Show original vector
+        # Create transformed vectors
+        v1_transformed = Arrow(
+            start=ORIGIN,
+            end=np.array([2, -1, 0]),
+            color=RED,
+            tip_length=0.2
+        )
+        v2_transformed = Arrow(
+            start=ORIGIN,
+            end=np.array([1, 1, 0]),
+            color=BLUE,
+            tip_length=0.2
+        )
+
+        # Create transformed vector labels
+        mv1_label = MathTex("Mv_1", color=RED).next_to(v1_transformed.get_end(), RIGHT*0.3 + UP*0.3)
+        mv2_label = MathTex("Mv_2", color=BLUE).next_to(v2_transformed.get_end(), RIGHT*0.3 + UP*0.3)
+
+        # Step 3: Apply transformation
         self.play(
-            GrowArrow(vector_v),
-            Write(vector_v_label),
+            grid.animate.apply_matrix(matrix),
+            Transform(v1, v1_transformed),
+            Transform(v2, v2_transformed),
+            v1_label.animate.set_opacity(0.3),
+            v2_label.animate.set_opacity(0.3),
+            run_time=6
+        )
+
+        # Step 4: Add transformed labels
+        self.play(
+            Write(mv1_label),
+            Write(mv2_label),
             run_time=1.5
-        )
-        self.wait(0.5)
-
-        # Create transformed vector
-        vector_av = Vector([4, 2], color=RED)
-        vector_av_label = MathTex("Av").set_color(RED)
-        vector_av_label.next_to(vector_av.get_end(), UP + RIGHT, buff=0.1)
-
-        # Animate transformation
-        self.play(
-            Transform(vector_v.copy(), vector_av),
-            run_time=2
-        )
-        self.play(Write(vector_av_label))
-        
-        # Create dashed line connecting vector tips
-        dashed_line = DashedLine(
-            vector_v.get_end(),
-            vector_av.get_end(),
-            dash_length=0.15,
-            color=GRAY
-        )
-        
-        # Show dashed line
-        self.play(Create(dashed_line))
-
-        # Create and show eigenvalue equation
-        lambda_text = MathTex("\\lambda = 2").scale(1.2)
-        lambda_text.move_to([-3, 2, 0])
-        
-        eigen_equation = MathTex("A", "v", "=", "\\lambda", "v")
-        eigen_equation.set_color_by_tex_to_color_map({
-            "A": WHITE,
-            "v": BLUE,
-            "\\lambda": WHITE
-        })
-        eigen_equation.move_to([-3, 1.5, 0])
-
-        self.play(
-            Write(lambda_text),
-            Write(eigen_equation),
-            run_time=1.5
-        )
-
-        # Pulse animation for both vectors
-        self.play(
-            vector_v.animate.scale(1.2),
-            vector_av.animate.scale(1.2),
-            rate_func=there_and_back,
-            run_time=1
         )
 
         # Final pause
-        self.wait(2)
-
-        # Fade out everything
-        self.play(
-            *[FadeOut(mob) for mob in self.mobjects],
-            run_time=1
-        )
+        self.wait(1.5)

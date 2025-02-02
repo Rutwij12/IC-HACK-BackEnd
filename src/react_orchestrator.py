@@ -166,7 +166,7 @@ class ReactOrchestrator:
         initial_state = {
             "component_prompt": self.component_prompt
         }
-        
+
         return await self.app.ainvoke(initial_state)
 
     async def generate_and_return_components(self) -> dict:
@@ -184,4 +184,4 @@ class ReactOrchestrator:
 
         return {
             "react_code": result["final_code"],
-        } 
+        }

@@ -18,6 +18,7 @@ from prompts import (
     COMBINATION_STEP_USER_PROMPT,
     VIDEO_TITLE_GENERATOR_SYSTEM_PROMPT
 )
+from utils import TEST_ENV
 
 
 class SceneIdeas(BaseModel):
@@ -280,7 +281,8 @@ class VideoOrchestrator:
             dict: Contains paths to the rendered video and thumbnail
         """
         # First generate all the code and assets
-        result = await self.orchestrate_video()
+        if TEST_ENV:
+            result = await self.orchestrate_video()
 
         # Ensure the output directory exists
         os.makedirs("media", exist_ok=True)
