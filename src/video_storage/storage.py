@@ -1,9 +1,6 @@
 import boto3
 from time import time
-from dotenv import load_dotenv
 import os
-
-load_dotenv()
 
 BUCKET_NAME = "ic-hack"
 TEST_VIDEO_PATH = "../../media/videos/scene_4_temp_code/480p15/LinearTransformationProperties.mp4"
@@ -40,15 +37,18 @@ def run_video_pipeline(video_data):
     }
 
 
-def upload_video(video_path, id) -> str | None:
+def upload_video(video_path, video_id) -> str | None:
     try:
-        print(os.getcwd())
+        print()
         if os.path.exists(video_path):
-            object_name = f"videos/{id}.mp4"
+            object_name = f"videos/{video_id}.mp4"
+            print(object_name)
             s3.upload_file(video_path, BUCKET_NAME, object_name)
             public_url = f"https://{
                 BUCKET_NAME}.s3.eu-west-2.amazonaws.com/{object_name}"
             return public_url
+        else:
+            print("File does not exist")
     except Exception as e:
         print(e)
     return None

@@ -1,7 +1,7 @@
 cd src
 
 echo "starting server"
-poetry run fastapi dev main.py | tee -a server.log &
+poetry run fastapi run main.py | tee -a server.log &
 
 SERVER=$!
 

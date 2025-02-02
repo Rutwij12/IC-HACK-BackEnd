@@ -15,7 +15,8 @@ from prompts import (
     VOICEOVER_GENERATOR_SYSTEM_PROMPT,
     VOICEOVER_GENERATOR_USER_PROMPT,
     COMBINATION_STEP_SYSTEM_PROMPT,
-    COMBINATION_STEP_USER_PROMPT
+    COMBINATION_STEP_USER_PROMPT,
+    VIDEO_TITLE_GENERATOR_SYSTEM_PROMPT
 )
 
 
@@ -42,6 +43,7 @@ class VideoOrchestrator:
             model=model).with_structured_output(SceneIdeas)
         self.workflow = self._setup_workflow()
         self.app = self.workflow.compile()
+        self.video_title = self._generate_title()
 
     def _generate_scene_ideas(self, state: VideoState):
         """Generate high-level scene ideas for the video"""
@@ -53,6 +55,15 @@ class VideoOrchestrator:
 
         scene_ideas = self.idea_generator.invoke(messages)
         return {"scene_ideas": scene_ideas.scenes}
+
+    def _generate_title(self):
+        messages = [
+            ("system", VIDEO_TITLE_GENERATOR_SYSTEM_PROMPT),
+            ("user", VIDEO_IDEA_GENERATOR_USER_PROMPT.format(
+                video_prompt=self.video_prompt))
+        ]
+        title_data = self.idea_generator.invoke(messages)
+        return title_data.scenes[0]
 
     async def _plan_scenes(self, state: VideoState):
         """Generate detailed plans for each scene idea asynchronously"""
@@ -312,6 +323,7 @@ class VideoOrchestrator:
                     break
 
         return {
-            "video_path": "media/videos/combined_scenes/720p30/CombinedScene.mp4",
+            "video_path": video_path,
             "image_path": thumbnail_path,
+            "video_title": self.video_title
         }

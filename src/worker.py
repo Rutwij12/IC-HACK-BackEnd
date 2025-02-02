@@ -23,19 +23,19 @@ app = Celery(
 @app.task
 def start_vid_pipeline(prompt: str):
     from video_orchestrator import VideoOrchestrator
-    print("Starting video pipeline")
-    # call claude here
-    # return dictionary with keys: "video_path", "id" and "image_path"
-    # and any other keys you want
     video_id = str(time.time())
     video_data = asyncio.run(VideoOrchestrator(
         prompt).generate_and_render_video())
 
-    video_data = {
-        "video_path": "../media/videos/scene_4_temp_code/480p15/LinearTransformationProperties.mp4",
-        "id": video_id,
-        "image_path": "/home/jay/Repos/IC-HACK-BackEnd/media/images/tree-736885_1280.jpg",
-    }
+    print(video_data)
+
+    if not video_data or "video_path" not in video_data or "image_path" not in video_data:
+        return {
+            "status": "FAILED",
+            "message": "Failed to generate video",
+        }
+
+    video_data["id"] = video_id
     time.sleep(5)
     data = run_video_pipeline(video_data)
     return {

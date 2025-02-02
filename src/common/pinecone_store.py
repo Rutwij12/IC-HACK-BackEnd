@@ -2,12 +2,15 @@ from pinecone import Pinecone, ServerlessSpec
 import os
 import hashlib
 from typing import List, Dict, Any
+from dotenv import load_dotenv
+
+load_dotenv()
 
 API_KEY = os.getenv("PINECONE_API_KEY")
 
 
 class PineconeStore():
-    def _init_(self, index_name: str, model: str = "multilingual-e5-large"):
+    def __init__(self, index_name: str, model: str = "multilingual-e5-large"):
         self.model = model
         self.pc = Pinecone(api_key=API_KEY)
         self.index_name = index_name
@@ -26,7 +29,7 @@ class PineconeStore():
         self.index = self.pc.Index(host=index_host)
 
     def add_embedding(
-        self, video_title: str,  metadata: List[Dict[str, Any]] = None, namespace: str = ""
+        self, video_title: str, video_id: int, namespace: str = ""
     ) -> bool:
         """
         Add text chunks along with a video title embedding to the Pinecone index.
@@ -51,17 +54,15 @@ class PineconeStore():
 
             # Ensure metadata contains age, default to None if not provided
             # video_age = metadata[0].get("age") if metadata and "age" in metadata[0] else None
-            video_age = self.num
-            self.num += 1
 
             # Store video title embedding separately
-            video_id = hashlib.sha256(video_title.encode()).hexdigest()
+            video_title_id = hashlib.sha256(video_title.encode()).hexdigest()
             self.index.upsert(
                 vectors=[{
-                    "id": video_id,
+                    "id": video_title_id,
                     "values": video_embedding,
                     # Add age metadata
-                    "metadata": {"title": video_title, "age": video_age}
+                    "metadata": {"title": video_title, "age": video_id}
                 }],
                 namespace=namespace
             )
