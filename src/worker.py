@@ -31,16 +31,11 @@ app = Celery(
 def start_vid_pipeline(prompt: str):
     from video_orchestrator import VideoOrchestrator
     video_id = str(time.time())
-    data = asyncio.run(
-        asyncio.gather(
-            VideoOrchestrator(prompt).generate_and_render_video(),
-            ReactOrchestrator(prompt).generate_and_return_components()
-        )
+    video_data = asyncio.run(
+        VideoOrchestrator(prompt).generate_and_render_video(),
     )
 
-    print("DATA IS HERE:", data)
-    video_data = data[0]
-    react_code = data[1]
+    print("DATA IS HERE:", video_data)
 
     if not video_data or "video_path" not in video_data or "image_path" not in video_data:
         return {
@@ -48,7 +43,9 @@ def start_vid_pipeline(prompt: str):
             "message": "Failed to generate video",
         }
 
-    react_code = asyncio.run()
+    react_code = asyncio.run(ReactOrchestrator(
+        prompt).generate_and_return_components())
+    print("REACT CODE", react_code)
 
     if not react_code and "react_code" not in react_code:
         return {
@@ -63,7 +60,11 @@ def start_vid_pipeline(prompt: str):
     data = run_video_pipeline(video_data)
     pinecone.add_embedding(video_data["video_title"], video_id)
 
+    out = {**video_data, **data}
+
+    print("DONE", out)
+
     return {
         "status": "DONE",
-        "data": {**video_data, **data},
+        "data": out,
     }

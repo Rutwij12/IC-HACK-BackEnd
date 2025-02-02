@@ -1,86 +1,89 @@
 from manim import *
 
-class SubsetDemonstration(Scene):
+class FundamentalTheoremCalculus(Scene):
     def construct(self):
-        # Colors
-        light_blue = "#ADD8E6"
-        darker_blue = "#4682B4"
+        # Initial setup
+        title = Text("Fundamental Theorem of Calculus").scale(0.8).to_edge(UP, buff=0.5)
+        initial_eq = MathTex("f(x) = x^2").next_to(title, DOWN, buff=0.5)
+
+        # Create coordinate system
+        axes = Axes(
+            x_range=[0, 4.5, 1],
+            y_range=[0, 16, 4],
+            axis_config={"include_numbers": True},
+            tips=False
+        ).scale(0.6).shift(DOWN)
+
+        # Create function curve
+        curve = axes.plot(lambda x: x**2, x_range=[0, 4], color=BLUE)
         
-        # 1. Title sequence
-        title = Text("Subsets", font_size=48)
-        title.move_to(UP * 2)
-        self.play(FadeIn(title))
-        self.wait(1)
-        self.play(FadeOut(title))
-        
-        # 2. Create Set A
-        circle_a = Circle(radius=2, color=light_blue)
-        circle_a.set_fill(light_blue, opacity=0.3)
-        label_a = Text("A", font_size=36).next_to(circle_a, UR, buff=0.1)
-        
-        # Create numbers for Set A
-        numbers_a = VGroup()
-        positions = [
-            UP * 0.8 + LEFT * 0.8,    # 1
-            UP * 0.8 + RIGHT * 0.8,   # 2
-            LEFT * 1.2,               # 3
-            RIGHT * 1.2,              # 4
-            DOWN * 0.8 + LEFT * 0.8,  # 5
-            DOWN * 0.8 + RIGHT * 0.8  # 6
-        ]
-        
-        for i, pos in zip(range(1, 7), positions):
-            num = Text(str(i), font_size=36, color=BLACK)
-            num.move_to(pos)
-            numbers_a.add(num)
-        
-        # Animate Set A
-        self.play(
-            Create(circle_a),
-            Write(label_a)
+        # Animate initial setup
+        self.play(Write(title), run_time=1)
+        self.play(Write(initial_eq), run_time=1)
+        self.play(Create(axes), Create(curve), run_time=2)
+
+        # Part 2: Area Function
+        area_eq = MathTex(r"{\text{Area Function: }}F(x) = \int_0^x t^2 dt").scale(0.8)
+        area_eq.next_to(title, DOWN, buff=0.5)
+
+        # Create moving area
+        x_tracker = ValueTracker(0)
+        area = always_redraw(
+            lambda: axes.get_area(
+                curve,
+                x_range=[0, x_tracker.get_value()],
+                color=[BLUE_D],
+                opacity=0.3
+            )
         )
-        self.play(Write(numbers_a))
-        self.wait(1)
-        
-        # 3. Create Set B
-        circle_b = Circle(radius=1, color=darker_blue)
-        circle_b.set_fill(darker_blue, opacity=0.3)
-        circle_b.shift(RIGHT * 0.5 + DOWN * 0.3)  # Position within A
-        label_b = Text("B", font_size=36).next_to(circle_b, DR, buff=0.1)
-        
-        # Create highlights for subset elements
-        subset_indices = [1, 3, 5]  # indices for 2, 4, 6 in numbers_a
-        highlights = VGroup()
-        for idx in subset_indices:
-            highlight = Circle(radius=0.3, color=YELLOW, fill_opacity=0.2)
-            highlight.move_to(numbers_a[idx].get_center())
-            highlights.add(highlight)
-        
-        # Animate Set B and highlights
-        self.play(
-            Create(circle_b),
-            Write(label_b)
+
+        # Area value display
+        area_value = DecimalNumber(
+            0,
+            num_decimal_places=2,
+            include_sign=False,
+        ).scale(0.6)
+        area_value.next_to(axes, RIGHT, buff=0.5)
+        area_value.add_updater(
+            lambda m: m.set_value((x_tracker.get_value()**3)/3)
         )
-        self.play(FadeIn(highlights))
-        self.wait(1)
-        
-        # 4. Add subset symbol and text
-        subset_symbol = MathTex(r"\subseteq", font_size=48)
-        subset_symbol.next_to(circle_a, RIGHT, buff=0.5)
-        
-        subset_text = MathTex(r"B \subseteq A", font_size=36)
-        subset_text.next_to(circle_a, DOWN, buff=0.5)
-        
+
+        # Part 2 animations
         self.play(
-            Write(subset_symbol),
-            Write(subset_text)
+            ReplacementTransform(initial_eq, area_eq),
+            Create(area),
         )
-        self.wait(2)
-        
-        # Fade everything out
+        self.add(area_value)
+        self.play(x_tracker.animate.set_value(2), run_time=3)
+
+        # Part 3: Derivative Connection
+        derivative_eq = MathTex("F'(x) = f(x)").scale(0.8)
+        derivative_eq.next_to(area_eq, DOWN, buff=0.3)
+
+        point = Dot(axes.c2p(2, 4), color=YELLOW)
+        point_value = MathTex(
+            r"\text{At }x=2:",
+            r"F(2) = \frac{8}{3}",
+            r"F'(2) = f(2) = 4"
+        ).scale(0.7)
+        point_value.arrange(DOWN, aligned_edge=LEFT).next_to(derivative_eq, DOWN, buff=0.3)
+
+        # Final animations
+        self.play(Write(derivative_eq))
+        self.play(Create(point))
+        self.play(Write(point_value))
+
+        # Pulsing animation for the point
         self.play(
-            *[FadeOut(mob) for mob in [
-                circle_a, circle_b, label_a, label_b,
-                numbers_a, highlights, subset_symbol, subset_text
-            ]]
+            point.animate.scale(2),
+            rate_func=there_and_back,
+            run_time=1
         )
+        self.play(
+            point.animate.scale(2),
+            rate_func=there_and_back,
+            run_time=1
+        )
+
+        # Hold final state
+        self.wait()

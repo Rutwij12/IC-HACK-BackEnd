@@ -1,72 +1,93 @@
 from manim import *
 
-class SetDefinition(Scene):
+class DerivativeAsTangentSlope(Scene):
     def construct(self):
-        # Part 1: Create circles with different colors
-        circle1 = Circle(radius=0.5, color=RED).move_to(LEFT*3)
-        circle2 = Circle(radius=0.5, color=BLUE).move_to(ORIGIN)
-        circle3 = Circle(radius=0.5, color=GREEN).move_to(RIGHT*3)
+        # Create coordinate system
+        axes = Axes(
+            x_range=[-2, 2, 1],
+            y_range=[-1, 4, 1],
+            axis_config={"color": GREY},
+            tips=True
+        ).scale(0.8).shift(DOWN * 0.5)  # Slightly down to make room for text
 
-        # Animate circles appearing
-        self.play(FadeIn(circle1))
-        self.wait(0.5)
-        self.play(FadeIn(circle2))
-        self.wait(0.5)
-        self.play(FadeIn(circle3))
-        self.wait(0.5)
+        # Create the function graph f(x) = x²
+        function = axes.plot(lambda x: x**2, color=BLUE)
+        
+        # Create function label
+        function_label = MathTex("f(x) = x^2", color=BLUE)\
+            .scale(0.8)\
+            .to_corner(UR)\
+            .shift(LEFT * 0.5)
 
-        # Part 2: Create and add numbers
-        num1 = Text("1", color=WHITE, font_size=36).move_to(circle1.get_center())
-        num2 = Text("2", color=WHITE, font_size=36).move_to(circle2.get_center())
-        num3 = Text("3", color=WHITE, font_size=36).move_to(circle3.get_center())
-
-        # Write numbers simultaneously
+        # Initial animations
         self.play(
-            Write(num1),
-            Write(num2),
-            Write(num3)
-        )
-        self.wait(0.5)
-
-        # Part 3: Move circles with numbers to final positions
-        # Group circles with their numbers
-        group1 = VGroup(circle1, num1)
-        group2 = VGroup(circle2, num2)
-        group3 = VGroup(circle3, num3)
-
-        # Animate movement to final positions
-        self.play(
-            group1.animate.move_to(LEFT),
-            group2.animate.move_to(ORIGIN),
-            group3.animate.move_to(RIGHT),
+            Create(axes),
             run_time=1
         )
-
-        # Create and add braces and commas
-        left_brace = Text("{", color=WHITE, font_size=60).next_to(group1, LEFT, buff=0.2)
-        right_brace = Text("}", color=WHITE, font_size=60).next_to(group3, RIGHT, buff=0.2)
-        
-        comma1 = Text(",", color=WHITE, font_size=36).move_to(
-            (group1.get_center() + group2.get_center()) / 2
-        )
-        comma2 = Text(",", color=WHITE, font_size=36).move_to(
-            (group2.get_center() + group3.get_center()) / 2
-        )
-
-        # Add braces and commas
         self.play(
-            FadeIn(left_brace),
-            FadeIn(right_brace),
-            Write(comma1),
-            Write(comma2)
+            Create(function),
+            Write(function_label),
+            run_time=2
         )
-        self.wait(0.5)
 
-        # Add title text
-        title = Text("A Set: A collection of distinct objects", 
-                    color=WHITE, 
-                    font_size=40
-        ).to_edge(UP, buff=1)
+        # Create point and tangent line
+        dot = Dot(color=RED).scale(0.8)
+        tangent_line = Line(color=YELLOW)
+        
+        # Function to update point and tangent line
+        def update_point_and_line(t):
+            # Calculate x position (moving from -1 to 1)
+            x = -1 + 2 * t
+            # Get point on curve
+            point = axes.c2p(x, x**2)
+            dot.move_to(point)
+            
+            # Calculate slope at point (derivative = 2x)
+            slope = 2 * x
+            
+            # Create tangent line points
+            dx = 1  # Half-length of tangent line
+            x1 = x - dx
+            x2 = x + dx
+            y1 = x**2 + slope * (-dx)
+            y2 = x**2 + slope * dx
+            
+            start_point = axes.c2p(x1, y1)
+            end_point = axes.c2p(x2, y2)
+            
+            tangent_line.put_start_and_end_on(start_point, end_point)
 
-        self.play(Write(title))
+        # Animate point and tangent line
+        self.play(
+            Create(dot),
+            Create(tangent_line)
+        )
+
+        # Animate movement
+        self.play(
+            UpdateFromAlphaFunc(
+                dot,
+                lambda mob, alpha: update_point_and_line(alpha)
+            ),
+            UpdateFromAlphaFunc(
+                tangent_line,
+                lambda mob, alpha: update_point_and_line(alpha)
+            ),
+            rate_func=linear,
+            run_time=8
+        )
+
+        # Add final text
+        final_text = Text("Derivative = Slope of Tangent Line", 
+                         font="Times New Roman")\
+            .scale(0.8)\
+            .to_edge(DOWN)\
+            .shift(UP * 0.3)
+
+        self.play(
+            Write(final_text),
+            run_time=2
+        )
+
+        # Hold for a moment
         self.wait(2)

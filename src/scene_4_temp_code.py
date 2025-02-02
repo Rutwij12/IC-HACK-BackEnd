@@ -1,89 +1,93 @@
 from manim import *
 
-class SetOperations(Scene):
+class IntegrationScene(Scene):
     def construct(self):
-        # Part 1: Introduction
-        title = Text("Set Operations", font_size=40).to_edge(UP)
-        set_a_text = Text("A = {1, 2, 3, 4}", font_size=32).move_to(LEFT * 2 + UP)
-        set_b_text = Text("B = {3, 4, 5, 6}", font_size=32).move_to(RIGHT * 2 + UP)
-
-        self.play(Write(title))
+        # Create coordinate system
+        axes = Axes(
+            x_range=[0, 3, 0.5],
+            y_range=[0, 3, 0.5],
+            x_length=6,
+            y_length=6,
+            axis_config={"color": GREY},
+            x_axis_config={"numbers_to_include": [1, 2]},
+            y_axis_config={"numbers_to_include": [1, 2]},
+        ).add_coordinates()
+        
+        # Add grid
+        grid = axes.get_grid(color=GREY_D, opacity=0.15)
+        
+        # Create title
+        title = MathTex(r"\text{Integrating } x \, dx").scale(1.2)
+        title.to_edge(UP, buff=0.5)
+        
+        # Create function
+        func = axes.plot(lambda x: x, x_range=[0, 2], color=BLUE)
+        func_label = MathTex("f(x) = x").next_to(func.get_end(), RIGHT)
+        
+        # Initial animation
         self.play(
-            FadeIn(set_a_text),
-            FadeIn(set_b_text)
+            FadeIn(axes, grid),
+            Write(title),
+            run_time=1
         )
-        self.wait()
-
-        # Part 2: Venn Diagram
+        self.play(Create(func), Write(func_label), run_time=2)
+        
+        # Create vertical strip
+        x_val = 1
+        dx = 0.2
+        strip = axes.get_riemann_rectangles(
+            func,
+            x_range=[x_val, x_val + dx],
+            dx=dx,
+            color=YELLOW,
+            fill_opacity=0.2
+        )
+        
+        # Labels for strip
+        x_label = MathTex("x").scale(0.7).next_to(strip, RIGHT, buff=0.1)
+        dx_label = MathTex("dx").scale(0.7).next_to(axes.c2p(x_val + dx/2, 0), DOWN, buff=0.1)
+        strip_explanation = MathTex(r"\text{Area of strip} = x \cdot dx").next_to(axes, DOWN, buff=0.5)
+        
+        # Show strip and labels
         self.play(
-            FadeOut(set_a_text),
-            FadeOut(set_b_text)
+            FadeIn(strip, x_label, dx_label),
+            Write(strip_explanation),
+            run_time=2
         )
-
-        # Create circles
-        circle_a = Circle(radius=1.2, color=BLUE).move_to(LEFT * 0.8)
-        circle_b = Circle(radius=1.2, color=RED).move_to(RIGHT * 0.8)
-        circle_a.set_fill(BLUE, opacity=0.3)
-        circle_b.set_fill(RED, opacity=0.3)
-
-        # Labels for circles
-        label_a = Text("A", font_size=32).move_to(LEFT * 1.5 + UP)
-        label_b = Text("B", font_size=32).move_to(RIGHT * 1.5 + UP)
-
-        # Numbers
-        nums_a = [
-            Text("1", font_size=28).move_to(LEFT * 1.0 + UP * 0.3),
-            Text("2", font_size=28).move_to(LEFT * 1.0 + DOWN * 0.3),
-        ]
-        nums_intersection = [
-            Text("3", font_size=28).move_to(LEFT * 0.2 + UP * 0.2),
-            Text("4", font_size=28).move_to(LEFT * 0.2 + DOWN * 0.2),
-        ]
-        nums_b = [
-            Text("5", font_size=28).move_to(RIGHT * 1.0 + UP * 0.3),
-            Text("6", font_size=28).move_to(RIGHT * 1.0 + DOWN * 0.3),
-        ]
-
-        # Animate Venn diagram
+        
+        # Animate area filling
+        area = axes.get_riemann_rectangles(
+            func,
+            x_range=[0, 2],
+            dx=0.05,
+            color=BLUE,
+            fill_opacity=0.3
+        )
+        
+        running_calc = MathTex(r"\int x \, dx = \frac{x^2}{2}").next_to(axes, DOWN, buff=0.5)
+        final_area = MathTex(r"\text{When } x=2: \text{ Area} = 2").next_to(axes, RIGHT, buff=0.5)
+        
+        # Clear previous explanations and show area
         self.play(
-            Create(circle_a),
-            Create(circle_b),
+            FadeOut(strip, x_label, dx_label, strip_explanation),
+            FadeIn(area),
+            Transform(strip_explanation, running_calc),
+            Write(final_area),
+            run_time=4
         )
+        
+        # Final formula
+        final_formula = MathTex(r"\int x \, dx = \frac{x^2}{2} + C").scale(1.2)
+        final_formula.next_to(axes, DOWN, buff=0.5)
+        
         self.play(
-            Write(label_a),
-            Write(label_b)
+            FadeOut(running_calc, final_area),
+            Transform(strip_explanation, final_formula),
+            run_time=2
         )
-
-        # Animate numbers appearing
+        
+        # Fade everything out
         self.play(
-            *[Write(num) for num in nums_a],
-            *[Write(num) for num in nums_intersection],
-            *[Write(num) for num in nums_b]
+            *[FadeOut(mob) for mob in self.mobjects],
+            run_time=2
         )
-
-        # Part 3: Operations
-        union_text = Text("A ∪ B = {1, 2, 3, 4, 5, 6}", font_size=32).move_to(LEFT * 2.5 + DOWN * 2)
-        intersection_text = Text("A ∩ B = {3, 4}", font_size=32).move_to(RIGHT * 2.5 + DOWN * 2)
-
-        # Union highlight
-        union_highlight = VGroup(circle_a.copy(), circle_b.copy())
-        union_highlight.set_fill(YELLOW, opacity=0.2)
-
-        # Intersection highlight
-        intersection_highlight = Intersection(circle_a, circle_b)
-        intersection_highlight.set_fill(PURPLE, opacity=0.4)
-        intersection_highlight.set_stroke(width=0)
-
-        # Show union
-        self.play(Write(union_text))
-        self.play(FadeIn(union_highlight))
-        self.wait(0.5)
-        self.play(FadeOut(union_highlight))
-
-        # Show intersection
-        self.play(Write(intersection_text))
-        self.play(FadeIn(intersection_highlight))
-        self.wait(0.5)
-        self.play(FadeOut(intersection_highlight))
-
-        self.wait()

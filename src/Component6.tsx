@@ -1,94 +1,76 @@
-function SetOperationsCalculator() {
-  const [set1, setSet1] = React.useState(['a', 'b', 'c']);
-  const [set2, setSet2] = React.useState(['b', 'c', 'd']);
-  const [set1Input, setSet1Input] = React.useState('');
-  const [set2Input, setSet2Input] = React.useState('');
-
-  const updateSet = (input, setNum) => {
-    const elements = input.split(',').map(el => el.trim()).filter(el => el);
-    if (setNum === 1) {
-      setSet1(elements);
-    } else {
-      setSet2(elements);
-    }
-  };
-
-  const union = [...new Set([...set1, ...set2])];
-  const intersection = set1.filter(item => set2.includes(item));
-  const difference = set1.filter(item => !set2.includes(item));
-
-  const styles = {
-    container: {
+function MusicMathDiagram() {
+  return (
+    <div style={{
       fontFamily: 'Arial',
       padding: '20px',
-      maxWidth: '600px',
-      margin: '0 auto',
-    },
-    title: {
-      fontSize: '24px',
-      color: '#FF8C00',
-      marginBottom: '20px',
-    },
-    input: {
-      marginBottom: '15px',
-      width: '100%',
-      padding: '8px',
-      border: '1px solid #FFA500',
-    },
-    setDisplay: {
-      backgroundColor: '#FFF3E0',
-      padding: '10px',
-      marginBottom: '10px',
-      borderRadius: '5px',
-      color: '#E65100',
-    },
-    results: {
-      marginTop: '20px',
-      color: '#F57C00',
-    }
-  };
-
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Set Operations Calculator</h1>
+      maxWidth: '800px',
+      margin: '0 auto'
+    }}>
+      <h2 style={{
+        color: '#FF7F00',
+        fontSize: '28px',
+        marginBottom: '20px'
+      }}>
+        Pythagorean Musical Ratios
+      </h2>
       
-      <div>
-        <input
-          type="text"
-          placeholder="Enter Set 1 elements (comma separated)"
-          value={set1Input}
-          onChange={(e) => {
-            setSet1Input(e.target.value);
-            updateSet(e.target.value, 1);
-          }}
-          style={styles.input}
-        />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginBottom: '40px'
+      }}>
+        <div style={{
+          border: '2px solid #FFB366',
+          padding: '15px',
+          borderRadius: '8px',
+          width: '45%'
+        }}>
+          <h3 style={{color: '#FF8C1A', marginBottom: '10px'}}>
+            String Length Ratios
+          </h3>
+          <svg width="200" height="120">
+            <line x1="20" y1="20" x2="180" y2="20" stroke="#FF9933" strokeWidth="2"/>
+            <text x="85" y="15" style={{fill: '#FF9933'}}>1:1 (Unison)</text>
+            
+            <line x1="20" y1="60" x2="100" y2="60" stroke="#FF9933" strokeWidth="2"/>
+            <text x="85" y="55" style={{fill: '#FF9933'}}>2:1 (Octave)</text>
+            
+            <line x1="20" y1="100" x2="140" y2="100" stroke="#FF9933" strokeWidth="2"/>
+            <text x="85" y="95" style={{fill: '#FF9933'}}>3:2 (Fifth)</text>
+          </svg>
+        </div>
+
+        <div style={{
+          border: '2px solid #FFB366',
+          padding: '15px', 
+          borderRadius: '8px',
+          width: '45%'
+        }}>
+          <h3 style={{color: '#FF8C1A', marginBottom: '10px'}}>
+            Sound Wave Patterns
+          </h3>
+          <svg width="200" height="120">
+            <path d="M 10 60 Q 52.5 20, 95 60 T 180 60" 
+                  fill="none" 
+                  stroke="#FF9933" 
+                  strokeWidth="2"/>
+            <path d="M 10 60 Q 35 100, 60 60 T 110 60" 
+                  fill="none" 
+                  stroke="#FF9933" 
+                  strokeWidth="2"/>
+          </svg>
+        </div>
       </div>
 
-      <div>
-        <input
-          type="text"
-          placeholder="Enter Set 2 elements (comma separated)"
-          value={set2Input}
-          onChange={(e) => {
-            setSet2Input(e.target.value);
-            updateSet(e.target.value, 2);
-          }}
-          style={styles.input}
-        />
-      </div>
-
-      <div style={styles.setDisplay}>
-        <div>Set 1: {`{${set1.join(', ')}}`}</div>
-        <div>Set 2: {`{${set2.join(', ')}}`}</div>
-      </div>
-
-      <div style={styles.results}>
-        <h3>Results:</h3>
-        <div>Union: {`{${union.join(', ')}}`}</div>
-        <div>Intersection: {`{${intersection.join(', ')}}`}</div>
-        <div>Set 1 - Set 2: {`{${difference.join(', ')}}`}</div>
-      </div>
+      <p style={{
+        color: '#FF944D',
+        fontSize: '16px',
+        lineHeight: '1.5',
+        textAlign: 'center'
+      }}>
+        Pythagoras discovered that pleasant musical intervals correspond to simple whole-number ratios.
+        When string lengths have ratios of 2:1, they produce an octave; 3:2 creates a perfect fifth.
+      </p>
     </div>
   );
 }

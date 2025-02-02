@@ -1,515 +1,488 @@
 import React, {Component, PureComponent, Fragment, Children, createElement, cloneElement, createFactory, isValidElement, createContext, createRef, forwardRef, lazy, memo, useState, useEffect, useContext, useReducer, useCallback, useMemo, useRef} from 'react';
 
-function SetDefinitionCard() {
+function BiographyIntro() {
+  return (
+    <div style={{
+      fontFamily: 'Arial, sans-serif',
+      maxWidth: '800px',
+      margin: '0 auto',
+      padding: '20px'
+    }}>
+      <h1 style={{
+        fontSize: '2.5em',
+        color: '#FF8C00',
+        marginBottom: '20px'
+      }}>
+        Pythagoras of Samos
+      </h1>
+      
+      <p style={{
+        fontSize: '1.2em',
+        lineHeight: '1.6',
+        color: '#FF7F50',
+        marginBottom: '15px'
+      }}>
+        One of the most influential and enigmatic figures in ancient Greek philosophy and mathematics, Pythagoras (c. 570-495 BCE) left an indelible mark on human thought that resonates to this day.
+      </p>
+
+      <p style={{
+        fontSize: '1.1em',
+        lineHeight: '1.6',
+        color: '#FFA07A',
+        marginBottom: '15px'
+      }}>
+        Born on the island of Samos, Pythagoras founded a philosophical and religious school in Croton, Italy, where he developed his famous mathematical theories and cultivated a devoted following. His teachings extended far beyond mathematics into music, astronomy, and metaphysics.
+      </p>
+
+      <p style={{
+        fontSize: '1.1em',
+        lineHeight: '1.6',
+        color: '#FFA07A'
+      }}>
+        While he is most commonly known for the Pythagorean theorem, his influence spans much broader - from his belief in the mathematical nature of reality to his teachings on the immortality of the soul. His ideas would later influence great thinkers like Plato and continue to shape our understanding of mathematics and philosophy.
+      </p>
+    </div>
+  );
+}
+function TimelineBanner() {
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const events = [
+    {
+      year: "570 BCE",
+      title: "Birth",
+      details: "Born on the island of Samos, Greece"
+    },
+    {
+      year: "535 BCE", 
+      title: "Migration to Italy",
+      details: "Established his school in Croton"
+    },
+    {
+      year: "532 BCE",
+      title: "Pythagoras' Theorem",
+      details: "Formalized the relationship between sides of right triangles"
+    },
+    {
+      year: "520 BCE",
+      title: "Music Theory",
+      details: "Discovered mathematical ratios in musical harmonies"
+    },
+    {
+      year: "495 BCE",
+      title: "Death",
+      details: "Died in Metapontum, Italy"
+    }
+  ];
+
+  const timelineStyles = {
+    container: {
+      padding: "20px",
+      fontFamily: "Arial",
+      position: "relative"
+    },
+    line: {
+      height: "4px",
+      backgroundColor: "#FFA500",
+      width: "100%",
+      margin: "50px 0"
+    },
+    events: {
+      display: "flex",
+      justifyContent: "space-between",
+      position: "relative"
+    },
+    event: {
+      cursor: "pointer",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "120px"
+    },
+    dot: {
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      backgroundColor: "#FF8C00",
+      margin: "10px 0"
+    },
+    year: {
+      color: "#FF6600",
+      fontWeight: "bold"
+    },
+    selectedEvent: {
+      position: "absolute",
+      top: "100px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      backgroundColor: "#FFF3E0",
+      padding: "15px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      color: "#FF8C00",
+      textAlign: "center"
+    }
+  };
+
+  return (
+    <div style={timelineStyles.container}>
+      <h2 style={{color: "#FF4500", fontSize: "24px", textAlign: "center"}}>
+        Pythagoras Timeline
+      </h2>
+      <div style={timelineStyles.line} />
+      <div style={timelineStyles.events}>
+        {events.map((event, index) => (
+          <div 
+            key={index}
+            style={timelineStyles.event}
+            onClick={() => setSelectedEvent(event)}
+          >
+            <div style={timelineStyles.dot} />
+            <span style={timelineStyles.year}>{event.year}</span>
+          </div>
+        ))}
+      </div>
+      {selectedEvent && (
+        <div style={timelineStyles.selectedEvent}>
+          <h3 style={{color: "#FF4500", margin: "0 0 10px 0"}}>
+            {selectedEvent.title}
+          </h3>
+          <p style={{color: "#FF8C00", margin: 0}}>
+            {selectedEvent.details}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+function TheTheoremVisual() {
+  const [angle, setAngle] = React.useState(45);
+  const [isAnimating, setIsAnimating] = React.useState(false);
+
+  const calculateTriangleDimensions = (angleInDegrees) => {
+    const a = Math.cos(angleInDegrees * Math.PI / 180) * 100;
+    const b = Math.sin(angleInDegrees * Math.PI / 180) * 100;
+    const c = Math.sqrt(a * a + b * b);
+    return { a, b, c };
+  };
+
+  const dimensions = calculateTriangleDimensions(angle);
+
+  const handleSliderChange = (e) => {
+    setAngle(e.target.value);
+  };
+
+  const toggleAnimation = () => {
+    setIsAnimating(!isAnimating);
+  };
+
+  React.useEffect(() => {
+    let animationFrame;
+    if (isAnimating) {
+      let currentAngle = angle;
+      const animate = () => {
+        currentAngle = (currentAngle + 1) % 90;
+        setAngle(currentAngle);
+        animationFrame = requestAnimationFrame(animate);
+      };
+      animationFrame = requestAnimationFrame(animate);
+    }
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isAnimating]);
+
+  return (
+    <div style={{ fontFamily: 'Arial', padding: '20px' }}>
+      <h2 style={{ color: '#FF8C00', marginBottom: '20px' }}>
+        Interactive Pythagorean Theorem
+      </h2>
+      
+      <div style={{ position: 'relative', width: '300px', height: '300px' }}>
+        <svg width="300" height="300">
+          {/* Main triangle */}
+          <path
+            d={`M 50 250 L ${50 + dimensions.a} 250 L 50 ${250 - dimensions.b} Z`}
+            fill="none"
+            stroke="#FFA500"
+            strokeWidth="2"
+          />
+          
+          {/* Squares on each side */}
+          <path
+            d={`M 50 250 L 50 ${250 - dimensions.b} 
+                L ${50 - dimensions.b} ${250 - dimensions.b} 
+                L ${50 - dimensions.b} 250 Z`}
+            fill="#FFE4B5"
+            opacity="0.6"
+          />
+          
+          <path
+            d={`M ${50 + dimensions.a} 250 
+                L ${50 + dimensions.a} ${250 + dimensions.a}
+                L 50 ${250 + dimensions.a} 
+                L 50 250 Z`}
+            fill="#FFA07A"
+            opacity="0.6"
+          />
+          
+          <path
+            d={`M 50 ${250 - dimensions.b} 
+                L ${50 + dimensions.a} 250
+                L ${50 + dimensions.a + dimensions.b} ${250 - dimensions.b}
+                L ${50 + dimensions.b} ${250 - dimensions.a - dimensions.b} Z`}
+            fill="#FFD700"
+            opacity="0.6"
+          />
+        </svg>
+      </div>
+
+      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
+        <p>Angle: {angle}°</p>
+        <input
+          type="range"
+          min="15"
+          max="75"
+          value={angle}
+          onChange={handleSliderChange}
+          style={{ width: '200px' }}
+        />
+      </div>
+
+      <button
+        onClick={toggleAnimation}
+        style={{
+          marginTop: '10px',
+          padding: '8px 16px',
+          backgroundColor: '#FFA500',
+          border: 'none',
+          borderRadius: '4px',
+          color: 'white',
+          cursor: 'pointer'
+        }}
+      >
+        {isAnimating ? 'Stop Animation' : 'Start Animation'}
+      </button>
+
+      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
+        <p>a² + b² = c²</p>
+        <p>
+          {Math.round(dimensions.a * dimensions.a)} + {Math.round(dimensions.b * dimensions.b)} = {Math.round(dimensions.c * dimensions.c)}
+        </p>
+      </div>
+    </div>
+  );
+}
+function NumberMysticismText() {
   return (
     <div style={{
       fontFamily: 'Arial',
       padding: '20px',
-      maxWidth: '600px',
-      borderRadius: '8px',
-      backgroundColor: '#fff6eb'  
-    }}>
-      <h2 style={{
-        fontSize: '24px',
-        color: '#e65c00',
-        marginBottom: '15px'
-      }}>
-        What is a Mathematical Set?
-      </h2>
-      
-      <p style={{
-        fontSize: '16px',
-        color: '#cc5200',
-        lineHeight: '1.6',
-        marginBottom: '15px'
-      }}>
-        A set is a collection of distinct objects, considered as a single unit. The objects in a set are called elements or members of the set. Sets are usually denoted by capital letters.
-      </p>
-
-      <div style={{
-        fontSize: '16px',
-        color: '#e67300',
-        marginBottom: '15px'
-      }}>
-        <h3 style={{
-          fontSize: '18px',
-          color: '#cc5200',
-          marginBottom: '10px'
-        }}>
-          Simple Examples:
-        </h3>
-        <ul style={{lineHeight: '1.6'}}>
-          <li>A = {'{'}1, 2, 3, 4, 5{'}'} is a set of first five natural numbers</li>
-          <li>B = {'{'}red, blue, green{'}'} is a set of colors</li>
-          <li>C = {'{'}dog, cat, rabbit{'}'} is a set of animals</li>
-        </ul>
-      </div>
-
-      <p style={{
-        fontSize: '16px',
-        color: '#cc5200',
-        fontStyle: 'italic'
-      }}>
-        Key characteristic: Each element in a set must be unique, and the order of elements doesn't matter.
-      </p>
-    </div>
-  );
-}
-function VennDiagramVisualizer() {
-  const [sets, setSets] = React.useState({
-    setA: {x: 150, y: 150, elements: ['A1', 'A2', 'A3']},
-    setB: {x: 250, y: 150, elements: ['B1', 'B2', 'A2']} 
-  });
-  const [draggedSet, setDraggedSet] = React.useState(null);
-  const [mouseOffset, setMouseOffset] = React.useState({x: 0, y: 0});
-
-  const handleMouseDown = (e, setKey) => {
-    const rect = e.target.getBoundingClientRect();
-    setMouseOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-    setDraggedSet(setKey);
-  };
-
-  const handleMouseMove = (e) => {
-    if (draggedSet) {
-      setSets(prev => ({
-        ...prev,
-        [draggedSet]: {
-          ...prev[draggedSet],
-          x: e.clientX - mouseOffset.x,
-          y: e.clientY - mouseOffset.y
-        }
-      }));
-    }
-  };
-
-  const handleMouseUp = () => {
-    setDraggedSet(null);
-  };
-
-  const getIntersection = () => {
-    return sets.setA.elements.filter(el => sets.setB.elements.includes(el));
-  };
-
-  const getUnion = () => {
-    return [...new Set([...sets.setA.elements, ...sets.setB.elements])];
-  };
-
-  return (
-    <div 
-      style={{
-        position: 'relative',
-        height: '400px',
-        fontFamily: 'Arial',
-        userSelect: 'none'
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      <h2 style={{color: '#FF8C00', marginBottom: '20px'}}>Interactive Venn Diagram</h2>
-      
-      {/* Set A Circle */}
-      <div
-        style={{
-          position: 'absolute',
-          left: sets.setA.x,
-          top: sets.setA.y,
-          width: '150px',
-          height: '150px',
-          borderRadius: '50%',
-          backgroundColor: 'rgba(255, 140, 0, 0.3)',
-          cursor: 'move',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        onMouseDown={(e) => handleMouseDown(e, 'setA')}
-      >
-        Set A
-      </div>
-
-      {/* Set B Circle */}
-      <div
-        style={{
-          position: 'absolute',
-          left: sets.setB.x,
-          top: sets.setB.y,
-          width: '150px',
-          height: '150px',
-          borderRadius: '50%',
-          backgroundColor: 'rgba(255, 160, 0, 0.3)',
-          cursor: 'move',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        onMouseDown={(e) => handleMouseDown(e, 'setB')}
-      >
-        Set B
-      </div>
-
-      {/* Operations Display */}
-      <div style={{
-        position: 'absolute',
-        top: '320px',
-        left: '20px',
-        color: '#FF8C00'
-      }}>
-        <p>Intersection: {getIntersection().join(', ')}</p>
-        <p>Union: {getUnion().join(', ')}</p>
-      </div>
-    </div>
-  );
-}
-function SetNotationGuide() {
-  const styles = {
-    container: {
-      fontFamily: 'Arial, sans-serif',
       maxWidth: '800px',
-      margin: '20px auto',
-      padding: '20px',
-      color: '#cc7000'
-    },
-    title: {
-      fontSize: '28px',
-      color: '#ff8c00',
-      marginBottom: '20px'
-    },
-    section: {
-      marginBottom: '24px'
-    },
-    sectionTitle: {
-      fontSize: '20px',
-      color: '#e67300',
-      marginBottom: '12px'
-    },
-    text: {
-      fontSize: '16px',
-      lineHeight: '1.6',
-      marginBottom: '12px'
-    },
-    example: {
-      fontStyle: 'italic',
-      color: '#ff9933',
-      marginLeft: '20px'
-    }
-  }
+      margin: '0 auto'
+    }}>
+      <h1 style={{
+        color: '#FF8C00',
+        fontSize: '2.5em',
+        marginBottom: '20px'
+      }}>
+        The Sacred Mathematics of Pythagoras
+      </h1>
 
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Set Notation Guide</h1>
-
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Definition</h2>
-        <p style={styles.text}>
-          A set is denoted by curly braces {} containing its elements, separated by commas.
+      <div style={{
+        color: '#FF7F50',
+        fontSize: '1.1em',
+        lineHeight: '1.6'
+      }}>
+        <p>
+          Pythagoras, the ancient Greek philosopher and mathematician, believed numbers were far more than mere mathematical concepts - they were the very essence of everything in the universe. His mystical approach to numbers transformed mathematics into a spiritual practice.
         </p>
-        <p style={styles.example}>Example: {"{1, 2, 3}"} is a set containing three numbers</p>
-      </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Membership</h2>
-        <p style={styles.text}>
-          The symbol ∈ means "is an element of" and ∉ means "is not an element of"
+        <p>
+          To Pythagoras, each number held deep symbolic meaning. The number One represented unity and the divine source of all things. Two symbolized duality and the material world. Three was considered perfect harmony, while Four represented earthly elements and justice. The number Ten was seen as the most sacred, containing the sum of the first four numbers (1+2+3+4=10).
         </p>
-        <p style={styles.example}>Example: x ∈ A means x is an element of set A</p>
-      </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Common Sets</h2>
-        <p style={styles.text}>
-          ℕ represents Natural Numbers
-          ℤ represents Integers
-          ℚ represents Rational Numbers
-          ℝ represents Real Numbers
+        <p>
+          The Pythagoreans even attributed personalities and qualities to numbers. Odd numbers were considered masculine and yang, while even numbers were feminine and yin. Some numbers were thought to embody certain virtues - Seven was associated with wisdom and Five with marriage.
         </p>
-      </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Operations</h2>
-        <p style={styles.text}>
-          ∪ represents Union: combines elements from both sets
-          ∩ represents Intersection: elements common to both sets
-          \ represents Set Difference: elements in first set but not in second
+        <p>
+          Perhaps most famously, Pythagoras discovered the mathematical relationships in musical harmonies, leading him to declare that "everything is arranged according to number." This revelation strengthened his conviction that numbers were the key to understanding the divine architecture of the cosmos.
         </p>
-        <p style={styles.example}>Example: A ∪ B contains all elements from both A and B</p>
-      </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Properties</h2>
-        <p style={styles.text}>
-          ⊆ means "is a subset of"
-          ⊂ means "is a proper subset of"
-          = means sets contain exactly the same elements
+        <p>
+          His followers, known as the Pythagoreans, formed a semi-religious sect dedicated to studying numbers and their mystical properties. They took oaths of secrecy and lived by strict rules, treating mathematics as a path to spiritual enlightenment rather than just a practical tool.
         </p>
-        <p style={styles.example}>Example: If A ⊆ B, all elements of A are also in B</p>
-      </div>
-
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Special Sets</h2>
-        <p style={styles.text}>
-          ∅ or {} represents the Empty Set
-          U represents the Universal Set
-        </p>
-        <p style={styles.example}>Example: The empty set ∅ contains no elements</p>
       </div>
     </div>
-  )
+  );
 }
-function SetMembershipAnimator() {
-  const [elementPositions, setElementPositions] = React.useState([
-    { id: 1, text: "A", inSet: false, x: 50, y: 150 },
-    { id: 2, text: "B", inSet: false, x: 100, y: 150 }, 
-    { id: 3, text: "C", inSet: false, x: 150, y: 150 }
-  ]);
+function LegacyImpactWheel() {
+  const [selectedField, setSelectedField] = useState(null);
+  const [rotation, setRotation] = useState(0);
 
-  const moveElement = (id) => {
-    setElementPositions(positions => 
-      positions.map(element => {
-        if (element.id === id) {
-          return {
-            ...element,
-            inSet: !element.inSet,
-            y: element.inSet ? 150 : 50
-          };
-        }
-        return element;
-      })
-    );
+  const fields = [
+    { name: 'Mathematics', color: '#FFA500', description: 'Theorem and number theory foundations' },
+    { name: 'Music', color: '#FF8C00', description: 'Harmonic ratios and musical scales' },
+    { name: 'Architecture', color: '#FFA07A', description: 'Sacred geometry and proportions' },
+    { name: 'Philosophy', color: '#FFD700', description: 'Mysticism and metaphysics' },
+    { name: 'Astronomy', color: '#FF7F50', description: 'Celestial harmony and orbits' },
+    { name: 'Science', color: '#FF4500', description: 'Scientific method foundations' }
+  ];
+
+  const handleFieldClick = (field) => {
+    setSelectedField(field);
+  };
+
+  const handleWheelClick = () => {
+    setRotation(rotation + 60);
+    setSelectedField(null);
   };
 
   return (
     <div style={{ 
       fontFamily: 'Arial',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '20px',
       padding: '20px'
     }}>
-      <h2 style={{ 
-        color: '#FF8C00',
-        marginBottom: '20px'
-      }}>
-        Set Membership Animation
-      </h2>
+      <h2 style={{ color: '#FF8C00', fontSize: '24px' }}>Pythagorean Legacy Impact</h2>
       
-      <svg width="300" height="200" style={{background: '#FFF5EB'}}>
-        {/* Set circle */}
-        <circle 
-          cx="150" 
-          cy="70" 
-          r="50" 
-          fill="none" 
-          stroke="#FFA500" 
-          strokeWidth="2"
-        />
-        
-        {/* Set label */}
-        <text 
-          x="150" 
-          y="30" 
-          textAnchor="middle" 
-          fill="#FF8C00" 
-          fontFamily="Arial"
-        >
-          Set S
-        </text>
+      <div style={{ 
+        position: 'relative',
+        width: '400px',
+        height: '400px',
+        cursor: 'pointer'
+      }} onClick={handleWheelClick}>
+        {fields.map((field, index) => {
+          const angle = (index * 60 + rotation) * (Math.PI / 180);
+          const centerX = 200 + 150 * Math.cos(angle);
+          const centerY = 200 + 150 * Math.sin(angle);
 
-        {/* Movable elements */}
-        {elementPositions.map(element => (
-          <g 
-            key={element.id}
-            onClick={() => moveElement(element.id)}
-            style={{cursor: 'pointer'}}
-          >
-            <circle
-              cx={element.x}
-              cy={element.y}
-              r="15"
-              fill="#FFE4B5"
-              stroke="#FFA500"
-            />
-            <text
-              x={element.x}
-              y={element.y + 5}
-              textAnchor="middle"
-              fill="#FF8C00"
-              fontFamily="Arial"
+          return (
+            <div
+              key={field.name}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFieldClick(field);
+              }}
+              style={{
+                position: 'absolute',
+                left: centerX - 50,
+                top: centerY - 50,
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                backgroundColor: field.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontWeight: 'bold',
+                transition: 'transform 0.5s ease',
+                transform: `rotate(${rotation}deg)`,
+                cursor: 'pointer'
+              }}
             >
-              {element.text}
-            </text>
-          </g>
-        ))}
-      </svg>
-
-      <div style={{
-        color: '#FF8C00',
-        marginTop: '20px',
-        fontSize: '14px'
-      }}>
-        Click elements to toggle set membership
+              {field.name}
+            </div>
+          );
+        })}
       </div>
+
+      {selectedField && (
+        <div style={{
+          backgroundColor: selectedField.color,
+          padding: '20px',
+          borderRadius: '10px',
+          color: 'white',
+          maxWidth: '300px',
+          textAlign: 'center'
+        }}>
+          <h3>{selectedField.name}</h3>
+          <p>{selectedField.description}</p>
+        </div>
+      )}
+
+      <p style={{ color: '#FF8C00', fontSize: '14px', textAlign: 'center' }}>
+        Click on a field to learn more or click the wheel to rotate
+      </p>
     </div>
   );
 }
-function CommonSetsExplainer() {
+function MusicMathDiagram() {
   return (
-    <div style={{ fontFamily: 'Arial', color: '#FF8C42', padding: '20px' }}>
-      <h2 style={{ 
-        fontSize: '28px', 
-        color: '#E85D04', 
-        marginBottom: '20px' 
-      }}>
-        Common Sets in Everyday Life
-      </h2>
-
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{ 
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          In the Kitchen
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          Your kitchen utensils form a set: {'{spoons, forks, knives, spatulas}'}.
-          The ingredients in your fridge are another set.
-        </p>
-      </div>
-
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          At School
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          A classroom contains the set of students, the set of desks, and the set of school supplies.
-        </p>
-      </div>
-
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          In Nature
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          Trees in a forest form a set. Animals in a zoo form a set.
-          Even the planets in our solar system form a set: {'{Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune}'}.
-        </p>
-      </div>
-
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          In Your Closet
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          Your clothes form different sets: the set of shirts, the set of pants, the set of shoes.
-          These are all subsets of your complete wardrobe set.
-        </p>
-      </div>
-    </div>
-  );
-}
-function SetOperationsCalculator() {
-  const [set1, setSet1] = React.useState(['a', 'b', 'c']);
-  const [set2, setSet2] = React.useState(['b', 'c', 'd']);
-  const [set1Input, setSet1Input] = React.useState('');
-  const [set2Input, setSet2Input] = React.useState('');
-
-  const updateSet = (input, setNum) => {
-    const elements = input.split(',').map(el => el.trim()).filter(el => el);
-    if (setNum === 1) {
-      setSet1(elements);
-    } else {
-      setSet2(elements);
-    }
-  };
-
-  const union = [...new Set([...set1, ...set2])];
-  const intersection = set1.filter(item => set2.includes(item));
-  const difference = set1.filter(item => !set2.includes(item));
-
-  const styles = {
-    container: {
+    <div style={{
       fontFamily: 'Arial',
       padding: '20px',
-      maxWidth: '600px',
-      margin: '0 auto',
-    },
-    title: {
-      fontSize: '24px',
-      color: '#FF8C00',
-      marginBottom: '20px',
-    },
-    input: {
-      marginBottom: '15px',
-      width: '100%',
-      padding: '8px',
-      border: '1px solid #FFA500',
-    },
-    setDisplay: {
-      backgroundColor: '#FFF3E0',
-      padding: '10px',
-      marginBottom: '10px',
-      borderRadius: '5px',
-      color: '#E65100',
-    },
-    results: {
-      marginTop: '20px',
-      color: '#F57C00',
-    }
-  };
-
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Set Operations Calculator</h1>
+      maxWidth: '800px',
+      margin: '0 auto'
+    }}>
+      <h2 style={{
+        color: '#FF7F00',
+        fontSize: '28px',
+        marginBottom: '20px'
+      }}>
+        Pythagorean Musical Ratios
+      </h2>
       
-      <div>
-        <input
-          type="text"
-          placeholder="Enter Set 1 elements (comma separated)"
-          value={set1Input}
-          onChange={(e) => {
-            setSet1Input(e.target.value);
-            updateSet(e.target.value, 1);
-          }}
-          style={styles.input}
-        />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginBottom: '40px'
+      }}>
+        <div style={{
+          border: '2px solid #FFB366',
+          padding: '15px',
+          borderRadius: '8px',
+          width: '45%'
+        }}>
+          <h3 style={{color: '#FF8C1A', marginBottom: '10px'}}>
+            String Length Ratios
+          </h3>
+          <svg width="200" height="120">
+            <line x1="20" y1="20" x2="180" y2="20" stroke="#FF9933" strokeWidth="2"/>
+            <text x="85" y="15" style={{fill: '#FF9933'}}>1:1 (Unison)</text>
+            
+            <line x1="20" y1="60" x2="100" y2="60" stroke="#FF9933" strokeWidth="2"/>
+            <text x="85" y="55" style={{fill: '#FF9933'}}>2:1 (Octave)</text>
+            
+            <line x1="20" y1="100" x2="140" y2="100" stroke="#FF9933" strokeWidth="2"/>
+            <text x="85" y="95" style={{fill: '#FF9933'}}>3:2 (Fifth)</text>
+          </svg>
+        </div>
+
+        <div style={{
+          border: '2px solid #FFB366',
+          padding: '15px', 
+          borderRadius: '8px',
+          width: '45%'
+        }}>
+          <h3 style={{color: '#FF8C1A', marginBottom: '10px'}}>
+            Sound Wave Patterns
+          </h3>
+          <svg width="200" height="120">
+            <path d="M 10 60 Q 52.5 20, 95 60 T 180 60" 
+                  fill="none" 
+                  stroke="#FF9933" 
+                  strokeWidth="2"/>
+            <path d="M 10 60 Q 35 100, 60 60 T 110 60" 
+                  fill="none" 
+                  stroke="#FF9933" 
+                  strokeWidth="2"/>
+          </svg>
+        </div>
       </div>
 
-      <div>
-        <input
-          type="text"
-          placeholder="Enter Set 2 elements (comma separated)"
-          value={set2Input}
-          onChange={(e) => {
-            setSet2Input(e.target.value);
-            updateSet(e.target.value, 2);
-          }}
-          style={styles.input}
-        />
-      </div>
-
-      <div style={styles.setDisplay}>
-        <div>Set 1: {`{${set1.join(', ')}}`}</div>
-        <div>Set 2: {`{${set2.join(', ')}}`}</div>
-      </div>
-
-      <div style={styles.results}>
-        <h3>Results:</h3>
-        <div>Union: {`{${union.join(', ')}}`}</div>
-        <div>Intersection: {`{${intersection.join(', ')}}`}</div>
-        <div>Set 1 - Set 2: {`{${difference.join(', ')}}`}</div>
-      </div>
+      <p style={{
+        color: '#FF944D',
+        fontSize: '16px',
+        lineHeight: '1.5',
+        textAlign: 'center'
+      }}>
+        Pythagoras discovered that pleasant musical intervals correspond to simple whole-number ratios.
+        When string lengths have ratios of 2:1, they produce an octave; 3:2 creates a perfect fifth.
+      </p>
     </div>
   );
 }
@@ -517,17 +490,17 @@ function SetOperationsCalculator() {
 function App() {
   return (
     <div>
-      <SetDefinitionCard />
+      <BiographyIntro />
       <div style={{ marginBottom: '2rem' }} />
-      <VennDiagramVisualizer />
+      <TimelineBanner />
       <div style={{ marginBottom: '2rem' }} />
-      <SetNotationGuide />
+      <TheTheoremVisual />
       <div style={{ marginBottom: '2rem' }} />
-      <SetMembershipAnimator />
+      <NumberMysticismText />
       <div style={{ marginBottom: '2rem' }} />
-      <CommonSetsExplainer />
+      <LegacyImpactWheel />
       <div style={{ marginBottom: '2rem' }} />
-      <SetOperationsCalculator />
+      <MusicMathDiagram />
       <div style={{ marginBottom: '2rem' }} />
     </div>
   );

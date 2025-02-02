@@ -1,68 +1,95 @@
-function CommonSetsExplainer() {
+function LegacyImpactWheel() {
+  const [selectedField, setSelectedField] = useState(null);
+  const [rotation, setRotation] = useState(0);
+
+  const fields = [
+    { name: 'Mathematics', color: '#FFA500', description: 'Theorem and number theory foundations' },
+    { name: 'Music', color: '#FF8C00', description: 'Harmonic ratios and musical scales' },
+    { name: 'Architecture', color: '#FFA07A', description: 'Sacred geometry and proportions' },
+    { name: 'Philosophy', color: '#FFD700', description: 'Mysticism and metaphysics' },
+    { name: 'Astronomy', color: '#FF7F50', description: 'Celestial harmony and orbits' },
+    { name: 'Science', color: '#FF4500', description: 'Scientific method foundations' }
+  ];
+
+  const handleFieldClick = (field) => {
+    setSelectedField(field);
+  };
+
+  const handleWheelClick = () => {
+    setRotation(rotation + 60);
+    setSelectedField(null);
+  };
+
   return (
-    <div style={{ fontFamily: 'Arial', color: '#FF8C42', padding: '20px' }}>
-      <h2 style={{ 
-        fontSize: '28px', 
-        color: '#E85D04', 
-        marginBottom: '20px' 
-      }}>
-        Common Sets in Everyday Life
-      </h2>
+    <div style={{ 
+      fontFamily: 'Arial',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '20px',
+      padding: '20px'
+    }}>
+      <h2 style={{ color: '#FF8C00', fontSize: '24px' }}>Pythagorean Legacy Impact</h2>
+      
+      <div style={{ 
+        position: 'relative',
+        width: '400px',
+        height: '400px',
+        cursor: 'pointer'
+      }} onClick={handleWheelClick}>
+        {fields.map((field, index) => {
+          const angle = (index * 60 + rotation) * (Math.PI / 180);
+          const centerX = 200 + 150 * Math.cos(angle);
+          const centerY = 200 + 150 * Math.sin(angle);
 
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{ 
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          In the Kitchen
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          Your kitchen utensils form a set: {'{spoons, forks, knives, spatulas}'}.
-          The ingredients in your fridge are another set.
-        </p>
+          return (
+            <div
+              key={field.name}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFieldClick(field);
+              }}
+              style={{
+                position: 'absolute',
+                left: centerX - 50,
+                top: centerY - 50,
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                backgroundColor: field.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontWeight: 'bold',
+                transition: 'transform 0.5s ease',
+                transform: `rotate(${rotation}deg)`,
+                cursor: 'pointer'
+              }}
+            >
+              {field.name}
+            </div>
+          );
+        })}
       </div>
 
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
+      {selectedField && (
+        <div style={{
+          backgroundColor: selectedField.color,
+          padding: '20px',
+          borderRadius: '10px',
+          color: 'white',
+          maxWidth: '300px',
+          textAlign: 'center'
         }}>
-          At School
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          A classroom contains the set of students, the set of desks, and the set of school supplies.
-        </p>
-      </div>
+          <h3>{selectedField.name}</h3>
+          <p>{selectedField.description}</p>
+        </div>
+      )}
 
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          In Nature
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          Trees in a forest form a set. Animals in a zoo form a set.
-          Even the planets in our solar system form a set: {'{Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune}'}.
-        </p>
-      </div>
-
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{
-          fontSize: '20px',
-          color: '#F48C06',
-          marginBottom: '10px'
-        }}>
-          In Your Closet
-        </h3>
-        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
-          Your clothes form different sets: the set of shirts, the set of pants, the set of shoes.
-          These are all subsets of your complete wardrobe set.
-        </p>
-      </div>
+      <p style={{ color: '#FF8C00', fontSize: '14px', textAlign: 'center' }}>
+        Click on a field to learn more or click the wheel to rotate
+      </p>
     </div>
   );
 }

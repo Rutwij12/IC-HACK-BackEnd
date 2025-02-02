@@ -1,95 +1,116 @@
-function SetNotationGuide() {
-  const styles = {
-    container: {
-      fontFamily: 'Arial, sans-serif',
-      maxWidth: '800px',
-      margin: '20px auto',
-      padding: '20px',
-      color: '#cc7000'
-    },
-    title: {
-      fontSize: '28px',
-      color: '#ff8c00',
-      marginBottom: '20px'
-    },
-    section: {
-      marginBottom: '24px'
-    },
-    sectionTitle: {
-      fontSize: '20px',
-      color: '#e67300',
-      marginBottom: '12px'
-    },
-    text: {
-      fontSize: '16px',
-      lineHeight: '1.6',
-      marginBottom: '12px'
-    },
-    example: {
-      fontStyle: 'italic',
-      color: '#ff9933',
-      marginLeft: '20px'
+function TheTheoremVisual() {
+  const [angle, setAngle] = React.useState(45);
+  const [isAnimating, setIsAnimating] = React.useState(false);
+
+  const calculateTriangleDimensions = (angleInDegrees) => {
+    const a = Math.cos(angleInDegrees * Math.PI / 180) * 100;
+    const b = Math.sin(angleInDegrees * Math.PI / 180) * 100;
+    const c = Math.sqrt(a * a + b * b);
+    return { a, b, c };
+  };
+
+  const dimensions = calculateTriangleDimensions(angle);
+
+  const handleSliderChange = (e) => {
+    setAngle(e.target.value);
+  };
+
+  const toggleAnimation = () => {
+    setIsAnimating(!isAnimating);
+  };
+
+  React.useEffect(() => {
+    let animationFrame;
+    if (isAnimating) {
+      let currentAngle = angle;
+      const animate = () => {
+        currentAngle = (currentAngle + 1) % 90;
+        setAngle(currentAngle);
+        animationFrame = requestAnimationFrame(animate);
+      };
+      animationFrame = requestAnimationFrame(animate);
     }
-  }
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isAnimating]);
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Set Notation Guide</h1>
-
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Definition</h2>
-        <p style={styles.text}>
-          A set is denoted by curly braces {} containing its elements, separated by commas.
-        </p>
-        <p style={styles.example}>Example: {"{1, 2, 3}"} is a set containing three numbers</p>
+    <div style={{ fontFamily: 'Arial', padding: '20px' }}>
+      <h2 style={{ color: '#FF8C00', marginBottom: '20px' }}>
+        Interactive Pythagorean Theorem
+      </h2>
+      
+      <div style={{ position: 'relative', width: '300px', height: '300px' }}>
+        <svg width="300" height="300">
+          {/* Main triangle */}
+          <path
+            d={`M 50 250 L ${50 + dimensions.a} 250 L 50 ${250 - dimensions.b} Z`}
+            fill="none"
+            stroke="#FFA500"
+            strokeWidth="2"
+          />
+          
+          {/* Squares on each side */}
+          <path
+            d={`M 50 250 L 50 ${250 - dimensions.b} 
+                L ${50 - dimensions.b} ${250 - dimensions.b} 
+                L ${50 - dimensions.b} 250 Z`}
+            fill="#FFE4B5"
+            opacity="0.6"
+          />
+          
+          <path
+            d={`M ${50 + dimensions.a} 250 
+                L ${50 + dimensions.a} ${250 + dimensions.a}
+                L 50 ${250 + dimensions.a} 
+                L 50 250 Z`}
+            fill="#FFA07A"
+            opacity="0.6"
+          />
+          
+          <path
+            d={`M 50 ${250 - dimensions.b} 
+                L ${50 + dimensions.a} 250
+                L ${50 + dimensions.a + dimensions.b} ${250 - dimensions.b}
+                L ${50 + dimensions.b} ${250 - dimensions.a - dimensions.b} Z`}
+            fill="#FFD700"
+            opacity="0.6"
+          />
+        </svg>
       </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Membership</h2>
-        <p style={styles.text}>
-          The symbol ∈ means "is an element of" and ∉ means "is not an element of"
-        </p>
-        <p style={styles.example}>Example: x ∈ A means x is an element of set A</p>
+      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
+        <p>Angle: {angle}°</p>
+        <input
+          type="range"
+          min="15"
+          max="75"
+          value={angle}
+          onChange={handleSliderChange}
+          style={{ width: '200px' }}
+        />
       </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Common Sets</h2>
-        <p style={styles.text}>
-          ℕ represents Natural Numbers
-          ℤ represents Integers
-          ℚ represents Rational Numbers
-          ℝ represents Real Numbers
-        </p>
-      </div>
+      <button
+        onClick={toggleAnimation}
+        style={{
+          marginTop: '10px',
+          padding: '8px 16px',
+          backgroundColor: '#FFA500',
+          border: 'none',
+          borderRadius: '4px',
+          color: 'white',
+          cursor: 'pointer'
+        }}
+      >
+        {isAnimating ? 'Stop Animation' : 'Start Animation'}
+      </button>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Operations</h2>
-        <p style={styles.text}>
-          ∪ represents Union: combines elements from both sets
-          ∩ represents Intersection: elements common to both sets
-          \ represents Set Difference: elements in first set but not in second
+      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
+        <p>a² + b² = c²</p>
+        <p>
+          {Math.round(dimensions.a * dimensions.a)} + {Math.round(dimensions.b * dimensions.b)} = {Math.round(dimensions.c * dimensions.c)}
         </p>
-        <p style={styles.example}>Example: A ∪ B contains all elements from both A and B</p>
-      </div>
-
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Set Properties</h2>
-        <p style={styles.text}>
-          ⊆ means "is a subset of"
-          ⊂ means "is a proper subset of"
-          = means sets contain exactly the same elements
-        </p>
-        <p style={styles.example}>Example: If A ⊆ B, all elements of A are also in B</p>
-      </div>
-
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Special Sets</h2>
-        <p style={styles.text}>
-          ∅ or {} represents the Empty Set
-          U represents the Universal Set
-        </p>
-        <p style={styles.example}>Example: The empty set ∅ contains no elements</p>
       </div>
     </div>
-  )
+  );
 }

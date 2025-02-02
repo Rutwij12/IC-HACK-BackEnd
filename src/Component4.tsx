@@ -1,92 +1,43 @@
-function SetMembershipAnimator() {
-  const [elementPositions, setElementPositions] = React.useState([
-    { id: 1, text: "A", inSet: false, x: 50, y: 150 },
-    { id: 2, text: "B", inSet: false, x: 100, y: 150 }, 
-    { id: 3, text: "C", inSet: false, x: 150, y: 150 }
-  ]);
-
-  const moveElement = (id) => {
-    setElementPositions(positions => 
-      positions.map(element => {
-        if (element.id === id) {
-          return {
-            ...element,
-            inSet: !element.inSet,
-            y: element.inSet ? 150 : 50
-          };
-        }
-        return element;
-      })
-    );
-  };
-
+function NumberMysticismText() {
   return (
-    <div style={{ 
+    <div style={{
       fontFamily: 'Arial',
-      padding: '20px'
+      padding: '20px',
+      maxWidth: '800px',
+      margin: '0 auto'
     }}>
-      <h2 style={{ 
+      <h1 style={{
         color: '#FF8C00',
+        fontSize: '2.5em',
         marginBottom: '20px'
       }}>
-        Set Membership Animation
-      </h2>
-      
-      <svg width="300" height="200" style={{background: '#FFF5EB'}}>
-        {/* Set circle */}
-        <circle 
-          cx="150" 
-          cy="70" 
-          r="50" 
-          fill="none" 
-          stroke="#FFA500" 
-          strokeWidth="2"
-        />
-        
-        {/* Set label */}
-        <text 
-          x="150" 
-          y="30" 
-          textAnchor="middle" 
-          fill="#FF8C00" 
-          fontFamily="Arial"
-        >
-          Set S
-        </text>
-
-        {/* Movable elements */}
-        {elementPositions.map(element => (
-          <g 
-            key={element.id}
-            onClick={() => moveElement(element.id)}
-            style={{cursor: 'pointer'}}
-          >
-            <circle
-              cx={element.x}
-              cy={element.y}
-              r="15"
-              fill="#FFE4B5"
-              stroke="#FFA500"
-            />
-            <text
-              x={element.x}
-              y={element.y + 5}
-              textAnchor="middle"
-              fill="#FF8C00"
-              fontFamily="Arial"
-            >
-              {element.text}
-            </text>
-          </g>
-        ))}
-      </svg>
+        The Sacred Mathematics of Pythagoras
+      </h1>
 
       <div style={{
-        color: '#FF8C00',
-        marginTop: '20px',
-        fontSize: '14px'
+        color: '#FF7F50',
+        fontSize: '1.1em',
+        lineHeight: '1.6'
       }}>
-        Click elements to toggle set membership
+        <p>
+          Pythagoras, the ancient Greek philosopher and mathematician, believed numbers were far more than mere mathematical concepts - they were the very essence of everything in the universe. His mystical approach to numbers transformed mathematics into a spiritual practice.
+        </p>
+
+        <p>
+          To Pythagoras, each number held deep symbolic meaning. The number One represented unity and the divine source of all things. Two symbolized duality and the material world. Three was considered perfect harmony, while Four represented earthly elements and justice. The number Ten was seen as the most sacred, containing the sum of the first four numbers (1+2+3+4=10).
+        </p>
+
+        <p>
+          The Pythagoreans even attributed personalities and qualities to numbers. Odd numbers were considered masculine and yang, while even numbers were feminine and yin. Some numbers were thought to embody certain virtues - Seven was associated with wisdom and Five with marriage.
+        </p>
+
+        <p>
+          Perhaps most famously, Pythagoras discovered the mathematical relationships in musical harmonies, leading him to declare that "everything is arranged according to number." This revelation strengthened his conviction that numbers were the key to understanding the divine architecture of the cosmos.
+        </p>
+
+        <p>
+          His followers, known as the Pythagoreans, formed a semi-religious sect dedicated to studying numbers and their mystical properties. They took oaths of secrecy and lived by strict rules, treating mathematics as a path to spiritual enlightenment rather than just a practical tool.
+        </p>
       </div>
     </div>
   );

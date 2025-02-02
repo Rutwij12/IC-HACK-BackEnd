@@ -1,108 +1,111 @@
-function VennDiagramVisualizer() {
-  const [sets, setSets] = React.useState({
-    setA: {x: 150, y: 150, elements: ['A1', 'A2', 'A3']},
-    setB: {x: 250, y: 150, elements: ['B1', 'B2', 'A2']} 
-  });
-  const [draggedSet, setDraggedSet] = React.useState(null);
-  const [mouseOffset, setMouseOffset] = React.useState({x: 0, y: 0});
+function TimelineBanner() {
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const handleMouseDown = (e, setKey) => {
-    const rect = e.target.getBoundingClientRect();
-    setMouseOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-    setDraggedSet(setKey);
-  };
+  const events = [
+    {
+      year: "570 BCE",
+      title: "Birth",
+      details: "Born on the island of Samos, Greece"
+    },
+    {
+      year: "535 BCE", 
+      title: "Migration to Italy",
+      details: "Established his school in Croton"
+    },
+    {
+      year: "532 BCE",
+      title: "Pythagoras' Theorem",
+      details: "Formalized the relationship between sides of right triangles"
+    },
+    {
+      year: "520 BCE",
+      title: "Music Theory",
+      details: "Discovered mathematical ratios in musical harmonies"
+    },
+    {
+      year: "495 BCE",
+      title: "Death",
+      details: "Died in Metapontum, Italy"
+    }
+  ];
 
-  const handleMouseMove = (e) => {
-    if (draggedSet) {
-      setSets(prev => ({
-        ...prev,
-        [draggedSet]: {
-          ...prev[draggedSet],
-          x: e.clientX - mouseOffset.x,
-          y: e.clientY - mouseOffset.y
-        }
-      }));
+  const timelineStyles = {
+    container: {
+      padding: "20px",
+      fontFamily: "Arial",
+      position: "relative"
+    },
+    line: {
+      height: "4px",
+      backgroundColor: "#FFA500",
+      width: "100%",
+      margin: "50px 0"
+    },
+    events: {
+      display: "flex",
+      justifyContent: "space-between",
+      position: "relative"
+    },
+    event: {
+      cursor: "pointer",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "120px"
+    },
+    dot: {
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      backgroundColor: "#FF8C00",
+      margin: "10px 0"
+    },
+    year: {
+      color: "#FF6600",
+      fontWeight: "bold"
+    },
+    selectedEvent: {
+      position: "absolute",
+      top: "100px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      backgroundColor: "#FFF3E0",
+      padding: "15px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      color: "#FF8C00",
+      textAlign: "center"
     }
   };
 
-  const handleMouseUp = () => {
-    setDraggedSet(null);
-  };
-
-  const getIntersection = () => {
-    return sets.setA.elements.filter(el => sets.setB.elements.includes(el));
-  };
-
-  const getUnion = () => {
-    return [...new Set([...sets.setA.elements, ...sets.setB.elements])];
-  };
-
   return (
-    <div 
-      style={{
-        position: 'relative',
-        height: '400px',
-        fontFamily: 'Arial',
-        userSelect: 'none'
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      <h2 style={{color: '#FF8C00', marginBottom: '20px'}}>Interactive Venn Diagram</h2>
-      
-      {/* Set A Circle */}
-      <div
-        style={{
-          position: 'absolute',
-          left: sets.setA.x,
-          top: sets.setA.y,
-          width: '150px',
-          height: '150px',
-          borderRadius: '50%',
-          backgroundColor: 'rgba(255, 140, 0, 0.3)',
-          cursor: 'move',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        onMouseDown={(e) => handleMouseDown(e, 'setA')}
-      >
-        Set A
+    <div style={timelineStyles.container}>
+      <h2 style={{color: "#FF4500", fontSize: "24px", textAlign: "center"}}>
+        Pythagoras Timeline
+      </h2>
+      <div style={timelineStyles.line} />
+      <div style={timelineStyles.events}>
+        {events.map((event, index) => (
+          <div 
+            key={index}
+            style={timelineStyles.event}
+            onClick={() => setSelectedEvent(event)}
+          >
+            <div style={timelineStyles.dot} />
+            <span style={timelineStyles.year}>{event.year}</span>
+          </div>
+        ))}
       </div>
-
-      {/* Set B Circle */}
-      <div
-        style={{
-          position: 'absolute',
-          left: sets.setB.x,
-          top: sets.setB.y,
-          width: '150px',
-          height: '150px',
-          borderRadius: '50%',
-          backgroundColor: 'rgba(255, 160, 0, 0.3)',
-          cursor: 'move',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        onMouseDown={(e) => handleMouseDown(e, 'setB')}
-      >
-        Set B
-      </div>
-
-      {/* Operations Display */}
-      <div style={{
-        position: 'absolute',
-        top: '320px',
-        left: '20px',
-        color: '#FF8C00'
-      }}>
-        <p>Intersection: {getIntersection().join(', ')}</p>
-        <p>Union: {getUnion().join(', ')}</p>
-      </div>
+      {selectedEvent && (
+        <div style={timelineStyles.selectedEvent}>
+          <h3 style={{color: "#FF4500", margin: "0 0 10px 0"}}>
+            {selectedEvent.title}
+          </h3>
+          <p style={{color: "#FF8C00", margin: 0}}>
+            {selectedEvent.details}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
