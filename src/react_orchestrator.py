@@ -158,4 +158,21 @@ class ReactOrchestrator:
             "component_prompt": self.component_prompt
         }
         
-        return await self.app.ainvoke(initial_state) 
+        return await self.app.ainvoke(initial_state)
+
+    async def generate_and_return_components(self) -> dict:
+        """
+        Orchestrate React component creation and return the final code.
+
+        Returns:
+            dict: Contains the final React code and individual component codes
+        """
+        # First generate all the components and combined code
+        result = await self.orchestrate_components()
+
+        # Ensure the output directory exists
+        os.makedirs("components", exist_ok=True)
+
+        return {
+            "react_code": result["final_code"],
+        } 
