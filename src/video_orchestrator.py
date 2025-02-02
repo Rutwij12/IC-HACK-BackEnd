@@ -1,15 +1,15 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, List
 from pydantic import BaseModel, Field
-from scene_planner import ScenePlanner
-from code_generator import CodeGenerator
-from llm_provider import LLMWrapper
+from .scene_planner import ScenePlanner
+from .code_generator import CodeGenerator
+from .llm_provider import LLMWrapper
 import asyncio
 import subprocess
 import aiofiles
 import re
 import os
-from prompts import (
+from .prompts import (
     VIDEO_IDEA_GENERATOR_SYSTEM_PROMPT,
     VIDEO_IDEA_GENERATOR_USER_PROMPT,
     VOICEOVER_GENERATOR_SYSTEM_PROMPT,
@@ -90,23 +90,30 @@ class VideoOrchestrator:
             generator = CodeGenerator(
                 plan,
                 temp_file_prefix=f"scene_{idx}",
-                max_iterations=8
+                max_iterations=4
             )
             result = await generator.generate_code_with_feedback()
             if "current_code" not in result:
                 print(f"for some reason current code not in idx {idx}")
-            return result["current_code"]
+            return result.get("current_code", "")  # Return empty string if no code
 
         # Create tasks for all scene codes
         tasks = [generate_single_scene(idx, plan)
                  for idx, plan in enumerate(state["scene_plans"])]
         # Run all tasks concurrently
         scene_codes = await asyncio.gather(*tasks)
+        
+        # Filter out empty scenes
+        valid_scenes = [(idx, code) for idx, code in enumerate(scene_codes) if code]
+        scene_plans = [state["scene_plans"][idx] for idx, _ in valid_scenes]
+        scene_codes = [code for _, code in valid_scenes]
 
-        return {"scene_codes": scene_codes}
+        return {"scene_codes": scene_codes,
+                "scene_plans": scene_plans}
 
     async def _generate_voiceovers(self, state: VideoState):
         """Generate voiceover scripts for each scene asynchronously"""
+        # Only generate voiceovers for scenes that have code
         async def generate_single_voiceover(plan, code):
             messages = [
                 ("system", VOICEOVER_GENERATOR_SYSTEM_PROMPT),
@@ -119,7 +126,7 @@ class VideoOrchestrator:
             print("result of voiceover: ", result)
             return result.content
 
-        # Create tasks for all scenes
+        # Create tasks only for valid scenes
         tasks = [generate_single_voiceover(plan, code)
                  for plan, code in zip(state["scene_plans"], state["scene_codes"])]
         # Run all tasks concurrently
@@ -152,8 +159,7 @@ class VideoOrchestrator:
             combined_code.append(f"\n        # Scene {i}")
 
             # Add voiceover wrapper
-            combined_code.append(f"        with self.voiceover(text=\"\"\"{
-                                 voiceover.strip()}\"\"\") as tracker:")
+            combined_code.append(f"        with self.voiceover(text=\"\"\"{voiceover.strip()}\"\"\") as tracker:")
 
             # Add transition between scenes
             if i != 0:
@@ -283,7 +289,10 @@ class VideoOrchestrator:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
-        await video_process.communicate()
+        stdout, stderr = await video_process.communicate()
+        
+        if video_process.returncode != 0:
+            raise Exception(f"Video rendering failed with error:\nStdout: {stdout.decode()}\nStderr: {stderr.decode()}")
 
         filename = os.path.join(os.path.dirname(
             __file__), "scenes", "scene_1_temp_code.py")

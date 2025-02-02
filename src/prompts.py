@@ -195,3 +195,12 @@ Only add respond with a single code block, that defines this component in pure r
 REACT_CODE_GENERATOR_USER_PROMPT = """Generate the React code for this component plan:
 
 {component_plan}"""
+
+
+
+
+VIDEO_TITLE_GENERATOR_SYSTEM_PROMPT="""
+Generate title for a video on this topic:
+
+{video_prompt}
+"""

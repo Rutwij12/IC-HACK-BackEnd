@@ -1,4 +1,4 @@
-from video_orchestrator import VideoOrchestrator
+from src.video_orchestrator import VideoOrchestrator
 from dotenv import load_dotenv
 import asyncio
 
@@ -8,8 +8,7 @@ async def main():
     load_dotenv(override=True)
 
     video_prompt = """
-    Create a short video showing a circle morphing into a square.
-    Make it simple and quick - just 3-4 seconds long.
+    Explaining sine waves
     """
 
     print("\nInitializing VideoOrchestrator...")
@@ -28,22 +27,20 @@ async def main():
     print("\nOutput File Paths:")
     print("-" * 30)
     print(f"Video Path: {result['video_path']}")
-    print(f"Thumbnail Path: {result['thumbnail_path']}")
+    print(f"Thumbnail Path: {result['image_path']}")
 
     print("\nChecking if files exist...")
     print("-" * 30)
     import os
     if result['video_path'] and os.path.exists(result['video_path']):
         print(f"✅ Video file exists!")
-        print(f"Size: {os.path.getsize(
-            result['video_path']) / (1024*1024):.2f} MB")
+        print(f"Size: {os.path.getsize(result['video_path']) / (1024*1024):.2f} MB")
     else:
         print("❌ Video file not found!")
 
     if result['image_path'] and os.path.exists(result['image_path']):
         print(f"✅ Thumbnail file exists!")
-        print(f"Size: {os.path.getsize(
-            result['image_path']) / 1024:.2f} KB")
+        print(f"Size: {os.path.getsize(result['image_path']) / 1024:.2f} KB")
     else:
         print("❌ Thumbnail file not found!")
 

@@ -3,12 +3,12 @@ from typing import Annotated, TypedDict, List
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
-from llm_provider import LLMWrapper
+from .llm_provider import LLMWrapper
 import os
 import re
 import asyncio
 import aiofiles
-from prompts import CODE_GENERATOR_SYSTEM_PROMPT, CODE_GENERATOR_USER_PROMPT
+from .prompts import CODE_GENERATOR_SYSTEM_PROMPT, CODE_GENERATOR_USER_PROMPT
 
 # Structured output for code evaluation
 
@@ -34,7 +34,7 @@ class CodeGenerator:
                  model: str = "claude-3-5-sonnet-20241022",
                  max_iterations: int = 5):
         """Initialize the CodeGenerator with LLM and workflow setup"""
-        self.llm = LLMWrapper(model=model)
+        self.llm = ChatAnthropic(model=model)
         self.workflow = self._setup_workflow()
         self.app = self.workflow.compile()
         self.code_spec = code_spec
@@ -155,13 +155,11 @@ class CodeGenerator:
                     for i, line in enumerate(error_lines):
                         if "Error" in line:
                             error_message = "\n".join(error_lines[i:])
-                            print(f"\nDry run failed with error:\n{
-                                  error_message}")
+                            print(f"\nDry run failed with error:\n{error_message}")
                             break
                     return error_message
                 error_message = extract_error(stderr.decode())
-                print(f"error messsage extracted from file {
-                      filename}: {error_message}")
+                print(f"error message extracted from file {filename}: {error_message}")
                 evaluation = CodeEvaluation(
                     passes_criteria=False,
                     feedback=f"Code Execution: {error_message}"
@@ -178,8 +176,7 @@ class CodeGenerator:
                 # os.remove(filename)
 
         if not evaluation.passes_criteria and evaluation.feedback:
-            messages.append(("user", f"Please revise the code based on this feedback: {
-                            evaluation.feedback}"))
+            messages.append(("user", f"Please revise the code based on this feedback: {evaluation.feedback}"))
 
         return {
             "messages": messages,
@@ -193,7 +190,8 @@ class CodeGenerator:
             print("---CODE PASSED EVALUATION---")
             return "end"
         elif state["iterations"] >= self.max_iterations:  # Use max_iterations from instance
-            print("---MAX ITERATIONS REACHED---")
+            print("---MAX ITERATIONS REACHED - SKIPPING SCENE---")
+            state["current_code"] = ""  # Set empty code to indicate skip
             return "end"
         else:
             print("---CONTINUING TO NEXT ITERATION OF CODE GEN---")
