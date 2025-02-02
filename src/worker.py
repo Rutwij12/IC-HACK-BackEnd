@@ -60,6 +60,9 @@ def start_vid_pipeline(prompt: str):
     data = run_video_pipeline(video_data)
     pinecone.add_embedding(video_data["video_title"], video_id)
 
+    if os.path.exists(video_data["image_path"]):
+        os.remove(video_data["image_path"])
+
     out = {**video_data, **data}
 
     print("DONE", out)

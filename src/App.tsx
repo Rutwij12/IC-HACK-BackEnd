@@ -1,488 +1,457 @@
 import React, {Component, PureComponent, Fragment, Children, createElement, cloneElement, createFactory, isValidElement, createContext, createRef, forwardRef, lazy, memo, useState, useEffect, useContext, useReducer, useCallback, useMemo, useRef} from 'react';
 
-function BiographyIntro() {
-  return (
-    <div style={{
-      fontFamily: 'Arial, sans-serif',
-      maxWidth: '800px',
-      margin: '0 auto',
-      padding: '20px'
-    }}>
-      <h1 style={{
-        fontSize: '2.5em',
-        color: '#FF8C00',
-        marginBottom: '20px'
-      }}>
-        Pythagoras of Samos
-      </h1>
-      
-      <p style={{
-        fontSize: '1.2em',
-        lineHeight: '1.6',
-        color: '#FF7F50',
-        marginBottom: '15px'
-      }}>
-        One of the most influential and enigmatic figures in ancient Greek philosophy and mathematics, Pythagoras (c. 570-495 BCE) left an indelible mark on human thought that resonates to this day.
-      </p>
-
-      <p style={{
-        fontSize: '1.1em',
-        lineHeight: '1.6',
-        color: '#FFA07A',
-        marginBottom: '15px'
-      }}>
-        Born on the island of Samos, Pythagoras founded a philosophical and religious school in Croton, Italy, where he developed his famous mathematical theories and cultivated a devoted following. His teachings extended far beyond mathematics into music, astronomy, and metaphysics.
-      </p>
-
-      <p style={{
-        fontSize: '1.1em',
-        lineHeight: '1.6',
-        color: '#FFA07A'
-      }}>
-        While he is most commonly known for the Pythagorean theorem, his influence spans much broader - from his belief in the mathematical nature of reality to his teachings on the immortality of the soul. His ideas would later influence great thinkers like Plato and continue to shape our understanding of mathematics and philosophy.
-      </p>
-    </div>
-  );
-}
-function TimelineBanner() {
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  const events = [
-    {
-      year: "570 BCE",
-      title: "Birth",
-      details: "Born on the island of Samos, Greece"
-    },
-    {
-      year: "535 BCE", 
-      title: "Migration to Italy",
-      details: "Established his school in Croton"
-    },
-    {
-      year: "532 BCE",
-      title: "Pythagoras' Theorem",
-      details: "Formalized the relationship between sides of right triangles"
-    },
-    {
-      year: "520 BCE",
-      title: "Music Theory",
-      details: "Discovered mathematical ratios in musical harmonies"
-    },
-    {
-      year: "495 BCE",
-      title: "Death",
-      details: "Died in Metapontum, Italy"
-    }
-  ];
-
-  const timelineStyles = {
-    container: {
-      padding: "20px",
-      fontFamily: "Arial",
-      position: "relative"
-    },
-    line: {
-      height: "4px",
-      backgroundColor: "#FFA500",
-      width: "100%",
-      margin: "50px 0"
-    },
-    events: {
-      display: "flex",
-      justifyContent: "space-between",
-      position: "relative"
-    },
-    event: {
-      cursor: "pointer",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      width: "120px"
-    },
-    dot: {
-      width: "20px",
-      height: "20px",
-      borderRadius: "50%",
-      backgroundColor: "#FF8C00",
-      margin: "10px 0"
-    },
-    year: {
-      color: "#FF6600",
-      fontWeight: "bold"
-    },
-    selectedEvent: {
-      position: "absolute",
-      top: "100px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      backgroundColor: "#FFF3E0",
-      padding: "15px",
-      borderRadius: "8px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      color: "#FF8C00",
-      textAlign: "center"
-    }
-  };
-
-  return (
-    <div style={timelineStyles.container}>
-      <h2 style={{color: "#FF4500", fontSize: "24px", textAlign: "center"}}>
-        Pythagoras Timeline
-      </h2>
-      <div style={timelineStyles.line} />
-      <div style={timelineStyles.events}>
-        {events.map((event, index) => (
-          <div 
-            key={index}
-            style={timelineStyles.event}
-            onClick={() => setSelectedEvent(event)}
-          >
-            <div style={timelineStyles.dot} />
-            <span style={timelineStyles.year}>{event.year}</span>
-          </div>
-        ))}
-      </div>
-      {selectedEvent && (
-        <div style={timelineStyles.selectedEvent}>
-          <h3 style={{color: "#FF4500", margin: "0 0 10px 0"}}>
-            {selectedEvent.title}
-          </h3>
-          <p style={{color: "#FF8C00", margin: 0}}>
-            {selectedEvent.details}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-function TheTheoremVisual() {
-  const [angle, setAngle] = React.useState(45);
-  const [isAnimating, setIsAnimating] = React.useState(false);
-
-  const calculateTriangleDimensions = (angleInDegrees) => {
-    const a = Math.cos(angleInDegrees * Math.PI / 180) * 100;
-    const b = Math.sin(angleInDegrees * Math.PI / 180) * 100;
-    const c = Math.sqrt(a * a + b * b);
-    return { a, b, c };
-  };
-
-  const dimensions = calculateTriangleDimensions(angle);
-
-  const handleSliderChange = (e) => {
-    setAngle(e.target.value);
-  };
-
-  const toggleAnimation = () => {
-    setIsAnimating(!isAnimating);
-  };
-
-  React.useEffect(() => {
-    let animationFrame;
-    if (isAnimating) {
-      let currentAngle = angle;
-      const animate = () => {
-        currentAngle = (currentAngle + 1) % 90;
-        setAngle(currentAngle);
-        animationFrame = requestAnimationFrame(animate);
-      };
-      animationFrame = requestAnimationFrame(animate);
-    }
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isAnimating]);
-
-  return (
-    <div style={{ fontFamily: 'Arial', padding: '20px' }}>
-      <h2 style={{ color: '#FF8C00', marginBottom: '20px' }}>
-        Interactive Pythagorean Theorem
-      </h2>
-      
-      <div style={{ position: 'relative', width: '300px', height: '300px' }}>
-        <svg width="300" height="300">
-          {/* Main triangle */}
-          <path
-            d={`M 50 250 L ${50 + dimensions.a} 250 L 50 ${250 - dimensions.b} Z`}
-            fill="none"
-            stroke="#FFA500"
-            strokeWidth="2"
-          />
-          
-          {/* Squares on each side */}
-          <path
-            d={`M 50 250 L 50 ${250 - dimensions.b} 
-                L ${50 - dimensions.b} ${250 - dimensions.b} 
-                L ${50 - dimensions.b} 250 Z`}
-            fill="#FFE4B5"
-            opacity="0.6"
-          />
-          
-          <path
-            d={`M ${50 + dimensions.a} 250 
-                L ${50 + dimensions.a} ${250 + dimensions.a}
-                L 50 ${250 + dimensions.a} 
-                L 50 250 Z`}
-            fill="#FFA07A"
-            opacity="0.6"
-          />
-          
-          <path
-            d={`M 50 ${250 - dimensions.b} 
-                L ${50 + dimensions.a} 250
-                L ${50 + dimensions.a + dimensions.b} ${250 - dimensions.b}
-                L ${50 + dimensions.b} ${250 - dimensions.a - dimensions.b} Z`}
-            fill="#FFD700"
-            opacity="0.6"
-          />
-        </svg>
-      </div>
-
-      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
-        <p>Angle: {angle}°</p>
-        <input
-          type="range"
-          min="15"
-          max="75"
-          value={angle}
-          onChange={handleSliderChange}
-          style={{ width: '200px' }}
-        />
-      </div>
-
-      <button
-        onClick={toggleAnimation}
-        style={{
-          marginTop: '10px',
-          padding: '8px 16px',
-          backgroundColor: '#FFA500',
-          border: 'none',
-          borderRadius: '4px',
-          color: 'white',
-          cursor: 'pointer'
-        }}
-      >
-        {isAnimating ? 'Stop Animation' : 'Start Animation'}
-      </button>
-
-      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
-        <p>a² + b² = c²</p>
-        <p>
-          {Math.round(dimensions.a * dimensions.a)} + {Math.round(dimensions.b * dimensions.b)} = {Math.round(dimensions.c * dimensions.c)}
-        </p>
-      </div>
-    </div>
-  );
-}
-function NumberMysticismText() {
+function QuickIntroText() {
   return (
     <div style={{
       fontFamily: 'Arial',
-      padding: '20px',
-      maxWidth: '800px',
-      margin: '0 auto'
-    }}>
-      <h1 style={{
-        color: '#FF8C00',
-        fontSize: '2.5em',
-        marginBottom: '20px'
-      }}>
-        The Sacred Mathematics of Pythagoras
-      </h1>
-
-      <div style={{
-        color: '#FF7F50',
-        fontSize: '1.1em',
-        lineHeight: '1.6'
-      }}>
-        <p>
-          Pythagoras, the ancient Greek philosopher and mathematician, believed numbers were far more than mere mathematical concepts - they were the very essence of everything in the universe. His mystical approach to numbers transformed mathematics into a spiritual practice.
-        </p>
-
-        <p>
-          To Pythagoras, each number held deep symbolic meaning. The number One represented unity and the divine source of all things. Two symbolized duality and the material world. Three was considered perfect harmony, while Four represented earthly elements and justice. The number Ten was seen as the most sacred, containing the sum of the first four numbers (1+2+3+4=10).
-        </p>
-
-        <p>
-          The Pythagoreans even attributed personalities and qualities to numbers. Odd numbers were considered masculine and yang, while even numbers were feminine and yin. Some numbers were thought to embody certain virtues - Seven was associated with wisdom and Five with marriage.
-        </p>
-
-        <p>
-          Perhaps most famously, Pythagoras discovered the mathematical relationships in musical harmonies, leading him to declare that "everything is arranged according to number." This revelation strengthened his conviction that numbers were the key to understanding the divine architecture of the cosmos.
-        </p>
-
-        <p>
-          His followers, known as the Pythagoreans, formed a semi-religious sect dedicated to studying numbers and their mystical properties. They took oaths of secrecy and lived by strict rules, treating mathematics as a path to spiritual enlightenment rather than just a practical tool.
-        </p>
-      </div>
-    </div>
-  );
-}
-function LegacyImpactWheel() {
-  const [selectedField, setSelectedField] = useState(null);
-  const [rotation, setRotation] = useState(0);
-
-  const fields = [
-    { name: 'Mathematics', color: '#FFA500', description: 'Theorem and number theory foundations' },
-    { name: 'Music', color: '#FF8C00', description: 'Harmonic ratios and musical scales' },
-    { name: 'Architecture', color: '#FFA07A', description: 'Sacred geometry and proportions' },
-    { name: 'Philosophy', color: '#FFD700', description: 'Mysticism and metaphysics' },
-    { name: 'Astronomy', color: '#FF7F50', description: 'Celestial harmony and orbits' },
-    { name: 'Science', color: '#FF4500', description: 'Scientific method foundations' }
-  ];
-
-  const handleFieldClick = (field) => {
-    setSelectedField(field);
-  };
-
-  const handleWheelClick = () => {
-    setRotation(rotation + 60);
-    setSelectedField(null);
-  };
-
-  return (
-    <div style={{ 
-      fontFamily: 'Arial',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '20px',
-      padding: '20px'
-    }}>
-      <h2 style={{ color: '#FF8C00', fontSize: '24px' }}>Pythagorean Legacy Impact</h2>
-      
-      <div style={{ 
-        position: 'relative',
-        width: '400px',
-        height: '400px',
-        cursor: 'pointer'
-      }} onClick={handleWheelClick}>
-        {fields.map((field, index) => {
-          const angle = (index * 60 + rotation) * (Math.PI / 180);
-          const centerX = 200 + 150 * Math.cos(angle);
-          const centerY = 200 + 150 * Math.sin(angle);
-
-          return (
-            <div
-              key={field.name}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleFieldClick(field);
-              }}
-              style={{
-                position: 'absolute',
-                left: centerX - 50,
-                top: centerY - 50,
-                width: '100px',
-                height: '100px',
-                borderRadius: '50%',
-                backgroundColor: field.color,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontWeight: 'bold',
-                transition: 'transform 0.5s ease',
-                transform: `rotate(${rotation}deg)`,
-                cursor: 'pointer'
-              }}
-            >
-              {field.name}
-            </div>
-          );
-        })}
-      </div>
-
-      {selectedField && (
-        <div style={{
-          backgroundColor: selectedField.color,
-          padding: '20px',
-          borderRadius: '10px',
-          color: 'white',
-          maxWidth: '300px',
-          textAlign: 'center'
-        }}>
-          <h3>{selectedField.name}</h3>
-          <p>{selectedField.description}</p>
-        </div>
-      )}
-
-      <p style={{ color: '#FF8C00', fontSize: '14px', textAlign: 'center' }}>
-        Click on a field to learn more or click the wheel to rotate
-      </p>
-    </div>
-  );
-}
-function MusicMathDiagram() {
-  return (
-    <div style={{
-      fontFamily: 'Arial',
+      color: '#FF8533',
       padding: '20px',
       maxWidth: '800px',
       margin: '0 auto'
     }}>
       <h2 style={{
-        color: '#FF7F00',
         fontSize: '28px',
+        color: '#FF6600',
         marginBottom: '20px'
       }}>
-        Pythagorean Musical Ratios
+        What is Integration?
+      </h2>
+
+      <div style={{
+        fontSize: '18px',
+        lineHeight: '1.6',
+        color: '#FF944D'
+      }}>
+        <p>
+          Integration is a fundamental concept in calculus that helps us find the total amount
+          of a quantity over an interval. Think of it as adding up infinitely many infinitely
+          small pieces to find a total.
+        </p>
+
+        <h3 style={{
+          fontSize: '22px',
+          color: '#FF751A',
+          marginTop: '20px',
+          marginBottom: '15px'
+        }}>
+          Real World Applications
+        </h3>
+
+        <p>
+          We use integration in countless real-world scenarios:
+        </p>
+
+        <ul style={{color: '#FF944D', marginLeft: '20px'}}>
+          <li>Calculating the total distance traveled from speed</li>
+          <li>Finding the volume of irregular shapes</li>
+          <li>Computing the total energy consumption over time</li>
+          <li>Determining the center of mass of objects</li>
+          <li>Analyzing probability distributions in statistics</li>
+        </ul>
+
+        <p style={{marginTop: '15px'}}>
+          Whether you're an engineer designing buildings, a physicist studying motion,
+          or an economist analyzing market trends, integration provides the tools to
+          understand how quantities accumulate and change over time or space.
+        </p>
+      </div>
+    </div>
+  );
+}
+function BasicFormulaDisplay() {
+  return (
+    <div style={{
+      fontFamily: 'Arial',
+      color: '#FF8C00',
+      padding: '20px',
+      textAlign: 'center'
+    }}>
+      <h2 style={{
+        fontSize: '24px',
+        color: '#FFA500',
+        marginBottom: '15px'
+      }}>
+        Basic Integration Formula Structure
       </h2>
       
       <div style={{
+        fontSize: '60px',
         display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '40px'
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '10px'
       }}>
-        <div style={{
-          border: '2px solid #FFB366',
-          padding: '15px',
-          borderRadius: '8px',
-          width: '45%'
+        <span style={{
+          fontFamily: 'Times New Roman',
+          fontSize: '80px',
+          color: '#FF7F50'
         }}>
-          <h3 style={{color: '#FF8C1A', marginBottom: '10px'}}>
-            String Length Ratios
-          </h3>
-          <svg width="200" height="120">
-            <line x1="20" y1="20" x2="180" y2="20" stroke="#FF9933" strokeWidth="2"/>
-            <text x="85" y="15" style={{fill: '#FF9933'}}>1:1 (Unison)</text>
-            
-            <line x1="20" y1="60" x2="100" y2="60" stroke="#FF9933" strokeWidth="2"/>
-            <text x="85" y="55" style={{fill: '#FF9933'}}>2:1 (Octave)</text>
-            
-            <line x1="20" y1="100" x2="140" y2="100" stroke="#FF9933" strokeWidth="2"/>
-            <text x="85" y="95" style={{fill: '#FF9933'}}>3:2 (Fifth)</text>
-          </svg>
-        </div>
+          ∫
+        </span>
+        
+        <span style={{
+          fontSize: '40px',
+          color: '#FFA07A'
+        }}>
+          f(x) dx
+        </span>
+        
+        <span style={{
+          fontSize: '40px',
+          color: '#FF8C00'
+        }}>
+          = F(x) + C
+        </span>
+      </div>
+      
+      <p style={{
+        fontSize: '16px',
+        color: '#FF7F50',
+        marginTop: '20px'
+      }}>
+        Where F(x) is the antiderivative of f(x) and C is the constant of integration
+      </p>
+    </div>
+  );
+}
+function AreaUnderCurveAnimation() {
+  const [points, setPoints] = React.useState(10);
+  const [showArea, setShowArea] = React.useState(false);
+  const canvasRef = React.useRef(null);
 
-        <div style={{
-          border: '2px solid #FFB366',
-          padding: '15px', 
-          borderRadius: '8px',
-          width: '45%'
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw axes
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff9933';
+    ctx.moveTo(50, height - 50);
+    ctx.lineTo(width - 50, height - 50); // x-axis
+    ctx.moveTo(50, height - 50);
+    ctx.lineTo(50, 50); // y-axis
+    ctx.stroke();
+
+    // Draw curve (parabola)
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff6600';
+    ctx.moveTo(50, height - 50);
+    
+    for(let x = 0; x <= width - 100; x++) {
+      const y = 100 * Math.sin(x * 0.02) + 150;
+      ctx.lineTo(x + 50, height - y);
+    }
+    ctx.stroke();
+
+    // Draw rectangles under curve
+    if (showArea) {
+      ctx.fillStyle = 'rgba(255, 153, 51, 0.3)';
+      const dx = (width - 100) / points;
+      
+      for(let i = 0; i < points; i++) {
+        const x = i * dx;
+        const y = 100 * Math.sin(x * 0.02) + 150;
+        ctx.fillRect(
+          x + 50,
+          height - 50,
+          dx,
+          -y + 50
+        );
+      }
+    }
+
+  }, [points, showArea]);
+
+  return (
+    <div style={{fontFamily: 'Arial'}}>
+      <h2 style={{color: '#cc5200', fontSize: '24px'}}>Area Under Curve Visualization</h2>
+      <div style={{marginBottom: '20px'}}>
+        <label style={{color: '#ff751a', marginRight: '10px'}}>
+          Number of rectangles:
+          <input 
+            type="range" 
+            min="1" 
+            max="100" 
+            value={points}
+            onChange={(e) => setPoints(parseInt(e.target.value))}
+          />
+          {points}
+        </label>
+        <button
+          style={{
+            marginLeft: '20px',
+            backgroundColor: '#ff751a',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            color: 'white',
+            cursor: 'pointer'
+          }}
+          onClick={() => setShowArea(!showArea)}
+        >
+          {showArea ? 'Hide Area' : 'Show Area'}
+        </button>
+      </div>
+      <canvas
+        ref={canvasRef}
+        width={600}
+        height={400}
+        style={{border: '2px solid #ff751a', borderRadius: '8px'}}
+      />
+      <p style={{color: '#ff751a', marginTop: '20px'}}>
+        This visualization shows how integration can be approximated by summing the areas of rectangles under a curve. 
+        Adjust the slider to change the number of rectangles and see how the approximation becomes more accurate.
+      </p>
+    </div>
+  );
+}
+function IntegrationTypesGrid() {
+  const integrationTypes = [
+    {
+      title: "API Integration",
+      description: "Direct communication between systems using REST or GraphQL APIs"
+    },
+    {
+      title: "Webhook Integration", 
+      description: "Event-driven integration using HTTP callbacks"
+    },
+    {
+      title: "File-based Integration",
+      description: "Exchange of data through file transfers (CSV, XML, JSON)"
+    },
+    {
+      title: "Database Integration",
+      description: "Direct database connections and synchronization"
+    },
+    {
+      title: "Message Queue",
+      description: "Asynchronous communication using message brokers"
+    },
+    {
+      title: "SDK Integration",
+      description: "Using software development kits for native integration"
+    }
+  ];
+
+  return (
+    <div style={{
+      fontFamily: 'Arial',
+      padding: '20px'
+    }}>
+      <h1 style={{
+        color: '#FF8C00',
+        fontSize: '2em',
+        marginBottom: '30px'
+      }}>
+        Integration Types
+      </h1>
+      
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '20px'
+      }}>
+        {integrationTypes.map((type, index) => (
+          <div key={index} style={{
+            padding: '20px',
+            border: '2px solid #FFA500',
+            borderRadius: '8px',
+            backgroundColor: '#FFF8DC'
+          }}>
+            <h3 style={{
+              color: '#FF4500',
+              marginBottom: '10px',
+              fontSize: '1.2em'
+            }}>
+              {type.title}
+            </h3>
+            <p style={{
+              color: '#FF8C00',
+              fontSize: '0.9em',
+              lineHeight: '1.4'
+            }}>
+              {type.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+function RealWorldExamplesCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const examples = [
+    {
+      title: "Architecture & Engineering",
+      text: "Integration helps calculate load-bearing capacities of curved structures like bridges and domes"
+    },
+    {
+      title: "Economics", 
+      text: "Finding total revenue by integrating marginal revenue curves over time"
+    },
+    {
+      title: "Physics",
+      text: "Calculating work done by varying forces by integrating force over distance"
+    },
+    {
+      title: "Biology",
+      text: "Population growth modeling using integration of growth rate functions"
+    }
+  ];
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === examples.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? examples.length - 1 : prevIndex - 1
+    );
+  };
+
+  return (
+    <div style={{
+      fontFamily: 'Arial',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '20px',
+      backgroundColor: '#FFF5EB'
+    }}>
+      <h2 style={{
+        color: '#FF8C00',
+        fontSize: '24px',
+        marginBottom: '20px'
+      }}>
+        Real World Applications
+      </h2>
+
+      <div style={{
+        position: 'relative',
+        width: '80%',
+        height: '200px',
+        backgroundColor: '#FFE4CC',
+        borderRadius: '10px',
+        padding: '20px',
+        margin: '20px 0'
+      }}>
+        <h3 style={{
+          color: '#FF7F24',
+          fontSize: '20px',
+          marginBottom: '10px'
         }}>
-          <h3 style={{color: '#FF8C1A', marginBottom: '10px'}}>
-            Sound Wave Patterns
-          </h3>
-          <svg width="200" height="120">
-            <path d="M 10 60 Q 52.5 20, 95 60 T 180 60" 
-                  fill="none" 
-                  stroke="#FF9933" 
-                  strokeWidth="2"/>
-            <path d="M 10 60 Q 35 100, 60 60 T 110 60" 
-                  fill="none" 
-                  stroke="#FF9933" 
-                  strokeWidth="2"/>
-          </svg>
-        </div>
+          {examples[currentIndex].title}
+        </h3>
+        <p style={{
+          color: '#FF8C69',
+          fontSize: '16px'
+        }}>
+          {examples[currentIndex].text}
+        </p>
       </div>
 
-      <p style={{
-        color: '#FF944D',
-        fontSize: '16px',
-        lineHeight: '1.5',
-        textAlign: 'center'
+      <div style={{
+        display: 'flex',
+        gap: '20px'
       }}>
-        Pythagoras discovered that pleasant musical intervals correspond to simple whole-number ratios.
-        When string lengths have ratios of 2:1, they produce an octave; 3:2 creates a perfect fifth.
-      </p>
+        <button 
+          onClick={prevSlide}
+          style={{
+            backgroundColor: '#FFA500',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            color: 'white',
+            cursor: 'pointer'
+          }}
+        >
+          Previous
+        </button>
+        <button 
+          onClick={nextSlide}
+          style={{
+            backgroundColor: '#FFA500',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            color: 'white',
+            cursor: 'pointer'
+          }}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+function KeyPointsSummary() {
+  const styles = {
+    container: {
+      fontFamily: 'Arial, sans-serif',
+      padding: '20px',
+      maxWidth: '800px',
+      margin: '0 auto'
+    },
+    title: {
+      fontSize: '28px',
+      color: '#FF8C00',
+      marginBottom: '20px'
+    },
+    list: {
+      listStyleType: 'circle',
+      paddingLeft: '25px'
+    },
+    listItem: {
+      color: '#FFA500',
+      fontSize: '16px',
+      lineHeight: '1.6',
+      marginBottom: '12px'
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      <h2 style={styles.title}>Key Integration Concepts</h2>
+      <ul style={styles.list}>
+        <li style={styles.listItem}>
+          Always validate input data before processing to ensure data integrity
+        </li>
+        <li style={styles.listItem}>
+          Implement proper error handling and logging mechanisms
+        </li>
+        <li style={styles.listItem}>
+          Use asynchronous operations for better performance and scalability
+        </li>
+        <li style={styles.listItem}>
+          Maintain consistent data formats across all integration points
+        </li>
+        <li style={styles.listItem}>
+          Implement retry mechanisms for failed operations
+        </li>
+        <li style={styles.listItem}>
+          Follow security best practices and encrypt sensitive data
+        </li>
+        <li style={styles.listItem}>
+          Document all integration endpoints and their requirements
+        </li>
+        <li style={styles.listItem}>
+          Monitor integration performance and set up alerts
+        </li>
+        <li style={styles.listItem}>
+          Version your APIs to maintain backward compatibility
+        </li>
+        <li style={styles.listItem}>
+          Regular testing of integration points to ensure reliability
+        </li>
+      </ul>
     </div>
   );
 }
@@ -490,17 +459,17 @@ function MusicMathDiagram() {
 function App() {
   return (
     <div>
-      <BiographyIntro />
+      <QuickIntroText />
       <div style={{ marginBottom: '2rem' }} />
-      <TimelineBanner />
+      <BasicFormulaDisplay />
       <div style={{ marginBottom: '2rem' }} />
-      <TheTheoremVisual />
+      <AreaUnderCurveAnimation />
       <div style={{ marginBottom: '2rem' }} />
-      <NumberMysticismText />
+      <IntegrationTypesGrid />
       <div style={{ marginBottom: '2rem' }} />
-      <LegacyImpactWheel />
+      <RealWorldExamplesCarousel />
       <div style={{ marginBottom: '2rem' }} />
-      <MusicMathDiagram />
+      <KeyPointsSummary />
       <div style={{ marginBottom: '2rem' }} />
     </div>
   );

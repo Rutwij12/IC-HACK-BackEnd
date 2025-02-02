@@ -1,89 +1,83 @@
 from manim import *
 
-class FundamentalTheoremCalculus(Scene):
+class FundamentalTheoremScene(Scene):
     def construct(self):
-        # Initial setup
-        title = Text("Fundamental Theorem of Calculus").scale(0.8).to_edge(UP, buff=0.5)
-        initial_eq = MathTex("f(x) = x^2").next_to(title, DOWN, buff=0.5)
-
-        # Create coordinate system
-        axes = Axes(
-            x_range=[0, 4.5, 1],
-            y_range=[0, 16, 4],
-            axis_config={"include_numbers": True},
-            tips=False
-        ).scale(0.6).shift(DOWN)
-
-        # Create function curve
-        curve = axes.plot(lambda x: x**2, x_range=[0, 4], color=BLUE)
+        # Part 1: Title and General Formula
+        title = Text("Fundamental Theorem of Calculus", font_size=40)
+        title.to_edge(UP, buff=0.5)
         
-        # Animate initial setup
+        general_formula = MathTex(
+            r"\int_a^b f(x)dx = F(b) - F(a)",
+            font_size=36
+        )
+        general_formula.next_to(title, DOWN, buff=0.3)
+        
+        subtitle = Text("where F(x) is the antiderivative of f(x)", font_size=28)
+        subtitle.next_to(general_formula, DOWN, buff=0.2)
+        
+        # Animate Part 1
         self.play(Write(title), run_time=1)
-        self.play(Write(initial_eq), run_time=1)
-        self.play(Create(axes), Create(curve), run_time=2)
-
-        # Part 2: Area Function
-        area_eq = MathTex(r"{\text{Area Function: }}F(x) = \int_0^x t^2 dt").scale(0.8)
-        area_eq.next_to(title, DOWN, buff=0.5)
-
-        # Create moving area
-        x_tracker = ValueTracker(0)
-        area = always_redraw(
-            lambda: axes.get_area(
-                curve,
-                x_range=[0, x_tracker.get_value()],
-                color=[BLUE_D],
-                opacity=0.3
-            )
-        )
-
-        # Area value display
-        area_value = DecimalNumber(
-            0,
-            num_decimal_places=2,
-            include_sign=False,
-        ).scale(0.6)
-        area_value.next_to(axes, RIGHT, buff=0.5)
-        area_value.add_updater(
-            lambda m: m.set_value((x_tracker.get_value()**3)/3)
-        )
-
-        # Part 2 animations
         self.play(
-            ReplacementTransform(initial_eq, area_eq),
-            Create(area),
+            Write(general_formula),
+            Write(subtitle),
+            run_time=1.5
         )
-        self.add(area_value)
-        self.play(x_tracker.animate.set_value(2), run_time=3)
-
-        # Part 3: Derivative Connection
-        derivative_eq = MathTex("F'(x) = f(x)").scale(0.8)
-        derivative_eq.next_to(area_eq, DOWN, buff=0.3)
-
-        point = Dot(axes.c2p(2, 4), color=YELLOW)
-        point_value = MathTex(
-            r"\text{At }x=2:",
-            r"F(2) = \frac{8}{3}",
-            r"F'(2) = f(2) = 4"
-        ).scale(0.7)
-        point_value.arrange(DOWN, aligned_edge=LEFT).next_to(derivative_eq, DOWN, buff=0.3)
-
-        # Final animations
-        self.play(Write(derivative_eq))
-        self.play(Create(point))
-        self.play(Write(point_value))
-
-        # Pulsing animation for the point
+        
+        # Group and move initial elements up
+        initial_group = VGroup(title, general_formula, subtitle)
         self.play(
-            point.animate.scale(2),
-            rate_func=there_and_back,
-            run_time=1
-        )
-        self.play(
-            point.animate.scale(2),
-            rate_func=there_and_back,
+            initial_group.animate.scale(0.8).to_edge(UP, buff=0.2),
             run_time=1
         )
 
-        # Hold final state
-        self.wait()
+        # Part 2: Specific Example
+        integral = MathTex(
+            r"\int_1^2 x^2 dx = \left[\frac{1}{3}x^3\right]_1^2",
+            font_size=36
+        )
+        integral.move_to(ORIGIN)
+
+        steps = VGroup(
+            MathTex(r"= \frac{1}{3}(2^3) - \frac{1}{3}(1^3)", font_size=36),
+            MathTex(r"= \frac{1}{3}(8) - \frac{1}{3}(1)", font_size=36),
+            MathTex(r"= \frac{8}{3} - \frac{1}{3}", font_size=36),
+            MathTex(r"= \frac{7}{3}", font_size=36)
+        )
+
+        # Position steps
+        for i, step in enumerate(steps):
+            if i == 0:
+                step.next_to(integral, DOWN, buff=0.5)
+            else:
+                step.next_to(steps[i-1], DOWN, buff=0.3)
+
+        # Animate Part 2
+        self.play(Write(integral), run_time=1)
+        for step in steps:
+            self.play(Write(step), run_time=0.75)
+
+        # Part 3: Highlight Final Answer
+        final_answer = steps[-1]
+        highlighted_answer = MathTex(r"= \frac{7}{3}", font_size=48, color=YELLOW)
+        highlighted_answer.move_to(final_answer)
+
+        brace = Brace(highlighted_answer, DOWN)
+        brace_text = Text(
+            "Area under curve from x=1 to x=2",
+            font_size=24
+        )
+        brace_text.next_to(brace, DOWN, buff=0.2)
+
+        # Animate Part 3
+        self.play(
+            ReplacementTransform(final_answer, highlighted_answer),
+            run_time=0.75
+        )
+        self.play(
+            Create(brace),
+            Write(brace_text),
+            run_time=1
+        )
+
+        # Pause at the end
+        self.wait(1)

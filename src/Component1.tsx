@@ -1,44 +1,58 @@
-function BiographyIntro() {
+function QuickIntroText() {
   return (
     <div style={{
-      fontFamily: 'Arial, sans-serif',
+      fontFamily: 'Arial',
+      color: '#FF8533',
+      padding: '20px',
       maxWidth: '800px',
-      margin: '0 auto',
-      padding: '20px'
+      margin: '0 auto'
     }}>
-      <h1 style={{
-        fontSize: '2.5em',
-        color: '#FF8C00',
+      <h2 style={{
+        fontSize: '28px',
+        color: '#FF6600',
         marginBottom: '20px'
       }}>
-        Pythagoras of Samos
-      </h1>
-      
-      <p style={{
-        fontSize: '1.2em',
-        lineHeight: '1.6',
-        color: '#FF7F50',
-        marginBottom: '15px'
-      }}>
-        One of the most influential and enigmatic figures in ancient Greek philosophy and mathematics, Pythagoras (c. 570-495 BCE) left an indelible mark on human thought that resonates to this day.
-      </p>
+        What is Integration?
+      </h2>
 
-      <p style={{
-        fontSize: '1.1em',
+      <div style={{
+        fontSize: '18px',
         lineHeight: '1.6',
-        color: '#FFA07A',
-        marginBottom: '15px'
+        color: '#FF944D'
       }}>
-        Born on the island of Samos, Pythagoras founded a philosophical and religious school in Croton, Italy, where he developed his famous mathematical theories and cultivated a devoted following. His teachings extended far beyond mathematics into music, astronomy, and metaphysics.
-      </p>
+        <p>
+          Integration is a fundamental concept in calculus that helps us find the total amount
+          of a quantity over an interval. Think of it as adding up infinitely many infinitely
+          small pieces to find a total.
+        </p>
 
-      <p style={{
-        fontSize: '1.1em',
-        lineHeight: '1.6',
-        color: '#FFA07A'
-      }}>
-        While he is most commonly known for the Pythagorean theorem, his influence spans much broader - from his belief in the mathematical nature of reality to his teachings on the immortality of the soul. His ideas would later influence great thinkers like Plato and continue to shape our understanding of mathematics and philosophy.
-      </p>
+        <h3 style={{
+          fontSize: '22px',
+          color: '#FF751A',
+          marginTop: '20px',
+          marginBottom: '15px'
+        }}>
+          Real World Applications
+        </h3>
+
+        <p>
+          We use integration in countless real-world scenarios:
+        </p>
+
+        <ul style={{color: '#FF944D', marginLeft: '20px'}}>
+          <li>Calculating the total distance traveled from speed</li>
+          <li>Finding the volume of irregular shapes</li>
+          <li>Computing the total energy consumption over time</li>
+          <li>Determining the center of mass of objects</li>
+          <li>Analyzing probability distributions in statistics</li>
+        </ul>
+
+        <p style={{marginTop: '15px'}}>
+          Whether you're an engineer designing buildings, a physicist studying motion,
+          or an economist analyzing market trends, integration provides the tools to
+          understand how quantities accumulate and change over time or space.
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,93 +1,105 @@
 from manim import *
 
-class DerivativeAsTangentSlope(Scene):
+class AreaUnderCurve(Scene):
     def construct(self):
-        # Create coordinate system
+        # Create the coordinate system
+        grid = NumberPlane(
+            x_range=[-0.5, 1.5, 0.5],
+            y_range=[0, 1.5, 0.5],
+            x_length=8,
+            y_length=6,
+            background_line_style={
+                "stroke_color": "#ecf0f1",
+                "stroke_width": 1,
+                "stroke_opacity": 0.8
+            }
+        ).shift(LEFT)
+
         axes = Axes(
-            x_range=[-2, 2, 1],
-            y_range=[-1, 4, 1],
-            axis_config={"color": GREY},
-            tips=True
-        ).scale(0.8).shift(DOWN * 0.5)  # Slightly down to make room for text
+            x_range=[-0.5, 1.5, 0.5],
+            y_range=[0, 1.5, 0.5],
+            x_length=8,
+            y_length=6,
+            axis_config={
+                "stroke_color": "#2c3e50",
+                "stroke_width": 2,
+            }
+        ).shift(LEFT)
 
-        # Create the function graph f(x) = x²
-        function = axes.plot(lambda x: x**2, color=BLUE)
-        
-        # Create function label
-        function_label = MathTex("f(x) = x^2", color=BLUE)\
-            .scale(0.8)\
-            .to_corner(UR)\
-            .shift(LEFT * 0.5)
+        # Create axis labels
+        x_label = MathTex("x").next_to(axes.x_axis, RIGHT)
+        y_label = MathTex("y").next_to(axes.y_axis, UP)
 
-        # Initial animations
-        self.play(
-            Create(axes),
-            run_time=1
+        # Create the curve
+        curve = axes.plot(
+            lambda x: x**2,
+            x_range=[0, 1],
+            color="#3498db",
+            stroke_width=3
         )
+
+        # Create area
+        area = axes.get_area(
+            curve,
+            x_range=(0, 1),
+            color="#3498db",
+            opacity=0.4
+        )
+
+        # Create vertical lines
+        v_line_0 = DashedLine(
+            axes.c2p(0, 0),
+            axes.c2p(0, 0.5),
+            dash_length=0.1,
+            color="#95a5a6"
+        )
+        v_line_1 = DashedLine(
+            axes.c2p(1, 0),
+            axes.c2p(1, 1),
+            dash_length=0.1,
+            color="#95a5a6"
+        )
+
+        # Create text
+        function_label = MathTex("f(x) = x^2").scale(1.2)
+        function_label.move_to(axes.c2p(1.5, 1.3))
+        
+        area_text = MathTex(r"\text{Area} = \int_0^1 x^2 dx = \frac{1}{3}").scale(1.2)
+        area_text.move_to(axes.c2p(1.5, 0.8))
+
+        # Animation sequence
         self.play(
-            Create(function),
+            FadeIn(grid),
+            Create(axes),
+            FadeIn(x_label),
+            FadeIn(y_label),
+            run_time=3
+        )
+
+        self.play(
+            Create(curve),
+            run_time=3
+        )
+
+        self.play(
             Write(function_label),
             run_time=2
         )
 
-        # Create point and tangent line
-        dot = Dot(color=RED).scale(0.8)
-        tangent_line = Line(color=YELLOW)
-        
-        # Function to update point and tangent line
-        def update_point_and_line(t):
-            # Calculate x position (moving from -1 to 1)
-            x = -1 + 2 * t
-            # Get point on curve
-            point = axes.c2p(x, x**2)
-            dot.move_to(point)
-            
-            # Calculate slope at point (derivative = 2x)
-            slope = 2 * x
-            
-            # Create tangent line points
-            dx = 1  # Half-length of tangent line
-            x1 = x - dx
-            x2 = x + dx
-            y1 = x**2 + slope * (-dx)
-            y2 = x**2 + slope * dx
-            
-            start_point = axes.c2p(x1, y1)
-            end_point = axes.c2p(x2, y2)
-            
-            tangent_line.put_start_and_end_on(start_point, end_point)
-
-        # Animate point and tangent line
         self.play(
-            Create(dot),
-            Create(tangent_line)
+            Create(v_line_0),
+            Create(v_line_1),
+            run_time=1
         )
 
-        # Animate movement
         self.play(
-            UpdateFromAlphaFunc(
-                dot,
-                lambda mob, alpha: update_point_and_line(alpha)
-            ),
-            UpdateFromAlphaFunc(
-                tangent_line,
-                lambda mob, alpha: update_point_and_line(alpha)
-            ),
-            rate_func=linear,
-            run_time=8
-        )
-
-        # Add final text
-        final_text = Text("Derivative = Slope of Tangent Line", 
-                         font="Times New Roman")\
-            .scale(0.8)\
-            .to_edge(DOWN)\
-            .shift(UP * 0.3)
-
-        self.play(
-            Write(final_text),
+            FadeIn(area),
             run_time=2
         )
 
-        # Hold for a moment
+        self.play(
+            Write(area_text),
+            run_time=2
+        )
+
         self.wait(2)

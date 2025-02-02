@@ -1,116 +1,96 @@
-function TheTheoremVisual() {
-  const [angle, setAngle] = React.useState(45);
-  const [isAnimating, setIsAnimating] = React.useState(false);
-
-  const calculateTriangleDimensions = (angleInDegrees) => {
-    const a = Math.cos(angleInDegrees * Math.PI / 180) * 100;
-    const b = Math.sin(angleInDegrees * Math.PI / 180) * 100;
-    const c = Math.sqrt(a * a + b * b);
-    return { a, b, c };
-  };
-
-  const dimensions = calculateTriangleDimensions(angle);
-
-  const handleSliderChange = (e) => {
-    setAngle(e.target.value);
-  };
-
-  const toggleAnimation = () => {
-    setIsAnimating(!isAnimating);
-  };
+function AreaUnderCurveAnimation() {
+  const [points, setPoints] = React.useState(10);
+  const [showArea, setShowArea] = React.useState(false);
+  const canvasRef = React.useRef(null);
 
   React.useEffect(() => {
-    let animationFrame;
-    if (isAnimating) {
-      let currentAngle = angle;
-      const animate = () => {
-        currentAngle = (currentAngle + 1) % 90;
-        setAngle(currentAngle);
-        animationFrame = requestAnimationFrame(animate);
-      };
-      animationFrame = requestAnimationFrame(animate);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw axes
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff9933';
+    ctx.moveTo(50, height - 50);
+    ctx.lineTo(width - 50, height - 50); // x-axis
+    ctx.moveTo(50, height - 50);
+    ctx.lineTo(50, 50); // y-axis
+    ctx.stroke();
+
+    // Draw curve (parabola)
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff6600';
+    ctx.moveTo(50, height - 50);
+    
+    for(let x = 0; x <= width - 100; x++) {
+      const y = 100 * Math.sin(x * 0.02) + 150;
+      ctx.lineTo(x + 50, height - y);
     }
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isAnimating]);
+    ctx.stroke();
+
+    // Draw rectangles under curve
+    if (showArea) {
+      ctx.fillStyle = 'rgba(255, 153, 51, 0.3)';
+      const dx = (width - 100) / points;
+      
+      for(let i = 0; i < points; i++) {
+        const x = i * dx;
+        const y = 100 * Math.sin(x * 0.02) + 150;
+        ctx.fillRect(
+          x + 50,
+          height - 50,
+          dx,
+          -y + 50
+        );
+      }
+    }
+
+  }, [points, showArea]);
 
   return (
-    <div style={{ fontFamily: 'Arial', padding: '20px' }}>
-      <h2 style={{ color: '#FF8C00', marginBottom: '20px' }}>
-        Interactive Pythagorean Theorem
-      </h2>
-      
-      <div style={{ position: 'relative', width: '300px', height: '300px' }}>
-        <svg width="300" height="300">
-          {/* Main triangle */}
-          <path
-            d={`M 50 250 L ${50 + dimensions.a} 250 L 50 ${250 - dimensions.b} Z`}
-            fill="none"
-            stroke="#FFA500"
-            strokeWidth="2"
+    <div style={{fontFamily: 'Arial'}}>
+      <h2 style={{color: '#cc5200', fontSize: '24px'}}>Area Under Curve Visualization</h2>
+      <div style={{marginBottom: '20px'}}>
+        <label style={{color: '#ff751a', marginRight: '10px'}}>
+          Number of rectangles:
+          <input 
+            type="range" 
+            min="1" 
+            max="100" 
+            value={points}
+            onChange={(e) => setPoints(parseInt(e.target.value))}
           />
-          
-          {/* Squares on each side */}
-          <path
-            d={`M 50 250 L 50 ${250 - dimensions.b} 
-                L ${50 - dimensions.b} ${250 - dimensions.b} 
-                L ${50 - dimensions.b} 250 Z`}
-            fill="#FFE4B5"
-            opacity="0.6"
-          />
-          
-          <path
-            d={`M ${50 + dimensions.a} 250 
-                L ${50 + dimensions.a} ${250 + dimensions.a}
-                L 50 ${250 + dimensions.a} 
-                L 50 250 Z`}
-            fill="#FFA07A"
-            opacity="0.6"
-          />
-          
-          <path
-            d={`M 50 ${250 - dimensions.b} 
-                L ${50 + dimensions.a} 250
-                L ${50 + dimensions.a + dimensions.b} ${250 - dimensions.b}
-                L ${50 + dimensions.b} ${250 - dimensions.a - dimensions.b} Z`}
-            fill="#FFD700"
-            opacity="0.6"
-          />
-        </svg>
+          {points}
+        </label>
+        <button
+          style={{
+            marginLeft: '20px',
+            backgroundColor: '#ff751a',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            color: 'white',
+            cursor: 'pointer'
+          }}
+          onClick={() => setShowArea(!showArea)}
+        >
+          {showArea ? 'Hide Area' : 'Show Area'}
+        </button>
       </div>
-
-      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
-        <p>Angle: {angle}°</p>
-        <input
-          type="range"
-          min="15"
-          max="75"
-          value={angle}
-          onChange={handleSliderChange}
-          style={{ width: '200px' }}
-        />
-      </div>
-
-      <button
-        onClick={toggleAnimation}
-        style={{
-          marginTop: '10px',
-          padding: '8px 16px',
-          backgroundColor: '#FFA500',
-          border: 'none',
-          borderRadius: '4px',
-          color: 'white',
-          cursor: 'pointer'
-        }}
-      >
-        {isAnimating ? 'Stop Animation' : 'Start Animation'}
-      </button>
-
-      <div style={{ marginTop: '20px', color: '#FF8C00' }}>
-        <p>a² + b² = c²</p>
-        <p>
-          {Math.round(dimensions.a * dimensions.a)} + {Math.round(dimensions.b * dimensions.b)} = {Math.round(dimensions.c * dimensions.c)}
-        </p>
-      </div>
+      <canvas
+        ref={canvasRef}
+        width={600}
+        height={400}
+        style={{border: '2px solid #ff751a', borderRadius: '8px'}}
+      />
+      <p style={{color: '#ff751a', marginTop: '20px'}}>
+        This visualization shows how integration can be approximated by summing the areas of rectangles under a curve. 
+        Adjust the slider to change the number of rectangles and see how the approximation becomes more accurate.
+      </p>
     </div>
   );
 }
