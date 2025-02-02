@@ -146,13 +146,14 @@ class VideoOrchestrator:
             "from manim_voiceover import VoiceoverScene",
             "from manim_voiceover.services.azure import AzureService",
             "",
-            "class CombinedScene(VoiceoverScene):",
+            "class CombinedScene(VoiceoverScene, MovingCameraScene):",
             "    def construct(self):",
             "        # Set up Azure TTS service",
             "        self.set_speech_service(AzureService(",
             "            voice='en-US-JennyNeural',",
             "            style='friendly'",
             "        ))",
+            "        self.play(self.camera.frame.animate.scale(1.2))"
             ""
         ]
 
@@ -281,7 +282,6 @@ class VideoOrchestrator:
             dict: Contains paths to the rendered video and thumbnail
         """
         # First generate all the code and assets
-        # if TEST_ENV:
         result = await self.orchestrate_video()
 
         # Ensure the output directory exists
