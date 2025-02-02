@@ -1,15 +1,15 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, List
 from pydantic import BaseModel, Field
-from .scene_planner import ScenePlanner
-from .code_generator import CodeGenerator
-from .llm_provider import LLMWrapper
+from scene_planner import ScenePlanner
+from code_generator import CodeGenerator
+from llm_provider import LLMWrapper
 import asyncio
 import subprocess
 import aiofiles
 import re
 import os
-from .prompts import (
+from prompts import (
     VIDEO_IDEA_GENERATOR_SYSTEM_PROMPT,
     VIDEO_IDEA_GENERATOR_USER_PROMPT,
     VOICEOVER_GENERATOR_SYSTEM_PROMPT,
@@ -18,8 +18,10 @@ from .prompts import (
     COMBINATION_STEP_USER_PROMPT
 )
 
+
 class SceneIdeas(BaseModel):
     scenes: List[str]
+
 
 class VideoState(TypedDict):
     """Graph state for video orchestration"""
@@ -31,11 +33,13 @@ class VideoState(TypedDict):
     final_code: str
     iterations: int
 
+
 class VideoOrchestrator:
     def __init__(self, video_prompt: str, model: str = "claude-3-5-sonnet-20241022"):
         self.video_prompt = video_prompt
         self.llm = LLMWrapper(model=model)
-        self.idea_generator = LLMWrapper(model=model).with_structured_output(SceneIdeas)
+        self.idea_generator = LLMWrapper(
+            model=model).with_structured_output(SceneIdeas)
         self.workflow = self._setup_workflow()
         self.app = self.workflow.compile()
 
@@ -43,9 +47,10 @@ class VideoOrchestrator:
         """Generate high-level scene ideas for the video"""
         messages = [
             ("system", VIDEO_IDEA_GENERATOR_SYSTEM_PROMPT),
-            ("user", VIDEO_IDEA_GENERATOR_USER_PROMPT.format(video_prompt=state['video_prompt']))
+            ("user", VIDEO_IDEA_GENERATOR_USER_PROMPT.format(
+                video_prompt=state['video_prompt']))
         ]
-        
+
         scene_ideas = self.idea_generator.invoke(messages)
         return {"scene_ideas": scene_ideas.scenes}
 
@@ -59,12 +64,12 @@ class VideoOrchestrator:
             )
             result = await planner.generate_scene_with_feedback()
             return result["current_plan"]
-        
+
         # Create tasks for all scenes
         tasks = [plan_single_scene(idea) for idea in state["scene_ideas"]]
         # Run all tasks concurrently
         scene_plans = await asyncio.gather(*tasks)
-        
+
         return {"scene_plans": scene_plans}
 
     async def _generate_scene_code(self, state: VideoState):
@@ -80,13 +85,13 @@ class VideoOrchestrator:
             if "current_code" not in result:
                 print(f"for some reason current code not in idx {idx}")
             return result["current_code"]
-        
+
         # Create tasks for all scene codes
-        tasks = [generate_single_scene(idx, plan) 
-                for idx, plan in enumerate(state["scene_plans"])]
+        tasks = [generate_single_scene(idx, plan)
+                 for idx, plan in enumerate(state["scene_plans"])]
         # Run all tasks concurrently
         scene_codes = await asyncio.gather(*tasks)
-        
+
         return {"scene_codes": scene_codes}
 
     async def _generate_voiceovers(self, state: VideoState):
@@ -102,13 +107,13 @@ class VideoOrchestrator:
             result = await self.llm.ainvoke(messages)
             print("result of voiceover: ", result)
             return result.content
-        
+
         # Create tasks for all scenes
-        tasks = [generate_single_voiceover(plan, code) 
-                for plan, code in zip(state["scene_plans"], state["scene_codes"])]
+        tasks = [generate_single_voiceover(plan, code)
+                 for plan, code in zip(state["scene_plans"], state["scene_codes"])]
         # Run all tasks concurrently
         voiceover_scripts = await asyncio.gather(*tasks)
-        
+
         return {"voiceover_scripts": voiceover_scripts}
 
     async def _combine_code(self, state: VideoState):
@@ -134,20 +139,21 @@ class VideoOrchestrator:
         for i, (scene_code, voiceover) in enumerate(zip(state["scene_codes"], state["voiceover_scripts"]), 1):
             # Add scene header comment
             combined_code.append(f"\n        # Scene {i}")
-            
+
             # Add voiceover wrapper
-            combined_code.append(f"        with self.voiceover(text=\"\"\"{voiceover.strip()}\"\"\") as tracker:")
-            
+            combined_code.append(f"        with self.voiceover(text=\"\"\"{
+                                 voiceover.strip()}\"\"\") as tracker:")
+
             # Add transition between scenes
             if i != 0:
-              combined_code.extend([
-                  "",
-                  "            # Transition",
-                  "            self.wait(0.5)  # Wait for a moment",
-                  "            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen",
-                  "            self.wait(0.5)  # Brief pause before next scene",
-                  ""
-              ])
+                combined_code.extend([
+                    "",
+                    "            # Transition",
+                    "            self.wait(0.5)  # Wait for a moment",
+                    "            self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen",
+                    "            self.wait(0.5)  # Brief pause before next scene",
+                    ""
+                ])
 
             # Extract the content between the construct method definition and the end
             scene_lines = scene_code.split("\n")
@@ -162,32 +168,32 @@ class VideoOrchestrator:
                     combined_code.append(f"    {line}")
 
         combined_code.extend([
-                  "",
-                  "        # Transition",
-                  "        self.wait(0.5)  # Wait for a moment",
-                  "        self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen",
-                  "        self.wait(0.5)  # Brief pause before next scene",
-                  ""
-              ])
+            "",
+            "        # Transition",
+            "        self.wait(0.5)  # Wait for a moment",
+            "        self.play(*[FadeOut(mob) for mob in self.mobjects])  # Clear everything from screen",
+            "        self.wait(0.5)  # Brief pause before next scene",
+            ""
+        ])
 
         # Join all lines with proper newlines
         final_code = "\n".join(combined_code)
-        
+
         # Write the combined code to a file
         with open("combined_scenes.py", "w") as f:
             f.write(final_code)
-        
+
         return {"final_code": final_code}
-    
+
     # async def _combine_code(self, state: VideoState):
     #     """Combine all scene codes into a single Manim script with voiceovers using LLM"""
     #     # Format scenes and voiceovers with numbers
     #     print("voiceovers: ")
     #     print(state["voiceover_scripts"])
-        
+
     #     numbered_scenes = [f"Scene {i+1}:\n{code}" for i, code in enumerate(state["scene_codes"])]
     #     numbered_voiceovers = [f"Voiceover {i+1}:\n{vo}" for i, vo in enumerate(state["voiceover_scripts"])]
-        
+
     #     messages = [
     #         ("system", COMBINATION_STEP_SYSTEM_PROMPT),
     #         ("user", COMBINATION_STEP_USER_PROMPT.format(
@@ -195,7 +201,7 @@ class VideoOrchestrator:
     #             numbered_scenes="\n\n".join(numbered_scenes)
     #         ))
     #     ]
-        
+
     #     # Get combined code from LLM
     #     response = await self.llm.ainvoke(messages)
     #     response_content = response.content
@@ -205,17 +211,17 @@ class VideoOrchestrator:
     #     import re
     #     code_blocks = re.findall(r'```python\n(.*?)```', response_content, re.DOTALL)
     #     final_code = code_blocks[-1] if code_blocks else response_content
-        
+
     #     # Write the combined code to a file
     #     with open("combined_scenes.py", "w") as f:
     #         f.write(final_code)
-        
+
     #     return {"final_code": final_code}
 
     def _setup_workflow(self):
         """Create and setup the workflow graph"""
         workflow = StateGraph(VideoState)
-        
+
         workflow.add_node("generate_ideas", self._generate_scene_ideas)
         workflow.add_node("plan_scenes", self._plan_scenes)
         workflow.add_node("generate_code", self._generate_scene_code)
@@ -235,7 +241,7 @@ class VideoOrchestrator:
     async def orchestrate_video(self):
         """
         Orchestrate the entire video creation process asynchronously
-        
+
         Returns:
             dict: Final state containing all intermediate and final results
         """
@@ -243,22 +249,22 @@ class VideoOrchestrator:
             "video_prompt": self.video_prompt,
             "iterations": 0
         }
-        
+
         return await self.app.ainvoke(initial_state)
 
     async def generate_and_render_video(self) -> dict:
         """
         Orchestrate video creation and render the final video and thumbnail.
-        
+
         Returns:
             dict: Contains paths to the rendered video and thumbnail
         """
         # First generate all the code and assets
-        #result = await self.orchestrate_video()
-        
+        # result = await self.orchestrate_video()
+
         # Ensure the output directory exists
         os.makedirs("media", exist_ok=True)
-        
+
         # Render the full video
         video_cmd = ["manim", "-pqm", "combined_scenes.py", "CombinedScene"]
         video_process = await asyncio.create_subprocess_exec(
@@ -268,17 +274,18 @@ class VideoOrchestrator:
         )
         await video_process.communicate()
 
-        filename = "scene_1_temp_code.py"
+        filename = os.path.join(os.path.dirname(
+            __file__), "scenes", "scene_1_temp_code.py")
         async with aiofiles.open(filename) as f:
-                code_content = await f.read()
+            code_content = await f.read()
 
         # Extract the class name from the code
         class_match = re.search(r'class\s+(\w+)\s*\(', code_content)
         if not class_match:
             raise Exception("file for class regex not working")
-        
+
         class_name = class_match.group(1)
-        
+
         # Generate thumbnail by saving the last frame
         thumbnail_cmd = ["manim", "-s", "--format=png", filename, class_name]
         thumbnail_process = await asyncio.create_subprocess_exec(
@@ -287,23 +294,23 @@ class VideoOrchestrator:
             stderr=asyncio.subprocess.PIPE
         )
         await thumbnail_process.communicate()
-        
+
         # Find the generated files
         video_path = None
         thumbnail_path = None
-        
+
         for root, _, files in os.walk("media/videos"):
             for file in files:
                 if file.endswith(".mp4"):
                     video_path = os.path.join(root, file)
                     break
-        
+
         for root, _, files in os.walk("media/images"):
             for file in files:
                 if file.endswith(".png"):
                     thumbnail_path = os.path.join(root, file)
                     break
-        
+
         return {
             "video_path": "media/videos/combined_scenes/720p30/CombinedScene.mp4",
             "thumbnail_path": thumbnail_path,

@@ -1,7 +1,11 @@
-from .code_generator import CodeGenerator
-from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse
+from routes.video_gen import router as video_router
 
-if __name__ == "__main__":
-    # First load env variables
-    load_dotenv(override=True)
-    
+app = FastAPI()
+
+app.include_router(video_router)
+
+@app.get("/")
+def read_root():
+    return PlainTextResponse("OK")
