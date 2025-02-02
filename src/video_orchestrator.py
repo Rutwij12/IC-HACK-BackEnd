@@ -280,8 +280,8 @@ class VideoOrchestrator:
             dict: Contains paths to the rendered video and thumbnail
         """
         # First generate all the code and assets
-        if TEST_ENV:
-            result = await self.orchestrate_video()
+        # if TEST_ENV:
+        result = await self.orchestrate_video()
 
         # Ensure the output directory exists
         os.makedirs("media", exist_ok=True)

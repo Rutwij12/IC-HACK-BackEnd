@@ -1,82 +1,72 @@
 from manim import *
 
-class VectorAndMatrix(Scene):
+class SetDefinition(Scene):
     def construct(self):
-        # Create grid
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": GRAY,
-                "stroke_width": 1,
-                "stroke_opacity": 0.3
-            }
-        )
-        
-        # Create vector
-        vector = Arrow(
-            start=ORIGIN,
-            end=[2, 1, 0],
-            color=YELLOW,
-            buff=0
-        )
-        vector_label = MathTex("\\vec{v}", color=WHITE).next_to(
-            vector.get_end(), UP + RIGHT, buff=0.2
-        )
-        
-        # Create matrix
-        matrix = MathTex(
-            "\\begin{bmatrix} 2 & -1 \\\\ 1 & 1 \\end{bmatrix}",
-            color=WHITE
-        ).scale(1.2)
-        matrix_label = MathTex("A = ", color=WHITE).scale(1.2)
-        
-        # Position matrix on right side
-        matrix_group = VGroup(matrix_label, matrix).arrange(RIGHT)
-        matrix_group.move_to(RIGHT * 3)
-        
-        # Create "Transformation Matrix" text
-        transform_text = Text(
-            "Transformation Matrix",
-            color=WHITE,
-            font_size=24
-        ).next_to(matrix_group, DOWN, buff=0.5)
-        
-        # Part 1: Vector Introduction (0-4 seconds)
+        # Part 1: Create circles with different colors
+        circle1 = Circle(radius=0.5, color=RED).move_to(LEFT*3)
+        circle2 = Circle(radius=0.5, color=BLUE).move_to(ORIGIN)
+        circle3 = Circle(radius=0.5, color=GREEN).move_to(RIGHT*3)
+
+        # Animate circles appearing
+        self.play(FadeIn(circle1))
+        self.wait(0.5)
+        self.play(FadeIn(circle2))
+        self.wait(0.5)
+        self.play(FadeIn(circle3))
+        self.wait(0.5)
+
+        # Part 2: Create and add numbers
+        num1 = Text("1", color=WHITE, font_size=36).move_to(circle1.get_center())
+        num2 = Text("2", color=WHITE, font_size=36).move_to(circle2.get_center())
+        num3 = Text("3", color=WHITE, font_size=36).move_to(circle3.get_center())
+
+        # Write numbers simultaneously
         self.play(
-            Create(grid),
+            Write(num1),
+            Write(num2),
+            Write(num3)
+        )
+        self.wait(0.5)
+
+        # Part 3: Move circles with numbers to final positions
+        # Group circles with their numbers
+        group1 = VGroup(circle1, num1)
+        group2 = VGroup(circle2, num2)
+        group3 = VGroup(circle3, num3)
+
+        # Animate movement to final positions
+        self.play(
+            group1.animate.move_to(LEFT),
+            group2.animate.move_to(ORIGIN),
+            group3.animate.move_to(RIGHT),
             run_time=1
         )
-        self.play(
-            Create(vector),
-            Write(vector_label),
-            run_time=1
-        )
-        self.wait(1)
+
+        # Create and add braces and commas
+        left_brace = Text("{", color=WHITE, font_size=60).next_to(group1, LEFT, buff=0.2)
+        right_brace = Text("}", color=WHITE, font_size=60).next_to(group3, RIGHT, buff=0.2)
         
-        # Part 2: Matrix Introduction (4-8 seconds)
-        self.play(
-            Write(matrix_label),
-            Write(matrix),
-            run_time=2
+        comma1 = Text(",", color=WHITE, font_size=36).move_to(
+            (group1.get_center() + group2.get_center()) / 2
         )
-        self.play(
-            Write(transform_text),
-            run_time=1
+        comma2 = Text(",", color=WHITE, font_size=36).move_to(
+            (group2.get_center() + group3.get_center()) / 2
         )
-        self.wait(1)
-        
-        # Part 3: Final Touch (8-12 seconds)
-        # Create glow effect by scaling up and down quickly
+
+        # Add braces and commas
         self.play(
-            vector.animate.scale(1.2),
-            matrix_group.animate.scale(1.2),
-            run_time=0.5
+            FadeIn(left_brace),
+            FadeIn(right_brace),
+            Write(comma1),
+            Write(comma2)
         )
-        self.play(
-            vector.animate.scale(1/1.2),
-            matrix_group.animate.scale(1/1.2),
-            run_time=0.5
-        )
-        
-        self.wait(1)
+        self.wait(0.5)
+
+        # Add title text
+        title = Text("A Set: A collection of distinct objects", 
+                    color=WHITE, 
+                    font_size=40
+        ).to_edge(UP, buff=1)
+
+        self.play(Write(title))
+        self.wait(2)

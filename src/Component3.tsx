@@ -1,95 +1,95 @@
-function RealWorldExampleCards() {
-  const examples = [
-    {
-      field: "Architecture",
-      description: "Calculating roof angles and support beam placement. Architects use trigonometry to determine optimal roof pitches for drainage and load distribution.",
-      icon: "🏛️"
+function SetNotationGuide() {
+  const styles = {
+    container: {
+      fontFamily: 'Arial, sans-serif',
+      maxWidth: '800px',
+      margin: '20px auto',
+      padding: '20px',
+      color: '#cc7000'
     },
-    {
-      field: "Civil Engineering", 
-      description: "Bridge design and construction. Engineers use trigonometric functions to calculate cable tensions and arch supports in bridge structures.",
-      icon: "🌉"
+    title: {
+      fontSize: '28px',
+      color: '#ff8c00',
+      marginBottom: '20px'
     },
-    {
-      field: "Aviation",
-      description: "Flight navigation and control. Pilots use trigonometry to calculate flight paths, angles of ascent/descent, and wind compensation.",
-      icon: "✈️"
+    section: {
+      marginBottom: '24px'
     },
-    {
-      field: "Marine Navigation",
-      description: "Ship routing and positioning. Navigators use trigonometric calculations to determine bearings, distances and positions at sea.",
-      icon: "🚢"
+    sectionTitle: {
+      fontSize: '20px',
+      color: '#e67300',
+      marginBottom: '12px'
     },
-    {
-      field: "Game Development",
-      description: "Character movement and collision detection. Game developers use trig to calculate realistic object motion and interactions.",
-      icon: "🎮"
+    text: {
+      fontSize: '16px',
+      lineHeight: '1.6',
+      marginBottom: '12px'
     },
-    {
-      field: "Music",
-      description: "Sound wave analysis and synthesis. Audio engineers use trigonometric functions to process and create sound waves.",
-      icon: "🎵"
+    example: {
+      fontStyle: 'italic',
+      color: '#ff9933',
+      marginLeft: '20px'
     }
-  ];
+  }
 
   return (
-    <div style={{
-      fontFamily: 'Arial',
-      padding: '20px',
-      maxWidth: '1200px',
-      margin: '0 auto'
-    }}>
-      <h2 style={{
-        color: '#D35400',
-        fontSize: '28px',
-        marginBottom: '30px',
-        textAlign: 'center'
-      }}>
-        Real-World Applications of Trigonometry
-      </h2>
-      
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '20px',
-        justifyContent: 'center'
-      }}>
-        {examples.map((example, index) => (
-          <div key={index} style={{
-            backgroundColor: '#FFF3E0',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            transition: 'transform 0.2s',
-            cursor: 'pointer',
-            ':hover': {
-              transform: 'translateY(-5px)'
-            }
-          }}>
-            <div style={{
-              fontSize: '40px',
-              marginBottom: '10px',
-              textAlign: 'center'
-            }}>
-              {example.icon}
-            </div>
-            <h3 style={{
-              color: '#E67E22',
-              fontSize: '20px',
-              marginBottom: '10px'
-            }}>
-              {example.field}
-            </h3>
-            <p style={{
-              color: '#D35400',
-              fontSize: '16px',
-              lineHeight: '1.5'
-            }}>
-              {example.description}
-            </p>
-          </div>
-        ))}
+    <div style={styles.container}>
+      <h1 style={styles.title}>Set Notation Guide</h1>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Set Definition</h2>
+        <p style={styles.text}>
+          A set is denoted by curly braces {} containing its elements, separated by commas.
+        </p>
+        <p style={styles.example}>Example: {"{1, 2, 3}"} is a set containing three numbers</p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Set Membership</h2>
+        <p style={styles.text}>
+          The symbol ∈ means "is an element of" and ∉ means "is not an element of"
+        </p>
+        <p style={styles.example}>Example: x ∈ A means x is an element of set A</p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Common Sets</h2>
+        <p style={styles.text}>
+          ℕ represents Natural Numbers
+          ℤ represents Integers
+          ℚ represents Rational Numbers
+          ℝ represents Real Numbers
+        </p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Set Operations</h2>
+        <p style={styles.text}>
+          ∪ represents Union: combines elements from both sets
+          ∩ represents Intersection: elements common to both sets
+          \ represents Set Difference: elements in first set but not in second
+        </p>
+        <p style={styles.example}>Example: A ∪ B contains all elements from both A and B</p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Set Properties</h2>
+        <p style={styles.text}>
+          ⊆ means "is a subset of"
+          ⊂ means "is a proper subset of"
+          = means sets contain exactly the same elements
+        </p>
+        <p style={styles.example}>Example: If A ⊆ B, all elements of A are also in B</p>
+      </div>
+
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Special Sets</h2>
+        <p style={styles.text}>
+          ∅ or {} represents the Empty Set
+          U represents the Universal Set
+        </p>
+        <p style={styles.example}>Example: The empty set ∅ contains no elements</p>
       </div>
     </div>
-  );
+  )
 }

@@ -1,82 +1,68 @@
-function TrigRatiosExplainer() {
-  const styles = {
-    container: {
-      fontFamily: 'Arial, sans-serif',
-      maxWidth: '800px',
-      margin: '20px auto',
-      padding: '20px',
-      color: '#D35400'
-    },
-    title: {
-      fontSize: '32px',
-      color: '#E67E22',
-      marginBottom: '24px'
-    },
-    section: {
-      marginBottom: '20px'
-    },
-    sectionTitle: {
-      fontSize: '24px',
-      color: '#F39C12',
-      marginBottom: '12px'
-    },
-    text: {
-      fontSize: '16px',
-      lineHeight: '1.6',
-      color: '#E67E22'
-    },
-    mnemonic: {
-      fontStyle: 'italic',
-      color: '#F39C12',
-      marginTop: '8px'
-    }
-  }
-
+function CommonSetsExplainer() {
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Understanding Trigonometric Ratios</h1>
-      
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Sine (sin)</h2>
-        <p style={styles.text}>
-          Sine is the ratio of the opposite side to the hypotenuse in a right triangle.
-        </p>
-        <p style={styles.mnemonic}>
-          Remember: "SOH" - Sine equals Opposite over Hypotenuse
+    <div style={{ fontFamily: 'Arial', color: '#FF8C42', padding: '20px' }}>
+      <h2 style={{ 
+        fontSize: '28px', 
+        color: '#E85D04', 
+        marginBottom: '20px' 
+      }}>
+        Common Sets in Everyday Life
+      </h2>
+
+      <div style={{ marginBottom: '15px' }}>
+        <h3 style={{ 
+          fontSize: '20px',
+          color: '#F48C06',
+          marginBottom: '10px'
+        }}>
+          In the Kitchen
+        </h3>
+        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
+          Your kitchen utensils form a set: {'{spoons, forks, knives, spatulas}'}.
+          The ingredients in your fridge are another set.
         </p>
       </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Cosine (cos)</h2>
-        <p style={styles.text}>
-          Cosine is the ratio of the adjacent side to the hypotenuse in a right triangle.
-        </p>
-        <p style={styles.mnemonic}>
-          Remember: "CAH" - Cosine equals Adjacent over Hypotenuse
-        </p>
-      </div>
-
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Tangent (tan)</h2>
-        <p style={styles.text}>
-          Tangent is the ratio of the opposite side to the adjacent side in a right triangle.
-        </p>
-        <p style={styles.mnemonic}>
-          Remember: "TOA" - Tangent equals Opposite over Adjacent
+      <div style={{ marginBottom: '15px' }}>
+        <h3 style={{
+          fontSize: '20px',
+          color: '#F48C06',
+          marginBottom: '10px'
+        }}>
+          At School
+        </h3>
+        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
+          A classroom contains the set of students, the set of desks, and the set of school supplies.
         </p>
       </div>
 
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>SOHCAHTOA</h2>
-        <p style={styles.text}>
-          Put it all together and you get SOHCAHTOA - the classic mnemonic device for remembering all three ratios:
+      <div style={{ marginBottom: '15px' }}>
+        <h3 style={{
+          fontSize: '20px',
+          color: '#F48C06',
+          marginBottom: '10px'
+        }}>
+          In Nature
+        </h3>
+        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
+          Trees in a forest form a set. Animals in a zoo form a set.
+          Even the planets in our solar system form a set: {'{Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune}'}.
         </p>
-        <p style={styles.mnemonic}>
-          SOH - Sine = Opposite / Hypotenuse
-          CAH - Cosine = Adjacent / Hypotenuse
-          TOA - Tangent = Opposite / Adjacent
+      </div>
+
+      <div style={{ marginBottom: '15px' }}>
+        <h3 style={{
+          fontSize: '20px',
+          color: '#F48C06',
+          marginBottom: '10px'
+        }}>
+          In Your Closet
+        </h3>
+        <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
+          Your clothes form different sets: the set of shirts, the set of pants, the set of shoes.
+          These are all subsets of your complete wardrobe set.
         </p>
       </div>
     </div>
-  )
+  );
 }

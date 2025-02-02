@@ -1,6 +1,7 @@
 import sys
 import os
 from celery import Celery
+from routes import video
 from video_storage.storage import run_video_pipeline
 import asyncio
 import time
@@ -30,8 +31,16 @@ app = Celery(
 def start_vid_pipeline(prompt: str):
     from video_orchestrator import VideoOrchestrator
     video_id = str(time.time())
-    video_data = asyncio.run(VideoOrchestrator(
-        prompt).generate_and_render_video())
+    data = asyncio.run(
+        asyncio.gather(
+            VideoOrchestrator(prompt).generate_and_render_video(),
+            ReactOrchestrator(prompt).generate_and_return_components()
+        )
+    )
+
+    print("DATA IS HERE:", data)
+    video_data = data[0]
+    react_code = data[1]
 
     if not video_data or "video_path" not in video_data or "image_path" not in video_data:
         return {
@@ -39,8 +48,7 @@ def start_vid_pipeline(prompt: str):
             "message": "Failed to generate video",
         }
 
-    react_code = asyncio.run(ReactOrchestrator(
-        video_data["video_title"]).generate_and_return_components())
+    react_code = asyncio.run()
 
     if not react_code and "react_code" not in react_code:
         return {

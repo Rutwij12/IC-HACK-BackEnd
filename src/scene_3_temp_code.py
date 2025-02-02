@@ -1,112 +1,86 @@
 from manim import *
 
-class EigenvectorDemo(Scene):
+class SubsetDemonstration(Scene):
     def construct(self):
-        # Create coordinate plane with specified scale
-        plane = NumberPlane(
-            x_range=[-12, 12, 1],
-            y_range=[-12, 12, 1],
-            x_length=12,
-            y_length=7,
-            background_line_style={
-                "stroke_opacity": 0.4
-            }
-        ).scale(0.5)
-
-        # Create vectors
-        original_vector = Arrow(
-            plane.coords_to_point(0, 0),
-            plane.coords_to_point(1, 0.5),
-            color=BLUE,
-            buff=0,
-            stroke_width=2,
-            tip_length=0.2
-        )
+        # Colors
+        light_blue = "#ADD8E6"
+        darker_blue = "#4682B4"
         
-        transformed_vector = Arrow(
-            plane.coords_to_point(0, 0),
-            plane.coords_to_point(4, 2),
-            color=RED,
-            buff=0,
-            stroke_width=2,
-            tip_length=0.2
-        )
-
-        # Create labels
-        v_label = MathTex("v", color=BLUE).scale(0.8)
-        v_label.next_to(original_vector.get_center(), UP+RIGHT, buff=0.2)
-        
-        four_v_label = MathTex("4v", color=RED).scale(0.8)
-        four_v_label.next_to(transformed_vector.get_center(), UP+RIGHT, buff=0.2)
-
-        # Create matrix and equation text
-        matrix_A = MathTex(
-            r"A = \begin{pmatrix} 3 & 1 \\ 1 & 3 \end{pmatrix}"
-        ).scale(0.8).move_to([-5, 2.5, 0])
-        
-        equation = MathTex(r"Av = \lambda v").scale(0.8).next_to(matrix_A, DOWN, buff=0.5)
-        lambda_val = MathTex(r"\lambda = 4").scale(0.8).next_to(equation, DOWN, buff=0.5)
-        
-        orig_vector_text = Text("Original eigenvector", color=BLUE, font_size=24)
-        orig_vector_text.move_to([-5, 3, 0])
-
-        final_text = Text("The eigenvector is scaled by λ = 4", font_size=24)
-        final_text.move_to([0, -3, 0])
-
-        # Animation sequence
-        # 0-3 seconds
-        self.play(
-            Create(plane),
-            run_time=1
-        )
-        self.play(
-            Create(original_vector),
-            Write(v_label),
-            FadeIn(orig_vector_text),
-            run_time=1
-        )
-
-        # 3-6 seconds
-        self.play(
-            Write(matrix_A),
-            Write(equation),
-            Write(lambda_val),
-            run_time=1.5
-        )
-
-        # 6-9 seconds
-        original_vector_faded = original_vector.copy().set_opacity(0.5)
-        self.play(
-            Transform(original_vector, original_vector_faded),
-            Create(transformed_vector),
-            Write(four_v_label),
-            run_time=1.5
-        )
-
-        # 9-12 seconds
-        dashed_line = DashedLine(
-            start=original_vector.get_end(),
-            end=transformed_vector.get_end(),
-            color=GRAY,
-            stroke_opacity=0.7
-        )
-
-        self.play(
-            Create(dashed_line),
-            Write(final_text),
-            run_time=1
-        )
-
-        # Final highlight pulse
-        self.play(
-            original_vector.animate.set_color(YELLOW),
-            transformed_vector.animate.set_color(YELLOW),
-            run_time=0.25
-        )
-        self.play(
-            original_vector.animate.set_color(BLUE),
-            transformed_vector.animate.set_color(RED),
-            run_time=0.25
-        )
-
+        # 1. Title sequence
+        title = Text("Subsets", font_size=48)
+        title.move_to(UP * 2)
+        self.play(FadeIn(title))
         self.wait(1)
+        self.play(FadeOut(title))
+        
+        # 2. Create Set A
+        circle_a = Circle(radius=2, color=light_blue)
+        circle_a.set_fill(light_blue, opacity=0.3)
+        label_a = Text("A", font_size=36).next_to(circle_a, UR, buff=0.1)
+        
+        # Create numbers for Set A
+        numbers_a = VGroup()
+        positions = [
+            UP * 0.8 + LEFT * 0.8,    # 1
+            UP * 0.8 + RIGHT * 0.8,   # 2
+            LEFT * 1.2,               # 3
+            RIGHT * 1.2,              # 4
+            DOWN * 0.8 + LEFT * 0.8,  # 5
+            DOWN * 0.8 + RIGHT * 0.8  # 6
+        ]
+        
+        for i, pos in zip(range(1, 7), positions):
+            num = Text(str(i), font_size=36, color=BLACK)
+            num.move_to(pos)
+            numbers_a.add(num)
+        
+        # Animate Set A
+        self.play(
+            Create(circle_a),
+            Write(label_a)
+        )
+        self.play(Write(numbers_a))
+        self.wait(1)
+        
+        # 3. Create Set B
+        circle_b = Circle(radius=1, color=darker_blue)
+        circle_b.set_fill(darker_blue, opacity=0.3)
+        circle_b.shift(RIGHT * 0.5 + DOWN * 0.3)  # Position within A
+        label_b = Text("B", font_size=36).next_to(circle_b, DR, buff=0.1)
+        
+        # Create highlights for subset elements
+        subset_indices = [1, 3, 5]  # indices for 2, 4, 6 in numbers_a
+        highlights = VGroup()
+        for idx in subset_indices:
+            highlight = Circle(radius=0.3, color=YELLOW, fill_opacity=0.2)
+            highlight.move_to(numbers_a[idx].get_center())
+            highlights.add(highlight)
+        
+        # Animate Set B and highlights
+        self.play(
+            Create(circle_b),
+            Write(label_b)
+        )
+        self.play(FadeIn(highlights))
+        self.wait(1)
+        
+        # 4. Add subset symbol and text
+        subset_symbol = MathTex(r"\subseteq", font_size=48)
+        subset_symbol.next_to(circle_a, RIGHT, buff=0.5)
+        
+        subset_text = MathTex(r"B \subseteq A", font_size=36)
+        subset_text.next_to(circle_a, DOWN, buff=0.5)
+        
+        self.play(
+            Write(subset_symbol),
+            Write(subset_text)
+        )
+        self.wait(2)
+        
+        # Fade everything out
+        self.play(
+            *[FadeOut(mob) for mob in [
+                circle_a, circle_b, label_a, label_b,
+                numbers_a, highlights, subset_symbol, subset_text
+            ]]
+        )

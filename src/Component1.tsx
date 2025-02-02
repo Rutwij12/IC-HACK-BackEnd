@@ -1,109 +1,55 @@
-function TrigCircleVisualizer() {
-  const [angle, setAngle] = React.useState(0);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const canvasRef = React.useRef(null);
-
-  const size = 300;
-  const radius = 120;
-  const center = size / 2;
-
-  React.useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    
-    // Clear canvas
-    ctx.clearRect(0, 0, size, size);
-    
-    // Draw main circle
-    ctx.beginPath();
-    ctx.strokeStyle = '#ffa500';
-    ctx.lineWidth = 2;
-    ctx.arc(center, center, radius, 0, 2 * Math.PI);
-    ctx.stroke();
-
-    // Draw axes
-    ctx.beginPath();
-    ctx.strokeStyle = '#ffb732';
-    ctx.moveTo(center - radius - 10, center);
-    ctx.lineTo(center + radius + 10, center);
-    ctx.moveTo(center, center - radius - 10);
-    ctx.lineTo(center, center + radius + 10);
-    ctx.stroke();
-
-    // Calculate point on circle
-    const x = center + radius * Math.cos(angle);
-    const y = center - radius * Math.sin(angle);
-
-    // Draw angle line
-    ctx.beginPath();
-    ctx.strokeStyle = '#ff8c00';
-    ctx.moveTo(center, center);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-
-    // Draw sine line
-    ctx.beginPath();
-    ctx.strokeStyle = '#ffd700';
-    ctx.setLineDash([5, 5]);
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, center);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Draw cosine line
-    ctx.beginPath();
-    ctx.strokeStyle = '#ff4500';
-    ctx.setLineDash([5, 5]);
-    ctx.moveTo(x, y);
-    ctx.lineTo(center, y);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-  }, [angle]);
-
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    updateAngle(e);
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      updateAngle(e);
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const updateAngle = (e) => {
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left - center;
-    const y = e.clientY - rect.top - center;
-    setAngle(Math.atan2(-y, x));
-  };
-
+function SetDefinitionCard() {
   return (
-    <div style={{ fontFamily: 'Arial' }}>
-      <h2 style={{ color: '#ff8c00', fontSize: '24px' }}>Unit Circle Visualizer</h2>
-      <div>
-        <canvas
-          ref={canvasRef}
-          width={size}
-          height={size}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          style={{ cursor: 'pointer' }}
-        />
+    <div style={{
+      fontFamily: 'Arial',
+      padding: '20px',
+      maxWidth: '600px',
+      borderRadius: '8px',
+      backgroundColor: '#fff6eb'  
+    }}>
+      <h2 style={{
+        fontSize: '24px',
+        color: '#e65c00',
+        marginBottom: '15px'
+      }}>
+        What is a Mathematical Set?
+      </h2>
+      
+      <p style={{
+        fontSize: '16px',
+        color: '#cc5200',
+        lineHeight: '1.6',
+        marginBottom: '15px'
+      }}>
+        A set is a collection of distinct objects, considered as a single unit. The objects in a set are called elements or members of the set. Sets are usually denoted by capital letters.
+      </p>
+
+      <div style={{
+        fontSize: '16px',
+        color: '#e67300',
+        marginBottom: '15px'
+      }}>
+        <h3 style={{
+          fontSize: '18px',
+          color: '#cc5200',
+          marginBottom: '10px'
+        }}>
+          Simple Examples:
+        </h3>
+        <ul style={{lineHeight: '1.6'}}>
+          <li>A = {'{'}1, 2, 3, 4, 5{'}'} is a set of first five natural numbers</li>
+          <li>B = {'{'}red, blue, green{'}'} is a set of colors</li>
+          <li>C = {'{'}dog, cat, rabbit{'}'} is a set of animals</li>
+        </ul>
       </div>
-      <div style={{ color: '#ffa500', marginTop: '20px' }}>
-        <p>Angle: {(angle * 180 / Math.PI).toFixed(1)}°</p>
-        <p style={{ color: '#ffd700' }}>Sine: {Math.sin(angle).toFixed(3)}</p>
-        <p style={{ color: '#ff4500' }}>Cosine: {Math.cos(angle).toFixed(3)}</p>
-      </div>
+
+      <p style={{
+        fontSize: '16px',
+        color: '#cc5200',
+        fontStyle: 'italic'
+      }}>
+        Key characteristic: Each element in a set must be unique, and the order of elements doesn't matter.
+      </p>
     </div>
   );
 }

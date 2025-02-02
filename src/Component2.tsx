@@ -1,62 +1,107 @@
-function AngleFundamentals() {
-  const titleStyle = {
-    fontFamily: 'Arial',
-    fontSize: '28px',
-    color: '#FF8C00',
-    marginBottom: '20px'
+function VennDiagramVisualizer() {
+  const [sets, setSets] = React.useState({
+    setA: {x: 150, y: 150, elements: ['A1', 'A2', 'A3']},
+    setB: {x: 250, y: 150, elements: ['B1', 'B2', 'A2']} 
+  });
+  const [draggedSet, setDraggedSet] = React.useState(null);
+  const [mouseOffset, setMouseOffset] = React.useState({x: 0, y: 0});
+
+  const handleMouseDown = (e, setKey) => {
+    const rect = e.target.getBoundingClientRect();
+    setMouseOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+    setDraggedSet(setKey);
   };
 
-  const paragraphStyle = {
-    fontFamily: 'Arial',
-    fontSize: '16px',
-    color: '#FFA500',
-    lineHeight: '1.6',
-    marginBottom: '15px'
+  const handleMouseMove = (e) => {
+    if (draggedSet) {
+      setSets(prev => ({
+        ...prev,
+        [draggedSet]: {
+          ...prev[draggedSet],
+          x: e.clientX - mouseOffset.x,
+          y: e.clientY - mouseOffset.y
+        }
+      }));
+    }
   };
 
-  const subtitleStyle = {
-    fontFamily: 'Arial',
-    fontSize: '20px',
-    color: '#FF7F50',
-    marginTop: '20px',
-    marginBottom: '10px'
+  const handleMouseUp = () => {
+    setDraggedSet(null);
+  };
+
+  const getIntersection = () => {
+    return sets.setA.elements.filter(el => sets.setB.elements.includes(el));
+  };
+
+  const getUnion = () => {
+    return [...new Set([...sets.setA.elements, ...sets.setB.elements])];
   };
 
   return (
-    <div style={{padding: '20px'}}>
-      <h1 style={titleStyle}>Understanding Angle Measurements</h1>
+    <div 
+      style={{
+        position: 'relative',
+        height: '400px',
+        fontFamily: 'Arial',
+        userSelect: 'none'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    >
+      <h2 style={{color: '#FF8C00', marginBottom: '20px'}}>Interactive Venn Diagram</h2>
       
-      <div style={paragraphStyle}>
-        Angles can be measured in two primary ways: degrees and radians. Each has its own uses and advantages in mathematics and real-world applications.
+      {/* Set A Circle */}
+      <div
+        style={{
+          position: 'absolute',
+          left: sets.setA.x,
+          top: sets.setA.y,
+          width: '150px',
+          height: '150px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255, 140, 0, 0.3)',
+          cursor: 'move',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onMouseDown={(e) => handleMouseDown(e, 'setA')}
+      >
+        Set A
       </div>
 
-      <h2 style={subtitleStyle}>Degrees (°)</h2>
-      <div style={paragraphStyle}>
-        Degrees are the most common way to measure angles in everyday life. There are 360 degrees in a full circle.
-        - A quarter turn = 90°
-        - A half turn = 180°
-        - A full turn = 360°
+      {/* Set B Circle */}
+      <div
+        style={{
+          position: 'absolute',
+          left: sets.setB.x,
+          top: sets.setB.y,
+          width: '150px',
+          height: '150px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255, 160, 0, 0.3)',
+          cursor: 'move',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onMouseDown={(e) => handleMouseDown(e, 'setB')}
+      >
+        Set B
       </div>
 
-      <h2 style={subtitleStyle}>Radians (rad)</h2>
-      <div style={paragraphStyle}>
-        Radians are the standard unit in advanced mathematics and physics. A radian is the angle made when you wrap the radius length around the circle's arc.
-        - π radians = 180°
-        - 2π radians = 360°
-        - π/2 radians = 90°
-      </div>
-
-      <h2 style={subtitleStyle}>Common Conversions</h2>
-      <div style={paragraphStyle}>
-        To convert from degrees to radians: multiply by π/180
-        To convert from radians to degrees: multiply by 180/π
-      </div>
-
-      <div style={paragraphStyle}>
-        For example:
-        - 45° = π/4 radians
-        - 90° = π/2 radians
-        - 30° = π/6 radians
+      {/* Operations Display */}
+      <div style={{
+        position: 'absolute',
+        top: '320px',
+        left: '20px',
+        color: '#FF8C00'
+      }}>
+        <p>Intersection: {getIntersection().join(', ')}</p>
+        <p>Union: {getUnion().join(', ')}</p>
       </div>
     </div>
   );

@@ -1,80 +1,58 @@
 from manim import *
-import numpy as np
 
-class MatrixTransformation(Scene):
+class SetMembershipVisualization(Scene):
     def construct(self):
-        # Set up the coordinate grid
-        grid = NumberPlane(
-            x_range=[-4, 4, 1],
-            y_range=[-4, 4, 1],
-            background_line_style={
-                "stroke_color": "#888888",
-                "stroke_width": 0.5,
-                "stroke_opacity": 0.5,
-            }
-        )
-
-        # Define vectors
-        v1 = Arrow(start=ORIGIN, end=RIGHT, color=RED, tip_length=0.2)
-        v2 = Arrow(start=ORIGIN, end=UP, color=BLUE, tip_length=0.2)
+        # Part 1: Initial Setup
+        set_text = MathTex("A = \\{2, 4, 6, 8\\}")
+        set_text[0][0].set_color(BLUE)  # Color the 'A' blue
+        set_text.shift(UP)
         
-        # Create vector labels
-        v1_label = MathTex("v_1", color=RED).next_to(v1.get_end(), RIGHT*0.3 + UP*0.3)
-        v2_label = MathTex("v_2", color=BLUE).next_to(v2.get_end(), LEFT*0.3 + UP*0.3)
-
-        # Define transformation matrix
-        matrix = [[2, 1], [-1, 1]]
-        matrix_tex = MathTex(
-            "M = \\begin{bmatrix} 2 & 1 \\\\ -1 & 1 \\end{bmatrix}"
-        ).scale(0.8).to_corner(UR, buff=0.5)
-
-        # Step 1: Fade in grid and vectors
+        title = Text("Set Membership Examples", font_size=36)
+        title.next_to(set_text, DOWN, buff=0.5)
+        
+        # Fade in the initial elements
         self.play(
-            Create(grid),
-            GrowArrow(v1),
-            GrowArrow(v2),
-            Write(v1_label),
-            Write(v2_label),
-            run_time=3
+            FadeIn(set_text),
+            FadeIn(title)
         )
+        self.wait(1)
 
-        # Step 2: Show matrix
-        self.play(Write(matrix_tex), run_time=1.5)
+        # Part 2: Membership Tests
+        # Row 1
+        test1 = MathTex("2 \\in A").shift(LEFT * 2 + DOWN)
+        checkmark1 = Text("✓", color=GREEN).next_to(test1, RIGHT, buff=0.5)
+        
+        # Row 2
+        test2 = MathTex("5 \\in A").shift(LEFT * 2 + DOWN * 2)
+        x_mark = Text("✗", color=RED).next_to(test2, RIGHT, buff=0.5)
+        
+        # Row 3
+        test3 = MathTex("8 \\in A").shift(LEFT * 2 + DOWN * 3)
+        checkmark2 = Text("✓", color=GREEN).next_to(test3, RIGHT, buff=0.5)
 
-        # Create transformed vectors
-        v1_transformed = Arrow(
-            start=ORIGIN,
-            end=np.array([2, -1, 0]),
-            color=RED,
-            tip_length=0.2
-        )
-        v2_transformed = Arrow(
-            start=ORIGIN,
-            end=np.array([1, 1, 0]),
-            color=BLUE,
-            tip_length=0.2
-        )
+        # Animate membership tests
+        self.play(Write(test1))
+        self.play(Create(checkmark1))
+        self.wait(0.5)
+        
+        self.play(Write(test2))
+        self.play(Create(x_mark))
+        self.wait(0.5)
+        
+        self.play(Write(test3))
+        self.play(Create(checkmark2))
+        self.wait(0.5)
 
-        # Create transformed vector labels
-        mv1_label = MathTex("Mv_1", color=RED).next_to(v1_transformed.get_end(), RIGHT*0.3 + UP*0.3)
-        mv2_label = MathTex("Mv_2", color=BLUE).next_to(v2_transformed.get_end(), RIGHT*0.3 + UP*0.3)
-
-        # Step 3: Apply transformation
-        self.play(
-            grid.animate.apply_matrix(matrix),
-            Transform(v1, v1_transformed),
-            Transform(v2, v2_transformed),
-            v1_label.animate.set_opacity(0.3),
-            v2_label.animate.set_opacity(0.3),
-            run_time=6
-        )
-
-        # Step 4: Add transformed labels
-        self.play(
-            Write(mv1_label),
-            Write(mv2_label),
-            run_time=1.5
-        )
-
-        # Final pause
-        self.wait(1.5)
+        # Part 3: Highlight membership symbols
+        for test in [test1, test2, test3]:
+            self.play(
+                test[0][1].animate.set_color(BLUE),
+                run_time=0.3
+            )
+        
+        # Add explanation note
+        note = Text("∈ means 'is an element of'", font_size=32)
+        note.shift(DOWN * 4)
+        self.play(FadeIn(note))
+        
+        self.wait(1)
