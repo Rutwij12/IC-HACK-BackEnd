@@ -162,8 +162,7 @@ class VideoOrchestrator:
             combined_code.append(f"\n        # Scene {i}")
 
             # Add voiceover wrapper
-            combined_code.append(f"        with self.voiceover(text=\"\"\"{
-                                 voiceover.strip()}\"\"\") as tracker:")
+            combined_code.append(f"        with self.voiceover(text=\"\"\"{voiceover.strip()}\"\"\") as tracker:")
 
             # Add transition between scenes
             if i != 0:
@@ -297,8 +296,7 @@ class VideoOrchestrator:
         stdout, stderr = await video_process.communicate()
 
         if video_process.returncode != 0:
-            raise Exception(f"Video rendering failed with error:\nStdout: {
-                            stdout.decode()}\nStderr: {stderr.decode()}")
+            raise Exception(f"Video rendering failed with error:\nStdout: {stdout.decode()}\nStderr: {stderr.decode()}")
 
         filename = os.path.join(os.path.dirname(
             __file__), "scenes", "scene_1_temp_code.py")

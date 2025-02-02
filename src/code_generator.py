@@ -27,6 +27,7 @@ class State(TypedDict):
     evaluation: CodeEvaluation
     iterations: int
     current_code: str
+    has_error: bool = False  # Add new error flag
 
 
 class CodeGenerator:
@@ -52,8 +53,11 @@ class CodeGenerator:
             cleaned_content = response.content.rstrip()
         except:
             print(f"Response content: {response.content}")
-            raise Exception(
-                "Failed to get content from response when doing rstrip")
+            return {
+                "messages": messages,
+                "iterations": iterations + 1,
+                "has_error": True
+            }
         messages.append(("assistant", cleaned_content))
         print(f"state of messages after call: {self.temp_file_prefix}")
         return {
@@ -64,6 +68,10 @@ class CodeGenerator:
     async def _evaluate_code(self, state: State):
         """Evaluate generated code using manim --dry_run"""
         messages = state["messages"]
+
+        if state.get("has_error", False):  # Check for errors first
+            print("checked for error before eval ---ERROR OCCURRED - SKIPPING SCENE---")
+            return
 
         # Concatenate all recent assistant messages until a non-assistant message
         last_message = ""
@@ -195,6 +203,9 @@ class CodeGenerator:
 
     def _should_continue(self, state: State):
         """Determine whether to continue iteration"""
+        if state.get("has_error", False):  # Check for errors first
+            print("---ERROR OCCURRED - SKIPPING SCENE---")
+            return "invalid"
         if state["evaluation"].passes_criteria:
             print("---CODE PASSED EVALUATION---")
             return "end"
